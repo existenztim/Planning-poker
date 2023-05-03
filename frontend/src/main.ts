@@ -1,8 +1,8 @@
 import './style.css'
-import { testing123 } from './selectTask'
+import { taskSetup } from './selectTask'
 document.querySelector<HTMLDivElement>('#app')!.innerHTML = /*html */`
   <div>
-   <p>hey</p>
+   <p>You can freely remove everything in this div 😁</p>
   </div>
 `
-testing123();
+taskSetup();
