@@ -1,3 +1,6 @@
+import { io } from "https://cdn.socket.io/4.3.2/socket.io.esm.min.js";
+
+const socket = io("http://localhost:5050");
 class Task {
   id: string;
   title: string;
@@ -90,6 +93,13 @@ const  initSessionBtnEvent = () => {
         }
       });
       console.log("Session list: ",sessionList);
+      emitSession(sessionList);
     })
   }
+}
+
+const emitSession = (tasks:Task[]) => {
+  console.log("emit session", tasks);
+  socket.emit("send sessionList", tasks);
+
 }

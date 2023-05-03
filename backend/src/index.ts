@@ -1,8 +1,8 @@
 import express from 'express';
 import cors from 'cors';
 import * as dotenv from 'dotenv';
-// import type { Socket } from 'socket.io';
-// import { Server } from 'socket.io';
+import type { Socket } from 'socket.io';
+import { Server } from 'socket.io';
 import * as http from 'http';
 import connectDB from './config/database';
 
@@ -21,12 +21,12 @@ app.use(express.urlencoded({ extended: false }));
 //   res.send('Hello World');
 // });
 
-// const io = new Server(server, {
-//   cors: {
-//     origin: '*',
-//     methods: ['GET', 'POST'],
-//   },
-// });
+const io = new Server(server, {
+  cors: {
+    origin: '*',
+    methods: ['GET', 'POST'],
+  },
+});
 
 // io.on('connection', (socket: Socket) => {
 //   socket.on('chat', (arg: ClientChatMessage) => {
@@ -34,6 +34,15 @@ app.use(express.urlencoded({ extended: false }));
 //   });
 //   app.locals.socketIo = io;
 // });
+
+io.on('connection', function(socket: Socket) {
+  console.log("new user: ",socket.id);
+  
+  socket.on('send sessionList', (list) => {
+    console.log(list);
+  });
+
+})
 
 server.listen(PORT, () => {
   console.log(`Socket started on port ${PORT}`);
