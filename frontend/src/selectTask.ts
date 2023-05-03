@@ -30,14 +30,33 @@ export const taskSetup = () => {
 
 const printTasks = (list:Task[]) => {
   const body = document.querySelector<HTMLDivElement>('#app');
-  const taskTable = document.createElement("table");
+  const taskContainer = document.createElement("div");
   
   list.map(task => {
-    taskTable.innerHTML += /*html */`
-    <p>${task.title}</p>
-    <p>${task.description}</p>
+    taskContainer.innerHTML += /*html */`
+    <div id=${task.title}>
+        <ul>
+            <li>${task.title}</li>
+            <li>${task.description}</li>
+        </ul>
+        <input type="checkbox" id="scales" name="addTask">
+        <label for="addTask">Add to voting session</label>
+    </div>
     `
   })
 
-  body?.appendChild(taskTable);
+  taskContainer.innerHTML += /*html*/`
+  <button id="initSessionBtn">Start session</button>
+  `
+  body?.appendChild(taskContainer);
+  initSessionBtnEvent();
+}
+
+const  initSessionBtnEvent = () => {
+  const initSessionBtn = document.getElementById("initSessionBtn")as HTMLButtonElement || null;
+  if(initSessionBtn) {
+    initSessionBtn.addEventListener("click", () => {
+      console.log("hey");
+    })
+  }
 }
