@@ -3,17 +3,18 @@
 ## Wazzup?
 > Yesterday I…, today I will…, I need help with…, I'm stuck with…, TIL…
 
-### Name 1
-Lorem ipsum dolor sit amet
+### Viktor
+Projekt inlett
 
-### Name 2
-Lorem ipsum dolor sit amet
+### Tim
+Projekt inlett
 
-### Name 3
-Lorem ipsum dolor sit amet
+### Therese
+Projekt inlett
 
-### Name 4
-Lorem ipsum dolor sit amet
+### Maria
+Projekt inlett
 
+![project startup day](https://user-images.githubusercontent.com/97452286/235919838-9cd9b60c-875c-418a-9485-56a257183479.png)
 
-> ⚠️⚠️⚠️ Remember to add a screenshot of today's scrum board to this folder!
+![image](https://user-images.githubusercontent.com/97452286/235919671-00cfba62-6ab9-4871-8f1f-78425ecbfa33.png)
