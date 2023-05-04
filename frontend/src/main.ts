@@ -1,7 +1,7 @@
 import './style.css'
 import { taskSetup } from './selectTask'
-import { socket } from './socket.ts'
-import showTasks from './showTasks.ts'
+//import { socket } from './socket.ts'
+//import showTasks from './showTasks.ts'
 import createTasks from './createTasks.ts'
 
 document.querySelector<HTMLDivElement>('#app')!.innerHTML = /*html */`

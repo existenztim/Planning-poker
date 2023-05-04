@@ -54,6 +54,7 @@ io.on('connection', (socket: Socket) => {
   //})
   //app.locals.socketIo = io;
 });
+handleSession(io);
 
 server.listen(PORT, () => {
   console.log(`Socket started on port ${PORT}`);

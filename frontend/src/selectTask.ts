@@ -1,4 +1,5 @@
 import { io } from "https://cdn.socket.io/4.3.2/socket.io.esm.min.js";
+/* eslint-disable no-console */
 const socketURL ="http://localhost:5050";
 
 class Task {
@@ -38,6 +39,7 @@ export const taskSetup = () => {
       points: null
     }
   ]
+
   console.log("Template/fetched list: ",templateTaskList);
   printTasks(templateTaskList);
 }
@@ -88,7 +90,7 @@ const  initSessionBtnEvent = () => {
 
       checkboxes.forEach((checkbox) => {
         if (checkbox) {
-          const dataId = checkbox.dataset.id;
+          const dataId = (checkbox as HTMLInputElement).dataset.id as string;
           const dataIdValues = dataId.split(',');
           
           const task = {
@@ -97,7 +99,6 @@ const  initSessionBtnEvent = () => {
             description: dataIdValues[2].trim(),
             points: null
           }
-          console.log(task);
           sessionList.push(task);
           
         } 
@@ -111,5 +112,5 @@ const  initSessionBtnEvent = () => {
 const emitSession = (tasks:Task[]) => {
   const socket = io(socketURL);
   socket.emit("send sessionList", tasks);
-
+  //displayVotingTasks(); <--- behöver kalla på en funktion här
 }
