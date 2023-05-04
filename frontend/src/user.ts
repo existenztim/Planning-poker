@@ -39,7 +39,7 @@ addNewUserBtn.addEventListener('click', (event) => {
   const user = {username: newUserInput.value, password:newUserPassword.value};
 
   try {
-    fetch("http://localhost:5050/users/add", {    
+    fetch("http://localhost:5050/api/users/add", {    
       method: "POST",
       headers: {
         "Content-Type": "application/json",
