@@ -5,7 +5,10 @@ import type { Socket } from 'socket.io';
 import { Server } from 'socket.io';
 import * as http from 'http';
 import connectDB from './config/database';
+
+import userRoute from './routes/user.route';
 import tasksRouter from './routes/tasks.route';
+
 
 dotenv.config();
 
@@ -23,7 +26,10 @@ const server = http.createServer(app);
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+
+app.use('/api/users', userRoute);
 app.use('/api/tasks', tasksRouter);
+
 
 // app.get('/ping', (req, res) => {
 //   res.send('Hello World');
