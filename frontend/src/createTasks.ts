@@ -14,11 +14,11 @@ export default function createTasks () {
 <input type="text" id="description" name="description">
 <label for = "points">Poäng</label>
 <select name="points" id="points">
-  <option value="default">Välj</option>
-  <option value="tiny-1SP">Tiny 1SP</option>
-  <option value="small-3SP">Small 3SP</option>
-  <option value="medium-5SP">Medium 5SP</option>
-  <option value="large-8SP">Large 8 SP</option>
+  <option value=null>Välj</option>
+  <option value=1>Tiny 1SP</option>
+  <option value=3>Small 3SP</option>
+  <option value=5>Medium 5SP</option>
+  <option value=8>Large 8 SP</option>
 </select>
 <button id="save-task-btn">Spara</button>`
 
@@ -30,10 +30,26 @@ export default function createTasks () {
   //console.log(saveButton, titleField, descriptionField, pointsField);
 
   saveButton.addEventListener('click', () => {
+    const task = {title: titleField.value, description: descriptionField.value, points: pointsField.value}
     //console.log(titleField.value, descriptionField.value, pointsField.value);
-    showTasks();
     
-    socket.emit(titleField.value, descriptionField.value, pointsField.value)
+
+    fetch('http://localhost:5050/api/tasks/add', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(task)
+    })
+      .then(res => res.json())
+      .then(data => {
+        console.log(data);
+
+      })
+    showTasks();
   })
+    
+  //socket.emit('createTask', {title: titleField.value, description: descriptionField.value, points: pointsField.value})
+  
     
 }
