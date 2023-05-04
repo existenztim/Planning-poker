@@ -1,4 +1,4 @@
-import './style.css'
+import './style.scss'
 import { taskSetup } from './selectTask'
 //import { socket } from './socket.ts'
 //import showTasks from './showTasks.ts'

@@ -41,18 +41,8 @@ const io = new Server(server, {
 io.on('connection', (socket: Socket) => {
   console.log(socket.id);
   
-  // socket.on('createTask', ({title, description, points}) => {
-  //   //console.log(title,description,points);
-  //   const newTask : object = {title, description, points}
-  //   //console.log(newTask);
-  //   tasks.push(newTask);
-  //   console.log(tasks);
-    
-  //   io.emit('tasks', tasks);
-    
-    
-  //})
-  //app.locals.socketIo = io;
+  
+  app.locals.socketIo = io;
 });
 handleSession(io);
 
