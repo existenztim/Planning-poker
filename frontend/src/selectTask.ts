@@ -11,7 +11,6 @@ export const taskSetup = async () => {
   try {
     const response = await fetch(`${socketURL}/api/tasks`);
     const tasks = await response.json();
-    console.log(tasks);
     const templateTaskList: Task[] = tasks
     console.log("Fetched list: ",templateTaskList);
     printTasks(templateTaskList);
@@ -95,5 +94,6 @@ const  initSessionBtnEvent = () => {
 const emitSession = (tasks:Task[]) => {
   const socket = io(socketURL);
   socket.emit("send sessionList", tasks);
+  alert("Tasks have been sent for a planning poker session!");
   //displayVotingTasks(); <--- behöver kalla på en funktion här
 }
