@@ -5,17 +5,20 @@ export default function showTaskHtml() {
   console.log(container);
   container.innerHTML = '';
   
+  const votingPageContainer : HTMLDivElement = document.createElement('div');
+  votingPageContainer.classList.add('votingpage');
   const todoTaskList: HTMLTableElement = document.createElement('table');
   todoTaskList.classList.add('todo-list');
+  todoTaskList.innerText = 'röstningslista'
   const votingContainer: HTMLDivElement = document.createElement('div');
   votingContainer.classList.add('voting-div');
-  votingContainer.innerText = 'allt som rör röstning';
   const doneTasksList: HTMLTableElement = document.createElement('table');
   doneTasksList.classList.add('done-tasks');
   doneTasksList.innerText='alla färdiga röstningar';
   
   //console.log(todoTaskList, votingContainer, doneTasksList);
-  container.append(todoTaskList, votingContainer, doneTasksList);
+  container.appendChild(votingPageContainer);
+  votingPageContainer.append(todoTaskList, votingContainer, doneTasksList);
   
   const displayVoteTask: HTMLDivElement = document.createElement('div');
   displayVoteTask.classList.add('voting-header');
