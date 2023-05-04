@@ -6,6 +6,7 @@ import { Server } from 'socket.io';
 import * as http from 'http';
 import connectDB from './config/database';
 import voteRouter from './routes/vote.route';
+import tasksRouter from './routes/tasks.route';
 
 dotenv.config();
 
@@ -14,9 +15,16 @@ const PORT = process.env.PORT || 5000;
 const app = express();
 const server = http.createServer(app);
 
+// async function init (){
+//   await mongoose.connect(process.env.MONGO_URI)
+//     .then (() => console.log('databasen är igång'));
+// }
+// init ();
+
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use('/api/tasks', tasksRouter);
 
 app.use('/api/vote', voteRouter);
 
@@ -29,7 +37,6 @@ const io = new Server(server, {
 
 io.on('connection', (socket: Socket) => {
   console.log(socket.id);
-
   app.locals.socketIo = io;
 });
 
