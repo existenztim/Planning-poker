@@ -1,4 +1,4 @@
-import { error, log } from 'console';
+import error from '../middlewares/error.middleware';
 import { Router } from 'express';
 import Task from '../models/TasksModel';
 

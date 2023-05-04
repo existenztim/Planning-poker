@@ -8,10 +8,10 @@ export default function createTasks () {
 
   const taskForm : HTMLFormElement = document.createElement('form');
   taskForm.innerHTML = `
-<label for="title">Uppgift</label><br>
-<input type="text" id="title" name="title"><br>
-<label for="description">Beskrivning</label><br>
-<input type="text" id="description" name="description">
+<label for="title">Uppgift</label>
+<input type="text" id="title" name="title">
+<label for="description">Beskrivning</label>
+<textarea id="description" name="description"></textarea>
 <label for = "points">Poäng</label>
 <select name="points" id="points">
   <option value=null>Välj</option>
