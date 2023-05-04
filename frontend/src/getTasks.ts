@@ -4,7 +4,7 @@ export default function getTasks() {
   const table: HTMLTableElement = document.querySelector('.todo-list') as HTMLTableElement;
   console.log(table);
 
-//   socket.on('tasks', (tasks: []) => {
+//   socket.on('send sessionList', (list) => {
 //     console.log(tasks);
 //     tasks.map(task => {
 //       //console.log(task.title);
@@ -17,5 +17,5 @@ export default function getTasks() {
 //       table.append(tr);
 //       tr.append(titleTd, descriptionTd);
 //     });
-//});
+//   });
 }
