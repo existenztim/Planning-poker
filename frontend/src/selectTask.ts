@@ -1,20 +1,8 @@
 import { io } from "https://cdn.socket.io/4.3.2/socket.io.esm.min.js";
+import type { Task } from "./models/taskModel"
 /* eslint-disable no-console */
 const socketURL ="http://localhost:5050";
 
-class Task {
-  id: string;
-  title: string;
-  description: string;
-  points: number | null;
-      
-  constructor(id: string ,title: string, description: string, points: number | null) {
-    this.id = id;
-    this.title = title;
-    this.description = description;
-    this.points = points;
-  }
-}
 
 //this function will instead make a fetch in the future
 export const taskSetup = () => {
