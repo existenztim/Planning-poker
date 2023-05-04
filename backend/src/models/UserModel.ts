@@ -5,13 +5,17 @@ const userSchema = new Schema(
     username: {
       type: String,
       required: true,
+      unique: true,
     },
-    color: {
+    password: {
       type: String,
       required: true,
     },
-  },
-  { timestamps: true }
+    admin: {
+      type: Boolean,
+      default: false,       //När användare skapas så får de värdet på admin som false. Vi skickar in admin-loggin genom backend med värdet true när denne skapas. 
+    }
+  }
 );
 
 const User = model('users', userSchema);
