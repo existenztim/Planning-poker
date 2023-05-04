@@ -1,3 +1,4 @@
+import { taskSetup } from "./selectTask";
 import showTasks from "./showTasks";
 //import { socket } from "./socket";
 
@@ -44,9 +45,10 @@ export default function createTasks () {
       .then(res => res.json())
       .then(data => {
         console.log(data);
-
+        
       })
     showTasks();
+    //taskSetup();
   })
     
   //socket.emit('createTask', {title: titleField.value, description: descriptionField.value, points: pointsField.value})

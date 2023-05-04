@@ -4,18 +4,18 @@ export default function getTasks() {
   const table: HTMLTableElement = document.querySelector('.todo-list') as HTMLTableElement;
   console.log(table);
 
-//   socket.on('send sessionList', (list) => {
-//     console.log(tasks);
-//     tasks.map(task => {
-//       //console.log(task.title);
-//       const tr = document.createElement('tr');
-//       const titleTd = document.createElement('td');
-//       titleTd.innerText = task.title;
-//       const descriptionTd = document.createElement('td');
-//       descriptionTd.innerText = task.description;
+  socket.on('getList', (list) => {
+    //console.log(fejklist);
+    list.map(item => {
+      console.log(item.title);
+      const tr = document.createElement('tr');
+      const titleTd = document.createElement('td');
+      titleTd.innerText = item.title;
+      const descriptionTd = document.createElement('td');
+      descriptionTd.innerText = item.description;
 
-//       table.append(tr);
-//       tr.append(titleTd, descriptionTd);
-//     });
-//   });
+      table.append(tr);
+      tr.append(titleTd, descriptionTd);
+    });
+  });
 }
