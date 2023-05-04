@@ -1,10 +1,10 @@
 import showTasks from "./showTasks";
-import { socket } from "./socket";
+//import { socket } from "./socket";
 
 export default function createTasks () {
   //console.log('skapa tasks');
   const container : HTMLElement = document.querySelector('#app') as HTMLElement;
-  container.innerHTML = '';
+  //container.innerHTML = '';
 
   const taskForm : HTMLFormElement = document.createElement('form');
   taskForm.innerHTML = `
