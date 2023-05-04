@@ -3,22 +3,23 @@ import type { Task } from "./models/taskModel"
 /* eslint-disable no-console */
 const socketURL ="http://localhost:5050";
 
-
-//this function will instead make a fetch in the future
-export const taskSetup = () => {
-  fetch('http://localhost:5050/api/tasks', {
-  })
-    .then(res => res.json())
-    .then(tasks => {
-      console.log(tasks);
-      const templateTaskList: Task[] = tasks
-      console.log("Template/fetched list: ",templateTaskList);
-      printTasks(templateTaskList);
-    })
+export const taskSetup = async () => {
+  try {
+    const response = await fetch(`${socketURL}/api/tasks`);
+    const tasks = await response.json();
+    console.log(tasks);
+    const templateTaskList: Task[] = tasks
+    console.log("Template/fetched list: ",templateTaskList);
+    printTasks(templateTaskList);
+  } catch (error) {
+    console.log(error);
+  }
 }
+
 /**
  * This will print the tasks from fetch 
  */
+
 const printTasks = (list:Task[]) => {
   const body = document.querySelector<HTMLDivElement>('#app');
   const taskContainer = document.createElement("div");
@@ -55,7 +56,7 @@ const printTasks = (list:Task[]) => {
  */
 
 const  initSessionBtnEvent = () => {
-  const initSessionBtn = document.getElementById("initSessionBtn")as HTMLButtonElement || null;
+  const initSessionBtn = document.getElementById("initSessionBtn");
   if(initSessionBtn) {
     initSessionBtn.addEventListener("click", () => {
       const sessionList: Task[] = [];
@@ -81,6 +82,10 @@ const  initSessionBtnEvent = () => {
     })
   }
 }
+
+/**
+ *Emit sessionList to backend using socket.io
+ */
 
 const emitSession = (tasks:Task[]) => {
   const socket = io(socketURL);
