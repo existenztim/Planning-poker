@@ -6,30 +6,15 @@ const socketURL ="http://localhost:5050";
 
 //this function will instead make a fetch in the future
 export const taskSetup = () => {
-
-  const templateTaskList: Task[] = [
-    {
-      id: "1",
-      title: "Task 1",
-      description: "Task 1 description",
-      points: null
-    },
-    {
-      id: "2",
-      title: "Task 2",
-      description: "Task 2 description",
-      points: null
-    },
-    {
-      id: "3",
-      title: "Task 3",
-      description: "Task 3 description",
-      points: null
-    }
-  ]
-
-  console.log("Template/fetched list: ",templateTaskList);
-  printTasks(templateTaskList);
+  fetch('http://localhost:5050/api/tasks', {
+  })
+    .then(res => res.json())
+    .then(tasks => {
+      console.log(tasks);
+      const templateTaskList: Task[] = tasks
+      console.log("Template/fetched list: ",templateTaskList);
+      printTasks(templateTaskList);
+    })
 }
 /**
  * This will print the tasks from fetch 
@@ -40,14 +25,14 @@ const printTasks = (list:Task[]) => {
   
   list.map(task => {
     taskContainer.innerHTML += /*html */`
-    <div id="task:${task.id}">
+    <div id="task:${task._id}">
         <ul>
             <li>${task.title}</li>
             <li>${task.description}</li>
         </ul>
         <input type="checkbox" id="checkbox:${task.title}" name="addTask" 
         data-id="
-        ${task.id},
+        ${task._id},
         ${task.title},
         ${task.description}">
 
@@ -82,7 +67,7 @@ const  initSessionBtnEvent = () => {
           const dataIdValues = dataId.split(',');
           
           const task = {
-            id: dataIdValues[0].trim(), //trim to remove whitespace
+            _id: dataIdValues[0].trim(), //trim to remove whitespace
             title: dataIdValues[1].trim(),
             description: dataIdValues[2].trim(),
             points: null
