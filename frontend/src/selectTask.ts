@@ -1,15 +1,17 @@
 import { io } from "https://cdn.socket.io/4.3.2/socket.io.esm.min.js";
+const socketURL ="http://localhost:5050";
 
-const socket = io("http://localhost:5050");
 class Task {
   id: string;
   title: string;
   description: string;
+  points: number | null;
       
-  constructor(id: string ,title: string, description: string) {
+  constructor(id: string ,title: string, description: string, points: number | null) {
     this.id = id;
     this.title = title;
     this.description = description;
+    this.points = points;
   }
 }
 
@@ -21,16 +23,19 @@ export const taskSetup = () => {
       id: "1",
       title: "Task 1",
       description: "Task 1 description",
+      points: null
     },
     {
       id: "2",
       title: "Task 2",
       description: "Task 2 description",
+      points: null
     },
     {
       id: "3",
       title: "Task 3",
       description: "Task 3 description",
+      points: null
     }
   ]
   console.log("Template/fetched list: ",templateTaskList);
@@ -50,7 +55,12 @@ const printTasks = (list:Task[]) => {
             <li>${task.title}</li>
             <li>${task.description}</li>
         </ul>
-        <input type="checkbox" id="checkbox:${task.title}" name="addTask">
+        <input type="checkbox" id="checkbox:${task.title}" name="addTask" 
+        data-id="
+        ${task.id},
+        ${task.title},
+        ${task.description}">
+
         <label for="addTask">Add to voting session</label>
     </div>
     `
@@ -75,22 +85,22 @@ const  initSessionBtnEvent = () => {
     initSessionBtn.addEventListener("click", () => {
       const sessionList: Task[] = [];
       const checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
-      const taskDivs = document.querySelectorAll('[id^="task"]');
-      
-      checkboxes.forEach((checkbox, i) => {
-        if (checkbox) {
-          const taskDiv = taskDivs[i];
-          const title = taskDiv.querySelector('li:first-child')?.innerHTML as string;
-          const description = taskDiv.querySelector('li:last-child')?.innerHTML as string;
-          const taskId = taskDiv.id.replace('task:', '');
 
+      checkboxes.forEach((checkbox) => {
+        if (checkbox) {
+          const dataId = checkbox.dataset.id;
+          const dataIdValues = dataId.split(',');
+          
           const task = {
-            id: taskId,
-            title,
-            description
+            id: dataIdValues[0].trim(), //trim to remove whitespace
+            title: dataIdValues[1].trim(),
+            description: dataIdValues[2].trim(),
+            points: null
           }
+          console.log(task);
           sessionList.push(task);
-        }
+          
+        } 
       });
       console.log("Session list: ",sessionList);
       emitSession(sessionList);
@@ -99,7 +109,7 @@ const  initSessionBtnEvent = () => {
 }
 
 const emitSession = (tasks:Task[]) => {
-  console.log("emit session", tasks);
+  const socket = io(socketURL);
   socket.emit("send sessionList", tasks);
 
 }

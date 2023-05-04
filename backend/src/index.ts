@@ -5,6 +5,7 @@ import type { Socket } from 'socket.io';
 import { Server } from 'socket.io';
 import * as http from 'http';
 import connectDB from './config/database';
+import { handleSession } from './selectTaskSocket';
 
 dotenv.config();
 
@@ -35,14 +36,7 @@ const io = new Server(server, {
 //   app.locals.socketIo = io;
 // });
 
-io.on('connection', function(socket: Socket) {
-  console.log("new user: ",socket.id);
-  
-  socket.on('send sessionList', (list) => {
-    console.log(list);
-  });
-
-})
+handleSession(io);
 
 server.listen(PORT, () => {
   console.log(`Socket started on port ${PORT}`);
