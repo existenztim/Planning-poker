@@ -4,11 +4,8 @@ import { taskSetup } from './selectTask'
 import showTasks from './showTasks.ts'
 import createTasks from './createTasks.ts'
 
-document.querySelector<HTMLDivElement>('#app')!.innerHTML = /*html */`
-  <div>
-   <p>You can freely remove everything in this div 😁</p>
-  </div>
-`
-//taskSetup();
+
+//setupCounter(document.querySelector<HTMLButtonElement>('#counter')!)
+
 //showTasks();
-createTasks ();
+//createTasks ();
