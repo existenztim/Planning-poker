@@ -79,11 +79,11 @@ const  initSessionBtnEvent = () => {
             points: null
           }
           sessionList.push(task);
-          showTasks();
         } 
       });
-      console.log("Session list: ",sessionList);
+      //console.log("Session list: ",sessionList);
       emitSession(sessionList);
+      showTasks();
     })
     
   }

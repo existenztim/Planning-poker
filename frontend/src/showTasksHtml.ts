@@ -1,8 +1,10 @@
 /* eslint-disable no-console */
+import { socket } from "./socket";
+
 export default function showTaskHtml() {
   const container: HTMLElement = document.querySelector('#app') as HTMLElement;
   // eslint-disable-next-line no-console
-  console.log(container);
+  //console.log(container);
   container.innerHTML = '';
   
   const votingPageContainer : HTMLDivElement = document.createElement('div');
@@ -25,12 +27,15 @@ export default function showTaskHtml() {
   displayVoteTask.innerText = 'vad vi ska rösta på';
   
   const voteCardsContainer: HTMLDivElement = document.createElement('div');
+  voteCardsContainer.classList.add('voting-card-container');
   voteCardsContainer.innerText= 'våra röstkost';
 
-  console.log(displayVoteTask, voteCardsContainer);
+  //console.log(displayVoteTask, voteCardsContainer);
   
   
   votingContainer.append(displayVoteTask, voteCardsContainer);
 
   //return todoTaskList;
+
+  
 }

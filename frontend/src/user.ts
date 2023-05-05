@@ -2,14 +2,33 @@
 ------------------ Hantera om användaren redan är inloggad -----------------
 --------------------------------------------------------------------------*/
 
-const CheckUserInlog = JSON.parse(localStorage.getItem('userData') || '');
+import showTasks from "./showTasks";
+import { socket } from "./socket";
+
+
+const loggedInUser = localStorage.getItem('userData');
+const CheckUserInlog = loggedInUser ? JSON.parse(loggedInUser) :null;
+
+// const CheckUserInlog = JSON.parse(localStorage.getItem('userData') || '');
 if (CheckUserInlog != null) {
+
+  //showTasks();
+  
   // Kopplas vidare till Planning - Poker
+  ('test if')
 } else {
   /*--------------------------------------------------------------------------
   ------------------- Add user -----------------------------------------------
   --------------------------------------------------------------------------*/
+  //console.log(('test else'));
+  
+  createAndLoginUser();
 
+}
+
+
+
+function createAndLoginUser() {
   const userAndLoginRoot = document.getElementById('app');
 
   const newUserSpan = document.createElement('span');
@@ -75,12 +94,13 @@ if (CheckUserInlog != null) {
         serverMassage.style.color = 'red';
       };
     }
+    // socket.emit('sendUser', user)
+    // showTasks();
   });
 
   /*------------------------------------------------------------------
   ------------------------------ Login -------------------------------
   ------------------------------------------------------------------*/
-
   const UserSpan = document.createElement('span');
   UserSpan.id = 'UserSpan';
   UserSpan.className = 'UserSpan';
@@ -140,10 +160,10 @@ if (CheckUserInlog != null) {
         serverMassage.style.color = 'red';
       };
     }
+    socket.emit('sendUser', user)
+    showTasks();
   });
 }
-
-
 /*--------------------------------------------------------------------------------------
 -------------- Logga ut användaren -----------------------------------------------------
 --------------------------------------------------------------------------------------*/

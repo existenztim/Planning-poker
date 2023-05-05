@@ -2,13 +2,13 @@ import { socket } from "./socket";
 
 export default function getTasks() {
   const table: HTMLTableElement = document.querySelector('.todo-list') as HTMLTableElement;
-  console.log(table);
+  //console.log(table);
 
   socket.on('getList', (list) => {
-    console.log(list);
+    //console.log(list);
     let count = 0
     list.map(item => {
-      console.log(item.title);
+      //console.log(item.title);
       const tr = document.createElement('tr');
       tr.id = `tr-${count}`;
       count++;

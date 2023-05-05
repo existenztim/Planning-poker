@@ -6,7 +6,7 @@
 }
 .todo-list {
     margin-left: 0px;
-    margin-right: 25em;
+    margin-right: 5em;
     background-color: lightgray;
     height: 100vh;
 
@@ -23,6 +23,15 @@
         td:first-child {
             font-weight: bold;
         }
+    }
+}
+.voting-card-container {
+    display: flex;
+    justify-content: space-between;
+
+    .voting-card-div {
+        margin: 3em;
+        border: solid 1px gray
     }
 }
 .done-tasks {
