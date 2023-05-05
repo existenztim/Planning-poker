@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
-import { socket } from "./socket.ts";
+import { socket } from "../socket.ts";
 import renderTempAdminPage from "./adminVue.ts";
-import type { Task } from "./models/taskModel.ts";
+import type { Task } from "../models/taskModel.ts";
 
 export default function sessionVue () {
   const printAppHtml =() => {

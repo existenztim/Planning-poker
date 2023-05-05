@@ -3,7 +3,7 @@
 --------------------------------------------------------------------------*/
 
 import sessionVue from "./sessionVue";
-import { socket } from "./socket";
+import { socket } from "../socket";
 
 
 // const CheckUserInlog = JSON.parse(localStorage.getItem('userData') || '');

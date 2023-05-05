@@ -1,5 +1,5 @@
 import { io } from "https://cdn.socket.io/4.3.2/socket.io.esm.min.js";
-import type { Task } from "./models/taskModel"
+import type { Task } from "../models/taskModel"
 import sessionVue from "./sessionVue";
 const socketURL ="http://localhost:5050";
 

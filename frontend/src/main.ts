@@ -1,5 +1,5 @@
 import './style.scss'
-import { checkUser } from './user.ts'
+import { checkUser } from './modules/user.ts'
 
 checkUser();
 
