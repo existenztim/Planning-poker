@@ -3,51 +3,41 @@ import type { Task } from "./models/taskModel"
 /* eslint-disable no-console */
 const socketURL ="http://localhost:5050";
 
+/**
+ * fetch tasks from DB
+ */
 
-//this function will instead make a fetch in the future
-export const taskSetup = () => {
-
-  const templateTaskList: Task[] = [
-    {
-      id: "1",
-      title: "Task 1",
-      description: "Task 1 description",
-      points: null
-    },
-    {
-      id: "2",
-      title: "Task 2",
-      description: "Task 2 description",
-      points: null
-    },
-    {
-      id: "3",
-      title: "Task 3",
-      description: "Task 3 description",
-      points: null
-    }
-  ]
-
-  console.log("Template/fetched list: ",templateTaskList);
-  printTasks(templateTaskList);
+export const taskSetup = async () => {
+  try {
+    const response = await fetch(`${socketURL}/api/tasks`);
+    const tasks = await response.json();
+    const templateTaskList: Task[] = tasks
+    console.log("Fetched list: ",templateTaskList);
+    printTasks(templateTaskList);
+  } catch (error) {
+    console.log(error);
+  }
 }
+
 /**
  * This will print the tasks from fetch 
  */
+
 const printTasks = (list:Task[]) => {
   const body = document.querySelector<HTMLDivElement>('#app');
   const taskContainer = document.createElement("div");
-  
+  taskContainer.classList.add("select-task-container");
+
   list.map(task => {
     taskContainer.innerHTML += /*html */`
-    <div id="task:${task.id}">
+    <div id="task:${task._id}" class="task-item">
         <ul>
             <li>${task.title}</li>
             <li>${task.description}</li>
         </ul>
         <input type="checkbox" id="checkbox:${task.title}" name="addTask" 
         data-id="
-        ${task.id},
+        ${task._id},
         ${task.title},
         ${task.description}">
 
@@ -70,7 +60,7 @@ const printTasks = (list:Task[]) => {
  */
 
 const  initSessionBtnEvent = () => {
-  const initSessionBtn = document.getElementById("initSessionBtn")as HTMLButtonElement || null;
+  const initSessionBtn = document.getElementById("initSessionBtn");
   if(initSessionBtn) {
     initSessionBtn.addEventListener("click", () => {
       const sessionList: Task[] = [];
@@ -82,7 +72,7 @@ const  initSessionBtnEvent = () => {
           const dataIdValues = dataId.split(',');
           
           const task = {
-            id: dataIdValues[0].trim(), //trim to remove whitespace
+            _id: dataIdValues[0].trim(), //trim to remove whitespace
             title: dataIdValues[1].trim(),
             description: dataIdValues[2].trim(),
             points: null
@@ -97,8 +87,13 @@ const  initSessionBtnEvent = () => {
   }
 }
 
+/**
+ *Emits sessionList to backend using socket.io
+ */
+
 const emitSession = (tasks:Task[]) => {
   const socket = io(socketURL);
   socket.emit("send sessionList", tasks);
+  alert("Tasks have been sent for a planning poker session!");
   //displayVotingTasks(); <--- behöver kalla på en funktion här
 }
