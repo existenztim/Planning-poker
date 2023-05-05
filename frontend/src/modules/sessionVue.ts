@@ -2,6 +2,7 @@
 import { socket } from "../socket.ts";
 import renderTempAdminPage from "./adminVue.ts";
 import type { Task } from "../models/taskModel.ts";
+import type { User } from "../models/userModel.ts";
 
 export default function sessionVue () {
   const printAppHtml =() => {
@@ -38,7 +39,7 @@ export default function sessionVue () {
   }
 
   const createUserCards = () => {
-    socket.on('userList', (userList) => {
+    socket.on('userList', (userList:User[]) => {
       console.log(userList);
       const votingCardContainer : HTMLDivElement = document.querySelector('.voting-card-container') as HTMLDivElement;
       votingCardContainer.innerHTML = '';
@@ -48,7 +49,7 @@ export default function sessionVue () {
         const votingCard : HTMLDivElement = document.createElement('div');
         votingCard.classList.add('voting-card-div');
         votingCard.innerText = 'Röstkort';
-        votingCard.innerHTML = /*html */`<p>Mitt poäng</p>
+        votingCard.innerHTML = /*html */`<p>${user.username}s: poäng</p>
         <select name="points" id="points">
           <option value=null>Välj</option>
           <option value=1>Tiny 1SP</option>
