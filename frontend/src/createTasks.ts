@@ -8,8 +8,9 @@ export default function createTasks () {
   //container.innerHTML = '';
 
   const taskForm : HTMLFormElement = document.createElement('form');
-  taskForm.innerHTML = `
-<label for="title">Uppgift</label>
+
+  taskForm.innerHTML = 
+  `<label for="title">Uppgift</label>
 <input type="text" id="title" name="title">
 <label for="description">Beskrivning</label>
 <textarea id="description" name="description"></textarea>
@@ -47,8 +48,8 @@ export default function createTasks () {
         console.log(data);
         
       })
-    showTasks();
-    //taskSetup();
+    //showTasks();
+    taskSetup();
   })
     
   //socket.emit('createTask', {title: titleField.value, description: descriptionField.value, points: pointsField.value})

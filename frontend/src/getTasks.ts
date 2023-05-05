@@ -5,7 +5,7 @@ export default function getTasks() {
   console.log(table);
 
   socket.on('getList', (list) => {
-    //console.log(fejklist);
+    console.log(list);
     list.map(item => {
       console.log(item.title);
       const tr = document.createElement('tr');
