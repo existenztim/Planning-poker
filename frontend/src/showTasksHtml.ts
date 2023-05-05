@@ -28,13 +28,17 @@ export const printAppHtml =() => {
 
 export const printHeaderHtml =() => {
   const admin = true; // Tillfällig lösning
-  const headerContainer = document.querySelector("#header") as HTMLHeadingElement;
-  headerContainer.innerHTML += /*html */`
-  <button id="logOut">Logga ut</button>
+  const headerContainer = document.querySelector('#header') as HTMLHeadingElement;
+  const buttonContainer = document.createElement('div');
+  buttonContainer.classList.add('button-container');
+  headerContainer.appendChild(buttonContainer);
+
+  buttonContainer.innerHTML += /*html */`
+  <button id='logOut'>Logga ut</button>
   `
-  if(admin) {
-    headerContainer.innerHTML += /*html */`
-    <button id="adminMode">Admin läge</button>
+  if(admin) { //kontrollera med localstorage (user.admin någon sådant)
+    buttonContainer.innerHTML += /*html */`
+    <button id='adminMode'>Admin läge</button>
     `
   }
 }
