@@ -1,3 +1,4 @@
+import { taskSetup } from "./selectTask";
 import showTasks from "./showTasks";
 //import { socket } from "./socket";
 
@@ -7,20 +8,21 @@ export default function createTasks () {
   //container.innerHTML = '';
 
   const taskForm : HTMLFormElement = document.createElement('form');
-  taskForm.innerHTML = /*html */`
-  <label for="title">Uppgift</label><br>
-  <input type="text" id="title" name="title"><br>
-  <label for="description">Beskrivning</label><br>
-  <input type="text" id="description" name="description">
-  <label for = "points">Poäng</label>
-    <select name="points" id="points">
-      <option value=null>Välj</option>
-      <option value=1>Tiny 1SP</option>
-      <option value=3>Small 3SP</option>
-      <option value=5>Medium 5SP</option>
-      <option value=8>Large 8 SP</option>
-    </select>
-  <button id="save-task-btn">Spara</button>`
+
+  taskForm.innerHTML = 
+  `<label for="title">Uppgift</label>
+<input type="text" id="title" name="title">
+<label for="description">Beskrivning</label>
+<textarea id="description" name="description"></textarea>
+<label for = "points">Poäng</label>
+<select name="points" id="points">
+  <option value=null>Välj</option>
+  <option value=1>Tiny 1SP</option>
+  <option value=3>Small 3SP</option>
+  <option value=5>Medium 5SP</option>
+  <option value=8>Large 8 SP</option>
+</select>
+<button id="save-task-btn">Spara</button>`
 
   container.append(taskForm);
   const saveButton :HTMLButtonElement = document.querySelector('#save-task-btn') as HTMLButtonElement;
@@ -44,9 +46,10 @@ export default function createTasks () {
       .then(res => res.json())
       .then(data => {
         console.log(data);
-
+        
       })
-    showTasks();
+    //showTasks();
+    taskSetup();
   })
     
   //socket.emit('createTask', {title: titleField.value, description: descriptionField.value, points: pointsField.value})
