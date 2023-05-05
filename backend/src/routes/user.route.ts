@@ -4,7 +4,7 @@ const userRouter = Router();
 
 import User from '../models/UserModel';
 import CryptoJS from "crypto-js";
-import { error } from 'console';
+//import { error } from 'console';
 
 
 userRouter.post('/add', async (req, res) => {

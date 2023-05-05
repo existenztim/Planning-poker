@@ -8,6 +8,6 @@ import renderTempAdminPage from './tempAdimpage.ts'
 
 //setupCounter(document.querySelector<HTMLButtonElement>('#counter')!)
 
-//showTasks();
+showTasks();
 //createTasks ();
 renderTempAdminPage();

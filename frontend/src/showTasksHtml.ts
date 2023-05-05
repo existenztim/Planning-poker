@@ -33,16 +33,18 @@ export const printAppHtml =() => {
 export const printHeaderHtml =() => {
   const admin = true; // Tillfällig lösning
   const headerContainer = document.querySelector('#header') as HTMLHeadingElement;
-  const buttonContainer = document.createElement('div');
-  buttonContainer.classList.add('button-container');
-  headerContainer.appendChild(buttonContainer);
+  const headerTag = /*html*/`<h1>Planning Poker</h1>`;
+  let adminButton = '';
 
-  buttonContainer.innerHTML += /*html */`
-  <button id='logOut'>Logga ut</button>
-  `
   if(admin) { //kontrollera med localstorage (user.admin någon sådant)
-    buttonContainer.innerHTML += /*html */`
-    <button id='adminMode'>Admin läge</button>
-    `
+    adminButton = `<button id='adminMode'>Admin Läge</button>`;
   }
+
+  headerContainer.innerHTML =/*html */`
+    ${headerTag}
+    <div class="button-container">
+      ${adminButton}
+      <button id='logOut'>Logga ut</button>
+    </div>
+  `
 }
