@@ -12,7 +12,7 @@ Lorem ipsum dolor sit amet
 ### Name 3
 Lorem ipsum dolor sit amet
 
-Therese
+### Therese
 Har färdigstält inloggning med check mot localstorage om user är inlogga, skapa ny användare, logga in och kod för att logga ut kopplat till poker. Vidare läsa på mer i materialet agilt arbetsätt och TS för backend för att ha bättre förståelse inför nästa sprint om tid finns under dagen (efter parkodning och lektion). Inga svårigheter i dagsläget. 
 
 
