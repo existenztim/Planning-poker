@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { socket } from "./socket";
+import { socket } from "../socket";
 
 export default function showTaskHtml() {
   const container: HTMLElement = document.querySelector('#app') as HTMLElement;

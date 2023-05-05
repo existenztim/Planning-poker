@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { socket } from "./socket.ts";
+import { socket } from "../socket.ts";
 import showTaskHtml from "./showTasksHtml.ts";
 import getTasks from "./getTasks.ts";
 import createUserCards from "./createUserCardHtml.ts";

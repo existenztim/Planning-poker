@@ -1,8 +1,8 @@
 import './style.scss'
-import './user'
+import './modules/user.ts'
 import { socket } from './socket.ts'
-import showTasks from './showTasks.ts'
-import createTasks from './createTasks.ts'
+import showTasks from './modules/showTasks.ts'
+import createTasks from './modules/createTasks.ts'
 import renderTempAdminPage from './tempAdimpage.ts'
 
 

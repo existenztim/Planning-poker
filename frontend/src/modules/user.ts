@@ -3,7 +3,7 @@
 --------------------------------------------------------------------------*/
 
 import showTasks from "./showTasks";
-import { socket } from "./socket";
+import { socket } from "../socket";
 
 
 const loggedInUser = localStorage.getItem('userData');
@@ -12,7 +12,8 @@ const CheckUserInlog = loggedInUser ? JSON.parse(loggedInUser) :null;
 // const CheckUserInlog = JSON.parse(localStorage.getItem('userData') || '');
 if (CheckUserInlog != null) {
 
-  //showTasks();
+  showTasks();
+  
   
   // Kopplas vidare till Planning - Poker
   ('test if')
@@ -94,8 +95,8 @@ function createAndLoginUser() {
         serverMassage.style.color = 'red';
       };
     }
-    // socket.emit('sendUser', user)
-    // showTasks();
+    socket.emit('sendUser', user)
+    showTasks();
   });
 
   /*------------------------------------------------------------------

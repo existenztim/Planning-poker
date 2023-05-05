@@ -1,4 +1,4 @@
-import { socket } from "./socket";
+import { socket } from "../socket";
 
 export default function getTasks() {
   const table: HTMLTableElement = document.querySelector('.todo-list') as HTMLTableElement;
