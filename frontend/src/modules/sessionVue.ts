@@ -29,13 +29,43 @@ export default function sessionVue () {
     displayVoteTask.innerText = 'vad vi ska rösta på';
     
     const voteCardsContainer: HTMLDivElement = document.createElement('div');
+    voteCardsContainer.classList.add('voting-card-container');
     voteCardsContainer.innerText= 'våra röstkost';
   
     
     votingContainer.append(displayVoteTask, voteCardsContainer);
     printHeaderHtml();
   }
+
+  const createUserCards = () => {
+    socket.on('userList', (userList) => {
+      console.log(userList);
+      const votingCardContainer : HTMLDivElement = document.querySelector('.voting-card-container') as HTMLDivElement;
+      votingCardContainer.innerHTML = '';
   
+      userList.map(user => {
+        console.log(user);
+        const votingCard : HTMLDivElement = document.createElement('div');
+        votingCard.classList.add('voting-card-div');
+        votingCard.innerText = 'Röstkort';
+        votingCard.innerHTML = /*html */`<p>Mitt poäng</p>
+        <select name="points" id="points">
+          <option value=null>Välj</option>
+          <option value=1>Tiny 1SP</option>
+          <option value=3>Small 3SP</option>
+          <option value=5>Medium 5SP</option>
+          <option value=8>Large 8 SP</option>
+        </select>`
+  
+        votingCardContainer.append(votingCard)
+          
+          
+      })
+      
+    })
+      
+  }
+
   const printHeaderHtml =() => {
     const admin = true; // Tillfällig lösning
     const headerContainer = document.querySelector('#header') as HTMLHeadingElement;
@@ -92,6 +122,7 @@ export default function sessionVue () {
     });
   }
   printAppHtml();
+  createUserCards();
   getTasks();
 }
 
