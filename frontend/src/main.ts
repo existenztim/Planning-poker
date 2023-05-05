@@ -13,5 +13,5 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = /*html */`
   </div>
 `
 taskSetup();
-//showTasks();
+showTasks();
 createTasks ();

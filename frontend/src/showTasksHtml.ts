@@ -1,8 +1,7 @@
 /* eslint-disable no-console */
-export default function showTaskHtml() {
+export const printAppHtml =() => {
   const container: HTMLElement = document.querySelector('#app') as HTMLElement;
   // eslint-disable-next-line no-console
-  console.log(container);
   container.innerHTML = '';
   
   const todoTaskList: HTMLTableElement = document.createElement('table');
@@ -14,7 +13,6 @@ export default function showTaskHtml() {
   doneTasksList.classList.add('done-tasks');
   doneTasksList.innerText='alla färdiga röstningar';
   
-  //console.log(todoTaskList, votingContainer, doneTasksList);
   container.append(todoTaskList, votingContainer, doneTasksList);
   
   const displayVoteTask: HTMLDivElement = document.createElement('div');
@@ -24,10 +22,19 @@ export default function showTaskHtml() {
   const voteCardsContainer: HTMLDivElement = document.createElement('div');
   voteCardsContainer.innerText= 'våra röstkost';
 
-  console.log(displayVoteTask, voteCardsContainer);
-  
   
   votingContainer.append(displayVoteTask, voteCardsContainer);
+}
 
-  //return todoTaskList;
+export const printHeaderHtml =() => {
+  const admin = true; // Tillfällig lösning
+  const headerContainer = document.querySelector("#header") as HTMLHeadingElement;
+  headerContainer.innerHTML += /*html */`
+  <button id="logOut">Logga ut</button>
+  `
+  if(admin) {
+    headerContainer.innerHTML += /*html */`
+    <button id="adminMode">Admin läge</button>
+    `
+  }
 }
