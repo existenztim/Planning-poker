@@ -1,0 +1,22 @@
+.select-task-container {
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    
+    .task-item {
+        border: 1px solid black;
+        border-radius: 5px;
+        ul  {
+            list-style: none;
+            li:first-child {
+                font-weight: bold;
+            } 
+        }
+    }
+
+    button {
+        margin-top: 1em;
+        background-color: grey;
+    }
+}

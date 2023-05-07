@@ -9,6 +9,7 @@ import voteRouter from './routes/vote.route';
 
 import userRoute from './routes/user.route';
 import tasksRouter from './routes/tasks.route';
+import { handleSession } from './selectTaskSocket';
 
 dotenv.config();
 
@@ -43,6 +44,7 @@ io.on('connection', (socket: Socket) => {
   console.log(socket.id);
   app.locals.socketIo = io;
 });
+handleSession(io);
 
 server.listen(PORT, () => {
   console.log(`Socket started on port ${PORT}`);

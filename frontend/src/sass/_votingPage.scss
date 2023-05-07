@@ -1,0 +1,31 @@
+.votingpage {
+    max-width:100vw ;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.todo-list {
+    margin-left: 0px;
+    margin-right: 25em;
+    background-color: lightgray;
+    height: 100vh;
+
+    tr {
+        display: block;
+        margin-top: 1em;
+        border-bottom: solid 1px grey;
+
+        td {
+            display: flex;
+            flex-direction: column;
+            margin-top: 0.5em;
+        }
+        td:first-child {
+            font-weight: bold;
+        }
+    }
+}
+.done-tasks {
+    margin-right: 0px;
+    margin-left: 25em;
+}
