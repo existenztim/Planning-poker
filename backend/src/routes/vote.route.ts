@@ -1,8 +1,9 @@
 import { Router } from 'express';
-import { addVote } from '../controllers/vote.controller';
+import { addVote, getUserSessions } from '../controllers/vote.controller';
 
 const voteRouter = Router();
 
 voteRouter.post('/', addVote);
+voteRouter.get('/sessions', getUserSessions);
 
 export default voteRouter;

@@ -1,4 +1,5 @@
 import asyncHandler from 'express-async-handler';
+import { UserList } from '../selectTaskSocket';
 
 const Votes = new Map();
 
@@ -19,4 +20,8 @@ export const addVote = asyncHandler(async (req: IRequest, res) => {
     res.status(400);
     throw new Error('No body specified');
   }
+});
+
+export const getUserSessions = asyncHandler(async (req, res) => {
+  res.status(200).json(UserList);
 });
