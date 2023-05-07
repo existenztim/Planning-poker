@@ -14,7 +14,6 @@ socket.on('userList', (userList: User[]) => {
   votingCardContainer.innerHTML = '';
 
   userList.map((user) => {
-    console.log(user);
     const votingCard: HTMLDivElement = document.createElement('div');
     votingCard.classList.add('voting-card-div');
     votingCard.innerText = 'Röstkort';
@@ -29,4 +28,24 @@ socket.on('userList', (userList: User[]) => {
 
     votingCardContainer.append(votingCard);
   });
+});
+
+interface Props {
+  user: User;
+  vote: string;
+}
+
+socket.on('flipCards', (data: Props[], average: number) => {
+  const cardElements = document.querySelector('.voting-card-container') as HTMLDivElement;
+
+  for (const vote of data) {
+    const card = document.querySelector(`[user-id="${vote.user._id}"`) as HTMLDivElement;
+    card.innerHTML = `<p>${vote.user.username} röstade på ${vote.vote}</p>`;
+  }
+
+  const votingContainer = document.querySelector('.voting-div') as HTMLDivElement;
+  const averageScoreElement = document.createElement('p');
+  averageScoreElement.innerHTML = `Medel-röstvärde: ${String(average)}`;
+
+  votingContainer.appendChild(averageScoreElement);
 });
