@@ -1,20 +1,24 @@
 import asyncHandler from 'express-async-handler';
-import { UserList } from '../selectTaskSocket';
+import { UserList, handleAddVote } from '../selectTaskSocket';
 
-const Votes = new Map();
-
-interface Vote {
-  userId: string;
-  score: string;
+export interface User {
+  _id: string;
+  username: string;
+  admin: boolean;
 }
 
-interface IRequest {
-  body: Vote;
+interface Body {
+  user: User;
+  vote: string;
+}
+interface IRequest<T> {
+  body: T;
 }
 
-export const addVote = asyncHandler(async (req: IRequest, res) => {
+export const addVote = asyncHandler(async (req: IRequest<Body>, res) => {
   if (req.body) {
     console.log(req.body);
+    handleAddVote(req.body.user, req.body.vote);
     res.status(200).json({ success: true, message: 'Vote registered' });
   } else {
     res.status(400);
