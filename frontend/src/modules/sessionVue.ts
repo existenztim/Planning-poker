@@ -3,6 +3,7 @@ import { socket } from '../socket.ts';
 import renderTempAdminPage from './adminVue.ts';
 import type { Task } from '../models/taskModel.ts';
 import type { User } from '../models/userModel.ts';
+import { getUser } from '../utils/getUser.ts';
 
 export default function sessionVue() {
   const printAppHtml = () => {
@@ -37,6 +38,40 @@ export default function sessionVue() {
     printHeaderHtml();
   };
 
+  const renderSelfCard = (user: User, render: Element) => {
+    const selectContainer = document.createElement('div');
+    selectContainer.innerHTML = /*html */ `
+      <select name="points" id="points">
+        <option value=null>Välj</option>
+        <option value=1>Tiny 1SP</option>
+        <option value=3>Small 3SP</option>
+        <option value=5>Medium 5SP</option>
+        <option value=8>Large 8 SP</option>
+      </select>
+      <button id="submitVote">Rösta</button>
+    `;
+
+    render.appendChild(selectContainer);
+
+    const voteButton = render.querySelector('#submitVote') as HTMLButtonElement;
+    const selectedOption = selectContainer.querySelector('#points') as HTMLSelectElement;
+    voteButton.addEventListener('click', async (e) => {
+      e.preventDefault();
+      const response = await fetch('http://localhost:5050/api/vote/send', {
+        method: 'POST',
+        body: JSON.stringify({ user, vote: selectedOption.value }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.status === 200) {
+        selectedOption.setAttribute('disabled', '');
+        voteButton.setAttribute('disabled', '');
+      }
+    });
+  };
+
   const createUserCards = async () => {
     const response = await fetch(`http://localhost:5050/api/vote/sessions`, {
       method: 'GET',
@@ -47,6 +82,7 @@ export default function sessionVue() {
 
     if (response.status === 200) {
       const users = (await response.json()) as User[];
+      const self = getUser();
       console.log('Users in session', users);
 
       const votingCardContainer: HTMLDivElement = document.querySelector('.voting-card-container') as HTMLDivElement;
@@ -55,18 +91,12 @@ export default function sessionVue() {
       users.map((user) => {
         const votingCard: HTMLDivElement = document.createElement('div');
         votingCard.classList.add('voting-card-div');
-        votingCard.innerText = 'Röstkort';
+        votingCard.innerHTML = /*html */ `<p>${user.username} funderar</p>`;
+        votingCard.setAttribute('user-id', user._id);
 
-        // if (user.username)
-
-        votingCard.innerHTML = /*html */ `<p>${user.username}s: poäng</p>
-        <select name="points" id="points">
-          <option value=null>Välj</option>
-          <option value=1>Tiny 1SP</option>
-          <option value=3>Small 3SP</option>
-          <option value=5>Medium 5SP</option>
-          <option value=8>Large 8 SP</option>
-        </select>`;
+        if (user._id === self._id) {
+          renderSelfCard(user, votingCard);
+        }
 
         votingCardContainer.append(votingCard);
       });
