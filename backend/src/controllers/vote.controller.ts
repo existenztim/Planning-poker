@@ -1,14 +1,9 @@
 import asyncHandler from 'express-async-handler';
 import { UserList, handleAddVote } from '../selectTaskSocket';
-
-export interface User {
-  _id: string;
-  username: string;
-  admin: boolean;
-}
+import type IUser from '../models/userListModel';
 
 interface Body {
-  user: User;
+  user: IUser;
   vote: string;
 }
 interface IRequest<T> {

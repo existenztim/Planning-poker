@@ -1,14 +1,14 @@
 /* eslint-disable no-console */
 import type { Socket, Server } from 'socket.io';
-import type { User } from './controllers/vote.controller';
 import { io } from './index';
+import type IUser from './models/userListModel';
 
 interface Props {
-  user: User;
+  user: IUser;
   vote: string;
 }
 
-export const UserList: User[] = [];
+export const UserList: IUser[] = [];
 export const VoteList: Props[] = [];
 
 const findNearestFibonacci = (value: number) => {
@@ -41,7 +41,7 @@ const calculateAverage = () => {
   return findNearestFibonacci(value / entries);
 };
 
-export const handleAddVote = (user: User, vote: string) => {
+export const handleAddVote = (user: IUser, vote: string) => {
   VoteList.push({ user, vote });
 
   if (UserList.length === VoteList.length) {
@@ -65,21 +65,18 @@ export const handleSession = (io: Server) => {
     socket.on('sendUser', (user) => {
       //console.log(user);
 
-      UserList.push(user)
+      UserList.push(user);
       //console.log(userList);
-      
-      io.emit('userList', UserList)
-      
-    })
+
+      io.emit('userList', UserList);
+    });
     socket.on('localStorageUser', (loggedInUser) => {
       UserList.push(loggedInUser);
       //console.log(loggedInUser);
-      
-      io.emit('userList', UserList)
-      console.log(userList);
-      
-    })  
-    
+
+      io.emit('userList', UserList);
+    });
+
     // socket.on('disconnect', () => {
     //   const disconnectedUser = userList.find(u => u.username === u.username)
     //   if (disconnectedUser) {
@@ -87,7 +84,7 @@ export const handleSession = (io: Server) => {
     //     userList.splice(userIndex, 1);
     //     console.log('någon har lämnat', userList);
     //   }
-      
+
     // })
-  })
-}
+  });
+};
