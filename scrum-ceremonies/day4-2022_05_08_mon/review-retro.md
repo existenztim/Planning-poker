@@ -3,12 +3,10 @@
 
 Today's review & retro are free-form, document as you like!
 
+Dayly standup: 
 Maria jobbar med localstorage just nu gör att få ut röstkorten om det finns inloggad användare. Är snart klar med detta. 
-
 Victor fixat till icsues. Ändrat lite i koden. Omröstningen fungerar nu. Man ser sitt kort. Linkbranch innan develop. 
-
 Tim slå ihop den kod som är beroende av varnadra och det fungerar nu. Det är svårt att veta hur långt tid kodningen tar. Den första tasken tog en timme och den adra tog tio timmar. Det va ett mindre fel som va svårt att hitta då den inte varnade. Logga ut.. bad händer i socket då. Maria har med en utcheckning som är utkommenterad. Adminknapp för användaren. Man kan ändra bolean så är det endast admin som kommer in. 
-
 Therese har gjort klart user som är mergad och läst på mer material. 
 
 * Börjar med att lägga in Linkbranchen så den är i develop? Så vi kan börja från samma grund denna veckan. 
