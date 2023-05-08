@@ -4,6 +4,7 @@ import renderTempAdminPage from './adminVue.ts';
 import type { Task } from '../models/taskModel.ts';
 import type { User } from '../models/userModel.ts';
 import { getUser } from '../utils/getUser.ts';
+const socketURL ="http://localhost:5050";
 let toggleView = true;
 
 export default function sessionVue() {
@@ -58,7 +59,7 @@ export default function sessionVue() {
     const selectedOption = selectContainer.querySelector('#points') as HTMLSelectElement;
     voteButton.addEventListener('click', async (e) => {
       e.preventDefault();
-      const response = await fetch('http://localhost:5050/api/vote/send', {
+      const response = await fetch(`${socketURL}/api/vote/send`, {
         method: 'POST',
         body: JSON.stringify({ user, vote: selectedOption.value }),
         headers: {
@@ -74,7 +75,7 @@ export default function sessionVue() {
   };
 
   const createUserCards = async () => {
-    const response = await fetch(`http://localhost:5050/api/vote/sessions`, {
+    const response = await fetch(`${socketURL}/api/vote/sessions`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -105,7 +106,6 @@ export default function sessionVue() {
   };
 
   const printHeaderHtml = () => {
-    const admin = true; // Tillfällig lösning
     const headerContainer = document.querySelector('#header') as HTMLHeadingElement;
     const headerTag = /*html*/ `<h1>Planning Poker</h1>`;
     let adminButton = '';
@@ -122,7 +122,7 @@ export default function sessionVue() {
         <button id='logOut'>Logga ut</button>
       </div>
     `
-    console.log(localStorage.getItem("userData"));
+
     adminBtnEvent();
     logoutBtnEvent();
   }
@@ -132,11 +132,12 @@ export default function sessionVue() {
     adminBtn?.addEventListener('click', () => {
       if (toggleView) {
         toggleView = false; 
-        console.log(toggleView);
+        adminBtn.innerHTML = "Sessions Läge";
         renderTempAdminPage();
 
       } else {
         toggleView = true; 
+        adminBtn.innerHTML = "Admin Läge";
         sessionVue();
       }
     })
