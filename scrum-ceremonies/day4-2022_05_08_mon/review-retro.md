@@ -19,3 +19,7 @@ Retro; Glad, Mad, Sad:
 * Tim: Glad; bra kommunikation i en aktiv grupp.  Mad; Sad; Planeringen kunde varit mer detaljerad. Filstrukturen skulle vi satt först. Hur hängde filerna ihop? 
 * Victor: Glad; Det har flutit på bra. Mad; Sad; Planeringen kunde va mer detaljerad. 
 * Therese: Glad; Det är ett bra team med bra kommunikation. Mad;Sad; Utmaning med filstrukturen. 
+
+Sprint planing: Uppdaterade listan på task. Delade upp task för veckan.
+
+![image](https://user-images.githubusercontent.com/113335422/236775034-a0bb7aaf-eb3b-45bf-98d8-e459d54749fb.png)
