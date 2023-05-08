@@ -5,9 +5,12 @@ import type { Task } from '../models/taskModel.ts';
 import type { User } from '../models/userModel.ts';
 import { getUser } from '../utils/getUser.ts';
 const socketURL ="http://localhost:5050";
-let toggleView = true;
+
 
 export default function sessionVue() {
+  let toggleView = true;
+  const userData = JSON.parse(localStorage.getItem("userData") as string);
+
   const printAppHtml = () => {
     const container: HTMLElement = document.querySelector('#app') as HTMLElement;
     // eslint-disable-next-line no-console
@@ -17,25 +20,27 @@ export default function sessionVue() {
     const todoTaskList: HTMLTableElement = document.createElement('table');
     todoTaskList.classList.add('todo-list');
     todoTaskList.innerText = 'röstningslista';
+    const votingHeader: HTMLDivElement = document.createElement('h3');
+    votingHeader.innerText ="Nu röstar vi om: ";
     const votingContainer: HTMLDivElement = document.createElement('div');
     votingContainer.classList.add('voting-div');
     const doneTasksList: HTMLTableElement = document.createElement('table');
     doneTasksList.classList.add('done-tasks');
     doneTasksList.innerText = 'alla färdiga röstningar';
 
-    //console.log(todoTaskList, votingContainer, doneTasksList);
+  
     container.appendChild(votingPageContainer);
     votingPageContainer.append(todoTaskList, votingContainer, doneTasksList);
 
     const displayVoteTask: HTMLDivElement = document.createElement('div');
     displayVoteTask.classList.add('voting-header');
-    displayVoteTask.innerText = 'vad vi ska rösta på';
+    displayVoteTask.innerText = 'När en session börjar kommer du kunna se vad vi ska rösta på här';
 
     const voteCardsContainer: HTMLDivElement = document.createElement('div');
     voteCardsContainer.classList.add('voting-card-container');
     voteCardsContainer.innerText = 'våra röstkost';
 
-    votingContainer.append(displayVoteTask, voteCardsContainer);
+    votingContainer.append(votingHeader, displayVoteTask, voteCardsContainer);
     printHeaderHtml();
   };
 
@@ -106,11 +111,28 @@ export default function sessionVue() {
 
   const currentVoteTask = () => {
     const displayCurrentTask = document.querySelector('.voting-header') as HTMLDivElement;
+    let nextButton = '';
+    
+    if(userData.admin == false) { //ta bort false senare 
+      nextButton = `<button id='nextTask'>Nästa uppgift</button>`;
+    }
+
     socket.on('getList', (list:Task[]) => {
       displayCurrentTask.innerHTML = /*html*/
       `<h3>${list[0].title}</h3>
        <p>${list[0].description}</p>
+       ${nextButton}
       `;
+      const nextTaskBtn = document.getElementById('nextTask');
+      nextTaskBtn?.addEventListener('click', () => {
+        list.shift();
+        if (list.length >= 1){
+          socket.emit('send sessionList', list);
+          sessionVue();
+        } else {
+          nextTaskBtn.innerHTML ="Det finns inget mer att rösta på."
+        }
+      })
     })
   }
 
@@ -118,7 +140,6 @@ export default function sessionVue() {
     const headerContainer = document.querySelector('#header') as HTMLHeadingElement;
     const headerTag = /*html*/ `<h1>Planning Poker</h1>`;
     let adminButton = '';
-    const userData = JSON.parse(localStorage.getItem("userData") as string);
 
     if(userData.admin == false) { //ta bort false senare 
       adminButton = `<button id='adminMode'>Admin Läge</button>`;
@@ -164,10 +185,9 @@ export default function sessionVue() {
     const table: HTMLTableElement = document.querySelector('.todo-list') as HTMLTableElement;
 
     socket.on('getList', (list: Task[]) => {
-      console.log(list);
+      //console.log(list);
       let count = 0;
       list.map((item) => {
-        console.log(item.title);
         const tr = document.createElement('tr');
         tr.id = `tr-${count}`;
         count++;
@@ -181,7 +201,7 @@ export default function sessionVue() {
         tr.append(titleTd, descriptionTd);
 
         tr.addEventListener('click', (e) => {
-          //console.log(e.currentTarget);
+          console.log(e.currentTarget);
         });
       });
     });
