@@ -84,13 +84,22 @@ export default function sessionVue () {
         <button id='logOut'>Logga ut</button>
       </div>
     `
-    headerBtnsEvent();
+    adminBtnEvent();
+    logoutBtnEvent();
   }
   
-  const headerBtnsEvent = () => {
+  const adminBtnEvent = () => {
     const adminBtn = document.getElementById('adminMode');
     adminBtn?.addEventListener('click', () => {
       renderTempAdminPage();
+    })
+  }
+
+  const logoutBtnEvent =() => {
+    const logoutBtn = document.getElementById('logOut');
+    logoutBtn?.addEventListener('click', () => {
+      localStorage.removeItem("userData");
+      location.reload();
     })
   }
 
