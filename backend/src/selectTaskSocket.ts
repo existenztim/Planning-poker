@@ -16,29 +16,31 @@ export const handleSession = (io: Server) => {
     });
 
     socket.on('sendUser', (user) => {
-      console.log(user);
+      //console.log(user);
 
       userList.push(user)
-      console.log(userList);
+      //console.log(userList);
       
       io.emit('userList', userList)
       
     })
     socket.on('localStorageUser', (loggedInUser) => {
       userList.push(loggedInUser);
-      console.log(loggedInUser);
+      //console.log(loggedInUser);
       
       io.emit('userList', userList)
+      console.log(userList);
+      
     })  
     
-    socket.on('disconnect', () => {
-      const disconnectedUser = userList.find(u => u.username === u.username)
-      if (disconnectedUser) {
-        const userIndex = userList.indexOf(disconnectedUser);
-        userList.splice(userIndex, 1);
-        console.log('någon har lämnat', userList);
-      }
+    // socket.on('disconnect', () => {
+    //   const disconnectedUser = userList.find(u => u.username === u.username)
+    //   if (disconnectedUser) {
+    //     const userIndex = userList.indexOf(disconnectedUser);
+    //     userList.splice(userIndex, 1);
+    //     console.log('någon har lämnat', userList);
+    //   }
       
-    })
+    // })
   })
 }

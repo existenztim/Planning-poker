@@ -5,13 +5,13 @@
 import sessionVue from "./sessionVue";
 import { socket } from "../socket";
 
-
 // const CheckUserInlog = JSON.parse(localStorage.getItem('userData') || '');
 export const checkUser = () => {
   const loggedInUser = localStorage.getItem('userData');
   const CheckUserInlog = loggedInUser ? JSON.parse(loggedInUser) :null;
   if (CheckUserInlog != null) {
-    socket.emit('localStorageUser', loggedInUser);
+    socket.emit('localStorageUser', CheckUserInlog);
+    
     sessionVue();
   
   

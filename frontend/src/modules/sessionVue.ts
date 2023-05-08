@@ -45,7 +45,7 @@ export default function sessionVue () {
       votingCardContainer.innerHTML = '';
   
       userList.map(user => {
-        console.log(user);
+        console.log(user.username);
         const votingCard : HTMLDivElement = document.createElement('div');
         votingCard.classList.add('voting-card-div');
         votingCard.innerText = 'Röstkort';
