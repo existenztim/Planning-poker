@@ -106,7 +106,12 @@ export default function sessionVue() {
 
   const currentVoteTask = () => {
     const displayCurrentTask = document.querySelector('.voting-header') as HTMLDivElement;
-    displayCurrentTask.innerHTML ="Här kommer det vi ska rösta på härnäst visas";
+    socket.on('getList', (list:Task[]) => {
+      displayCurrentTask.innerHTML = /*html*/
+      `<h3>${list[0].title}</h3>
+       <p>${list[0].description}</p>
+      `;
+    })
   }
 
   const printHeaderHtml = () => {
