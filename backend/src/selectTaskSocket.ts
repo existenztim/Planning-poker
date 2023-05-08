@@ -1,7 +1,9 @@
 import type { Socket, Server } from 'socket.io';
+import IUser from './models/userListModel';
+import User from './models/UserModel';
 /* eslint-disable no-console */
 export const handleSession = (io: Server) => {
-  const userList : Array<string | number | boolean> = [];
+  let userList : IUser [] = [];
 
   io.on('connection', function(socket: Socket) {
     console.log("new session socket: ",socket.id);
@@ -22,6 +24,21 @@ export const handleSession = (io: Server) => {
       io.emit('userList', userList)
       
     })
-        
+    socket.on('localStorageUser', (loggedInUser) => {
+      userList.push(loggedInUser);
+      console.log(loggedInUser);
+      
+      io.emit('userList', userList)
+    })  
+    
+    socket.on('disconnect', () => {
+      const disconnectedUser = userList.find(u => u.username === u.username)
+      if (disconnectedUser) {
+        const userIndex = userList.indexOf(disconnectedUser);
+        userList.splice(userIndex, 1);
+        console.log('någon har lämnat', userList);
+      }
+      
+    })
   })
 }
