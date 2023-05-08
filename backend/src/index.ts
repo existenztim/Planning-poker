@@ -8,6 +8,7 @@ import connectDB from './config/database';
 
 import userRoute from './routes/user.route';
 import tasksRouter from './routes/tasks.route';
+import { handleSession } from './selectTaskSocket';
 
 
 dotenv.config();
@@ -49,6 +50,7 @@ io.on('connection', (socket: Socket) => {
   
   app.locals.socketIo = io;
 });
+handleSession(io);
 
 server.listen(PORT, () => {
   console.log(`Socket started on port ${PORT}`);
