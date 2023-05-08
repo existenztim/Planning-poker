@@ -12,7 +12,6 @@ export default function sessionVue() {
     const container: HTMLElement = document.querySelector('#app') as HTMLElement;
     // eslint-disable-next-line no-console
     container.innerHTML = '';
-
     const votingPageContainer: HTMLDivElement = document.createElement('div');
     votingPageContainer.classList.add('votingpage');
     const todoTaskList: HTMLTableElement = document.createElement('table');
@@ -105,6 +104,11 @@ export default function sessionVue() {
     }
   };
 
+  const currentVoteTask = () => {
+    const displayCurrentTask = document.querySelector('.voting-header') as HTMLDivElement;
+    displayCurrentTask.innerHTML ="Här kommer det vi ska rösta på härnäst visas";
+  }
+
   const printHeaderHtml = () => {
     const headerContainer = document.querySelector('#header') as HTMLHeadingElement;
     const headerTag = /*html*/ `<h1>Planning Poker</h1>`;
@@ -177,7 +181,9 @@ export default function sessionVue() {
       });
     });
   };
+
   printAppHtml();
   createUserCards();
   getTasks();
+  currentVoteTask();
 }
