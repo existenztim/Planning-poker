@@ -3,6 +3,7 @@ import { socket } from "../socket.ts";
 import renderTempAdminPage from "./adminVue.ts";
 import type { Task } from "../models/taskModel.ts";
 import type { User } from "../models/userModel.ts";
+let toggleView = true;
 
 export default function sessionVue () {
   const printAppHtml =() => {
@@ -68,12 +69,12 @@ export default function sessionVue () {
   }
 
   const printHeaderHtml =() => {
-    const admin = true; // Tillfällig lösning
     const headerContainer = document.querySelector('#header') as HTMLHeadingElement;
     const headerTag = /*html*/`<h1>Planning Poker</h1>`;
     let adminButton = '';
-  
-    if(admin) { //kontrollera med localstorage (user.admin någon sådant)
+    const userData = JSON.parse(localStorage.getItem("userData") as string);
+
+    if(userData.admin == false) { //ta bort false senare 
       adminButton = `<button id='adminMode'>Admin Läge</button>`;
     }
   
@@ -84,6 +85,7 @@ export default function sessionVue () {
         <button id='logOut'>Logga ut</button>
       </div>
     `
+    console.log(localStorage.getItem("userData"));
     adminBtnEvent();
     logoutBtnEvent();
   }
@@ -91,7 +93,15 @@ export default function sessionVue () {
   const adminBtnEvent = () => {
     const adminBtn = document.getElementById('adminMode');
     adminBtn?.addEventListener('click', () => {
-      renderTempAdminPage();
+      if (toggleView) {
+        toggleView = false; 
+        console.log(toggleView);
+        renderTempAdminPage();
+
+      } else {
+        toggleView = true; 
+        sessionVue();
+      }
     })
   }
 
