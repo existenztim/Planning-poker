@@ -11,7 +11,7 @@ export const checkUser = () => {
   const loggedInUser = localStorage.getItem('userData');
   const CheckUserInlog = loggedInUser ? JSON.parse(loggedInUser) :null;
   if (CheckUserInlog != null) {
-
+    socket.emit('localStorageUser', loggedInUser);
     sessionVue();
   
   
