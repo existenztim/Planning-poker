@@ -4,6 +4,7 @@ import renderTempAdminPage from './adminVue.ts';
 import type { Task } from '../models/taskModel.ts';
 import type { User } from '../models/userModel.ts';
 import { getUser } from '../utils/getUser.ts';
+let toggleView = true;
 
 export default function sessionVue() {
   const printAppHtml = () => {
@@ -108,9 +109,9 @@ export default function sessionVue() {
     const headerContainer = document.querySelector('#header') as HTMLHeadingElement;
     const headerTag = /*html*/ `<h1>Planning Poker</h1>`;
     let adminButton = '';
+    const userData = JSON.parse(localStorage.getItem("userData") as string);
 
-    if (admin) {
-      //kontrollera med localstorage (user.admin någon sådant)
+    if(userData.admin == false) { //ta bort false senare 
       adminButton = `<button id='adminMode'>Admin Läge</button>`;
     }
 
@@ -120,16 +121,34 @@ export default function sessionVue() {
         ${adminButton}
         <button id='logOut'>Logga ut</button>
       </div>
-    `;
-    headerBtnsEvent();
-  };
-
-  const headerBtnsEvent = () => {
+    `
+    console.log(localStorage.getItem("userData"));
+    adminBtnEvent();
+    logoutBtnEvent();
+  }
+  
+  const adminBtnEvent = () => {
     const adminBtn = document.getElementById('adminMode');
     adminBtn?.addEventListener('click', () => {
-      renderTempAdminPage();
-    });
-  };
+      if (toggleView) {
+        toggleView = false; 
+        console.log(toggleView);
+        renderTempAdminPage();
+
+      } else {
+        toggleView = true; 
+        sessionVue();
+      }
+    })
+  }
+
+  const logoutBtnEvent =() => {
+    const logoutBtn = document.getElementById('logOut');
+    logoutBtn?.addEventListener('click', () => {
+      localStorage.removeItem("userData");
+      location.reload();
+    })
+  }
 
   const getTasks = () => {
     const table: HTMLTableElement = document.querySelector('.todo-list') as HTMLTableElement;

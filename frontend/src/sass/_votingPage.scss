@@ -25,6 +25,17 @@
     }
   }
 }
+.voting-card-container {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+
+    .voting-card-div {
+        border: solid 1px grey;
+        margin: 1em;
+    }
+}
+
 .done-tasks {
   margin-right: 0px;
   margin-left: 25em;

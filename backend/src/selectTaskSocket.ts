@@ -27,7 +27,6 @@ const findNearestFibonacci = (value: number) => {
   }
 
   const answer = Math.abs(third - value) >= Math.abs(second - value) ? second : third;
-
   return answer;
 };
 
@@ -63,13 +62,32 @@ export const handleSession = (io: Server) => {
       io.emit('getList', list);
     });
 
-    socket.on('sendUser', (user: User) => {
-      console.log(user);
+    socket.on('sendUser', (user) => {
+      //console.log(user);
 
-      UserList.push(user);
-      console.log(UserList);
-
-      io.emit('userList', UserList);
-    });
-  });
-};
+      UserList.push(user)
+      //console.log(userList);
+      
+      io.emit('userList', UserList)
+      
+    })
+    socket.on('localStorageUser', (loggedInUser) => {
+      UserList.push(loggedInUser);
+      //console.log(loggedInUser);
+      
+      io.emit('userList', UserList)
+      console.log(userList);
+      
+    })  
+    
+    // socket.on('disconnect', () => {
+    //   const disconnectedUser = userList.find(u => u.username === u.username)
+    //   if (disconnectedUser) {
+    //     const userIndex = userList.indexOf(disconnectedUser);
+    //     userList.splice(userIndex, 1);
+    //     console.log('någon har lämnat', userList);
+    //   }
+      
+    // })
+  })
+}
