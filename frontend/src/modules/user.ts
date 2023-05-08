@@ -2,32 +2,28 @@
 ------------------ Hantera om användaren redan är inloggad -----------------
 --------------------------------------------------------------------------*/
 
-import sessionVue from "./sessionVue";
-import { socket } from "../socket";
+import sessionVue from './sessionVue';
+import { socket } from '../socket';
+import type { User } from '../models/userModel';
 
 // const CheckUserInlog = JSON.parse(localStorage.getItem('userData') || '');
 export const checkUser = () => {
   const loggedInUser = localStorage.getItem('userData');
-  const CheckUserInlog = loggedInUser ? JSON.parse(loggedInUser) :null;
+  const CheckUserInlog = loggedInUser ? JSON.parse(loggedInUser) : null;
   if (CheckUserInlog != null) {
     socket.emit('localStorageUser', CheckUserInlog);
-    
     sessionVue();
-  
-  
     // Kopplas vidare till Planning - Poker
-    ('test if')
+    ('test if');
   } else {
-  /*--------------------------------------------------------------------------
+    /*--------------------------------------------------------------------------
   ------------------- Add user -----------------------------------------------
   --------------------------------------------------------------------------*/
     //console.log(('test else'));
-  
+
     createAndLoginUser();
-
   }
-}
-
+};
 
 function createAndLoginUser() {
   const userAndLoginRoot = document.getElementById('app');
@@ -63,6 +59,7 @@ function createAndLoginUser() {
 
     event.preventDefault();
     const user = { username: newUserInput.value, password: newUserPassword.value };
+    let storedUser: User | null = null;
 
     try {
       fetch('http://localhost:5050/api/users/add', {
@@ -84,10 +81,10 @@ function createAndLoginUser() {
         })
 
         .then((data) => {
-          localStorage.setItem(
-            'userData',
-            JSON.stringify({ username: data.username, _id: data._id, admin: data.admin })
-          );
+          storedUser = { _id: data._id, username: data.username, admin: data.admin };
+          localStorage.setItem('userData', JSON.stringify(storedUser));
+          socket.emit('sendUser', storedUser);
+          sessionVue();
         });
     } catch {
       () => {
@@ -95,8 +92,6 @@ function createAndLoginUser() {
         serverMassage.style.color = 'red';
       };
     }
-    socket.emit('sendUser', user)
-    sessionVue();
   });
 
   /*------------------------------------------------------------------
@@ -129,6 +124,7 @@ function createAndLoginUser() {
 
     event.preventDefault();
     const user = { username: UserInput.value, password: UserPassword.value };
+    let storedUser: User | null = null;
 
     try {
       fetch('http://localhost:5050/api/users/login', {
@@ -150,10 +146,10 @@ function createAndLoginUser() {
         })
 
         .then((data) => {
-          localStorage.setItem(
-            'userData',
-            JSON.stringify({ username: data.username, _id: data._id, admin: data.admin })
-          );
+          storedUser = { _id: data._id, username: data.username, admin: data.admin };
+          localStorage.setItem('userData', JSON.stringify(storedUser));
+          socket.emit('sendUser', storedUser);
+          sessionVue();
         });
     } catch {
       () => {
@@ -161,8 +157,6 @@ function createAndLoginUser() {
         serverMassage.style.color = 'red';
       };
     }
-    socket.emit('sendUser', user)
-    sessionVue();
   });
 }
 /*--------------------------------------------------------------------------------------

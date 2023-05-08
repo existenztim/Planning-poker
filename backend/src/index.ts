@@ -5,11 +5,11 @@ import type { Socket } from 'socket.io';
 import { Server } from 'socket.io';
 import * as http from 'http';
 import connectDB from './config/database';
+import voteRouter from './routes/vote.route';
 
 import userRoute from './routes/user.route';
 import tasksRouter from './routes/tasks.route';
 import { handleSession } from './selectTaskSocket';
-
 
 dotenv.config();
 
@@ -31,13 +31,9 @@ app.use(express.urlencoded({ extended: false }));
 app.use('/api/users', userRoute);
 app.use('/api/tasks', tasksRouter);
 
+app.use('/api/vote', voteRouter);
 
-// app.get('/ping', (req, res) => {
-//   res.send('Hello World');
-// });
-//const tasks : any[] = [];
-
-const io = new Server(server, {
+export const io = new Server(server, {
   cors: {
     origin: '*',
     methods: ['GET', 'POST'],
@@ -46,8 +42,6 @@ const io = new Server(server, {
 
 io.on('connection', (socket: Socket) => {
   console.log(socket.id);
-  
-  
   app.locals.socketIo = io;
 });
 handleSession(io);
