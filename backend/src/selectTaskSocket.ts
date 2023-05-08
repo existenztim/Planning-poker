@@ -59,7 +59,7 @@ export const handleSession = (io: Server) => {
       //console.log(list);
       //fortsätt här...
 
-      io.emit('getList', list);
+      io.emit('getTaskList', list);
     });
 
     socket.on('sendUser', (user) => {
@@ -71,7 +71,15 @@ export const handleSession = (io: Server) => {
       io.emit('userList', UserList);
     });
     socket.on('localStorageUser', (loggedInUser) => {
-      UserList.push(loggedInUser);
+
+      const user = UserList.find(user => user.username === loggedInUser.username);
+
+      if(!user){
+        UserList.push(loggedInUser)
+        console.log('användaren finns redan');
+        
+      }
+      
       //console.log(loggedInUser);
 
       io.emit('userList', UserList);

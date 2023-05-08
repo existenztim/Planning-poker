@@ -38,8 +38,36 @@ export default function sessionVue() {
     votingContainer.append(displayVoteTask, voteCardsContainer);
     printHeaderHtml();
   };
+  const renderCards = () => {
+    
+    socket.on('userList', (UserList: User[]) => {
+      const votingCardContainer: HTMLDivElement = document.querySelector('.voting-card-container') as HTMLDivElement;
+      votingCardContainer.innerHTML = '';
 
+      console.log('Receiving update on users in session from server', UserList);
+      
+      const loggedInUser = getUser();
+      //const CheckUserInlog = loggedInUser ? JSON.parse(loggedInUser) : null;
+      
+  
+      UserList.map((user) => {
+        const votingCard: HTMLDivElement = document.createElement('div');
+        votingCard.classList.add('voting-card-div');
+        votingCard.innerText = 'Röstkort';
+        votingCard.innerHTML = /*html */ `<p>${user.username} funderar</p>`;
+      
+        if(user._id === loggedInUser._id){
+          renderSelfCard(user, votingCard)
+        }
+      
+        votingCardContainer.appendChild(votingCard);
+      });
+    })  
+  }
   const renderSelfCard = (user: User, render: Element) => {
+    // const votingCardContainer: HTMLDivElement = document.querySelector('.voting-card-container') as HTMLDivElement;
+    // votingCardContainer.innerHTML = '';
+
     const selectContainer = document.createElement('div');
     selectContainer.innerHTML = /*html */ `
       <select name="points" id="points">
@@ -54,55 +82,55 @@ export default function sessionVue() {
 
     render.appendChild(selectContainer);
 
-    const voteButton = render.querySelector('#submitVote') as HTMLButtonElement;
-    const selectedOption = selectContainer.querySelector('#points') as HTMLSelectElement;
-    voteButton.addEventListener('click', async (e) => {
-      e.preventDefault();
-      const response = await fetch('http://localhost:5050/api/vote/send', {
-        method: 'POST',
-        body: JSON.stringify({ user, vote: selectedOption.value }),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
+    // const voteButton = document.querySelector('#submitVote') as HTMLButtonElement;
+    // const selectedOption = selectContainer.querySelector('#points') as HTMLSelectElement;
+    // voteButton.addEventListener('click', async (e) => {
+    //   e.preventDefault();
+    //   const response = await fetch('http://localhost:5050/api/vote/send', {
+    //     method: 'POST',
+    //     body: JSON.stringify({ user, vote: selectedOption.value }),
+    //     headers: {
+    //       'Content-Type': 'application/json',
+    //     },
+    //   });
 
-      if (response.status === 200) {
-        selectedOption.setAttribute('disabled', '');
-        voteButton.setAttribute('disabled', '');
-      }
-    });
+    //   if (response.status === 200) {
+    //     selectedOption.setAttribute('disabled', '');
+    //     voteButton.setAttribute('disabled', '');
+    //   }
+    // });
   };
 
-  const createUserCards = async () => {
-    const response = await fetch(`http://localhost:5050/api/vote/sessions`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
+  // const createUserCards = async () => {
+  //   const response = await fetch(`http://localhost:5050/api/vote/sessions`, {
+  //     method: 'GET',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     },
+  //   });
 
-    if (response.status === 200) {
-      const users = (await response.json()) as User[];
-      const self = getUser();
-      console.log('Users in session', users);
+  //   if (response.status === 200) {
+  //     const users = (await response.json()) as User[];
+  //     const self = getUser();
+  //     console.log('Users in session', users);
 
-      const votingCardContainer: HTMLDivElement = document.querySelector('.voting-card-container') as HTMLDivElement;
-      votingCardContainer.innerHTML = '';
+  //     const votingCardContainer: HTMLDivElement = document.querySelector('.voting-card-container') as HTMLDivElement;
+  //     votingCardContainer.innerHTML = '';
 
-      users.map((user) => {
-        const votingCard: HTMLDivElement = document.createElement('div');
-        votingCard.classList.add('voting-card-div');
-        votingCard.innerHTML = /*html */ `<p>${user.username} funderar</p>`;
-        votingCard.setAttribute('user-id', user._id);
+  //     users.map((user) => {
+  //       const votingCard: HTMLDivElement = document.createElement('div');
+  //       votingCard.classList.add('voting-card-div');
+  //       votingCard.innerHTML = /*html */ `<p>${user.username} funderar</p>`;
+  //       votingCard.setAttribute('user-id', user._id);
 
-        if (user._id === self._id) {
-          renderSelfCard(user, votingCard);
-        }
+  //       if (user._id === self._id) {
+  //         renderSelfCard(user, votingCard);
+  //       }
 
-        votingCardContainer.append(votingCard);
-      });
-    }
-  };
+  //       votingCardContainer.append(votingCard);
+  //     });
+  //   }
+  // };
 
   const printHeaderHtml = () => {
     const admin = true; // Tillfällig lösning
@@ -153,7 +181,7 @@ export default function sessionVue() {
   const getTasks = () => {
     const table: HTMLTableElement = document.querySelector('.todo-list') as HTMLTableElement;
 
-    socket.on('getList', (list: Task[]) => {
+    socket.on('getTaskList', (list: Task[]) => {
       console.log(list);
       let count = 0;
       list.map((item) => {
@@ -177,6 +205,7 @@ export default function sessionVue() {
     });
   };
   printAppHtml();
-  createUserCards();
+  //createUserCards();
+  renderCards();
   getTasks();
 }
