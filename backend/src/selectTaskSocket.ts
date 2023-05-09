@@ -62,41 +62,47 @@ export const handleSession = (io: Server) => {
       io.emit('getTaskList', list);
     });
 
-    socket.on('sendUser', (user :IUser) => {
+    socket.on('sendUser', (user: IUser) => {
       //console.log(user);
       user.status = 'connected';
-      UserList.push(user);
-      //console.log('sendUser', UserList);
-
-      io.emit('userList', UserList);
-    });
-    socket.on('localStorageUser', (loggedInUser :IUser) => {
-
-      const user = UserList.find(user => user.username === loggedInUser.username);
-
-      if(!user){
-        loggedInUser.status = 'connected';
-        UserList.push(loggedInUser)
-        console.log('användaren finns redan');
-        
+      if (UserList.find((item) => item.username === user.username)) {
+        const connectedUser = UserList.find((item) => item.username === user.username);
+        if (connectedUser) {
+          connectedUser.status = 'connected';
+          io.emit('userList', UserList);
+        }
+      } else {
+        console.log('User does not exist in server, adding!');
+        UserList.push(user);
+        io.emit('userList', UserList);
       }
-      
+      //console.log('sendUser', UserList);
+    });
+    socket.on('localStorageUser', (loggedInUser: IUser) => {
+      const user = UserList.find((user) => user.username === loggedInUser.username);
+
+      if (!user) {
+        loggedInUser.status = 'connected';
+        UserList.push(loggedInUser);
+        console.log('användaren finns redan');
+      }
+
       //console.log('localstorage', UserList);
 
       io.emit('userList', UserList);
     });
 
     socket.on('disconnectUser', (loggedOutUser) => {
-      const disconnectedUser = UserList.find(user => user.username === loggedOutUser.username)
+      const disconnectedUser = UserList.find((user) => user.username === loggedOutUser.username);
       console.log(disconnectedUser, 'disconnect');
-      
+
       if (disconnectedUser) {
-        disconnectedUser.status = 'disconnected'
+        disconnectedUser.status = 'disconnected';
         console.log();
-        disconnectedUser
+        disconnectedUser;
       }
       //const connectedUsers = UserList.filter(user => user.status === 'connected')
-      io.emit('userList', UserList)
-    })
+      io.emit('userList', UserList);
+    });
   });
 };
