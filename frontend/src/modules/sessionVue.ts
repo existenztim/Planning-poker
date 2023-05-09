@@ -4,6 +4,7 @@ import renderTempAdminPage from './adminVue.ts';
 import type { Task } from '../models/taskModel.ts';
 import type { User } from '../models/userModel.ts';
 import { getUser } from '../utils/getUser.ts';
+import { adminDeliteLogedoutUser } from './adminVue.ts';
 let toggleView = true;
 
 export default function sessionVue() {
@@ -99,11 +100,19 @@ export default function sessionVue() {
 
           if (user.status === 'disconnected') {
             votingCard.innerHTML = `<p>${user.username} har lämnat omröstningen</p>`
+            const userData = JSON.parse(localStorage.getItem('userData') || '');
+            if (userData!=null && userData.admin) {
+              const deleteUserCardBtn: HTMLButtonElement = document.createElement('button');
+              votingCard.appendChild(deleteUserCardBtn);
+              deleteUserCardBtn.innerText = 'Ta bort användare'
+              deleteUserCardBtn.addEventListener('click', () => {
+                adminDeliteLogedoutUser(user.username)
+              });
+            }
           }
         }
-      
       });
-      
+
     })  
     
   }
