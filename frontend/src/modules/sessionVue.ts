@@ -117,7 +117,7 @@ export default function sessionVue() {
       nextButton = /*html*/`<button id='nextTask'>Nästa uppgift</button>`;
     }
 
-    socket.on('getList', (list:Task[]) => {
+    socket.on('getTaskList', (list:Task[]) => {
       if (list.length >= 1){
         displayCurrentTask.innerHTML = /*html*/
       `<h3>${list[0].title}</h3>
@@ -212,7 +212,7 @@ export default function sessionVue() {
   const getTasks = () => {
     const table: HTMLTableElement = document.querySelector('.todo-list') as HTMLTableElement;
 
-    socket.on('getList', (list: Task[]) => {
+    socket.on('getTaskList', (list: Task[]) => {
       //console.log(list);
       let count = 0;
       list.map((item) => {
