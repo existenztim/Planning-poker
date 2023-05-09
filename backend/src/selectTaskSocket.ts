@@ -70,6 +70,16 @@ export const handleSession = (io: Server) => {
 
       io.emit('userList', UserList);
     });
+    socket.on('removeUser', (username: string) => {
+      //console.log(user);
+      const user = UserList.find(user => user.username === username) 
+      if (user != undefined) {
+        user.status = 'removed';
+      }
+      //console.log('sendUser', UserList);
+
+      io.emit('userList', UserList);
+    });
     socket.on('localStorageUser', (loggedInUser :IUser) => {
 
       const user = UserList.find(user => user.username === loggedInUser.username);
