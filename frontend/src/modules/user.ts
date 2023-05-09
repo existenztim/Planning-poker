@@ -159,14 +159,3 @@ function createAndLoginUser() {
     }
   });
 }
-/*--------------------------------------------------------------------------------------
--------------- Logga ut användaren -----------------------------------------------------
---------------------------------------------------------------------------------------*/
-
-//Hämta knapp för att logga ut från pokersidan
-//Lägga till eventlister till knappen som startar funktionen nedan.
-/* 
-function logout() {
-  localStorage.removeItem("userData");
-  location.reload();
-}*/

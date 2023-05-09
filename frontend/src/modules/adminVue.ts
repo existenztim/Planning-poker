@@ -150,6 +150,35 @@ export default function renderTempAdminPage () {
     alert("Tasks have been sent for a planning poker session!");
     //displayVotingTasks(); <--- behöver kalla på en funktion här
   }
-  
+
   createTasks();
 }
+
+
+/*
+* Admin delite cards when a user LogOut. 
+*/
+
+// Får user-id när personen väljer att logga ut, 
+// genom att backenden skickar id när personen loggar ut. Lägg till!
+// Ta bort användaren i socket 
+// Uppdatera användarnas kort så den utloggade användarens kort försvinner. 
+  
+/*
+export function adminDeliteLogedoutUser () {
+
+  const deliteapp = document.getElementById('app');
+
+  const deleteUserCardsSpan = document.createElement('span');
+  deleteUserCardsSpan.id = 'deleteUserCardsSpan';
+  deleteUserCardsSpan.innerHTML = 'Användare har lämnat.'
+
+  const deleteUserCardsBtn = document.createElement('button');
+  deleteUserCardsBtn.id = 'deleteUserCardsBtn';
+  deleteUserCardsBtn.innerHTML = 'Radera dennes kort';
+
+  deleteUserCardsDiv.append(deleteUserCardsSpan, deleteUserCardsBtn);
+  deliteapp?.appendChild(deleteUserCardsDiv);
+
+
+}*/
