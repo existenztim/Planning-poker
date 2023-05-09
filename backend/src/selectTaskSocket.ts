@@ -65,12 +65,12 @@ export const handleSession = (io: Server) => {
     socket.on('sendUser', (user: IUser) => {
       //console.log(user);
       user.status = 'connected';
-      if (UserList.find((item) => item.username === user.username)) {
-        const connectedUser = UserList.find((item) => item.username === user.username);
-        if (connectedUser) {
-          connectedUser.status = 'connected';
-          io.emit('userList', UserList);
-        }
+      const connectedUser = UserList.find((item) => item.username === user.username);
+      if (connectedUser) {
+        console.log('User is in session, reconnecting');
+
+        connectedUser.status = 'connected';
+        io.emit('userList', UserList);
       } else {
         console.log('User does not exist in server, adding!');
         UserList.push(user);
