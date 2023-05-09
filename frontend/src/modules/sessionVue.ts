@@ -129,12 +129,38 @@ export default function sessionVue() {
           if(window.confirm("Är du säker på att du vill gå vidare till nästa task?")){
             const finishedTask = list.shift();
             finishedTask;
+            //finishedTaskList.push(finishedTask);
             socket.emit('send sessionList', list);
             socket.emit('send finishedList', finishedTask);
             sessionVue();
+            previousVoteTask();
           }     
         })
       } 
+    })
+  }
+
+  const previousVoteTask = () => {
+    const table = document.querySelector('.done-tasks') as HTMLTableElement;
+    socket.on('finished List', (list:Task[]) => {
+      let count = 0;
+      list.map((item) => {
+        const tr = document.createElement('tr');
+        tr.id = `tr-${count}`;
+        count++;
+
+        const titleTd = document.createElement('td');
+        titleTd.innerText = item.title;
+        const descriptionTd = document.createElement('td');
+        descriptionTd.innerText = item.description;
+
+        table.append(tr);
+        tr.append(titleTd, descriptionTd);
+
+        tr.addEventListener('click', (e) => {
+          console.log(e.currentTarget);
+        });
+      });
     })
   }
 
