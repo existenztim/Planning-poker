@@ -38,8 +38,9 @@ export default function sessionVue() {
     votingContainer.append(displayVoteTask, voteCardsContainer);
     printHeaderHtml();
   };
+
   const renderCards = () => {
-    
+
     socket.on('userList', (UserList: User[]) => {
       const votingCardContainer: HTMLDivElement = document.querySelector('.voting-card-container') as HTMLDivElement;
       votingCardContainer.innerHTML = '';
@@ -47,29 +48,21 @@ export default function sessionVue() {
       console.log('Receiving update on users in session from server', UserList);
       
       const loggedInUser = getUser();
+      let userHasCard = false;
+
       //const CheckUserInlog = loggedInUser ? JSON.parse(loggedInUser) : null;
       
+     
   
       UserList.map((user) => {
-        const votingCard: HTMLDivElement = document.createElement('div');
-        votingCard.classList.add('voting-card-div');
-        votingCard.innerText = 'Röstkort';
-        votingCard.innerHTML = /*html */ `<p>${user.username} funderar</p>`;
-      
-        if(user._id === loggedInUser._id){
-          renderSelfCard(user, votingCard)
-        }
-      
-        votingCardContainer.appendChild(votingCard);
-      });
-    })  
-  }
-  const renderSelfCard = (user: User, render: Element) => {
-    // const votingCardContainer: HTMLDivElement = document.querySelector('.voting-card-container') as HTMLDivElement;
-    // votingCardContainer.innerHTML = '';
 
-    const selectContainer = document.createElement('div');
-    selectContainer.innerHTML = /*html */ `
+        if(user._id === loggedInUser._id){
+          if(!userHasCard){
+            const selectContainer = document.createElement('div');
+            selectContainer.classList.add('voting-card-div');
+            const selectHTML = /*html */
+           `
+           <p>${loggedInUser.username} funderar</p>
       <select name="points" id="points">
         <option value=null>Välj</option>
         <option value=1>Tiny 1SP</option>
@@ -79,58 +72,41 @@ export default function sessionVue() {
       </select>
       <button id="submitVote">Rösta</button>
     `;
+            selectContainer.innerHTML = selectHTML;
+            votingCardContainer.appendChild(selectContainer);
 
-    render.appendChild(selectContainer);
+            const voteButton = document.querySelector('#submitVote') as HTMLButtonElement;
+            const selectedOption = selectContainer.querySelector('#points') as HTMLSelectElement;
+            voteButton.addEventListener('click', async (e) => {
+              e.preventDefault();
+              const response = await fetch('http://localhost:5050/api/vote/send', {
+                method: 'POST',
+                body: JSON.stringify({ user, vote: selectedOption.value }),
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+              });
 
-    // const voteButton = document.querySelector('#submitVote') as HTMLButtonElement;
-    // const selectedOption = selectContainer.querySelector('#points') as HTMLSelectElement;
-    // voteButton.addEventListener('click', async (e) => {
-    //   e.preventDefault();
-    //   const response = await fetch('http://localhost:5050/api/vote/send', {
-    //     method: 'POST',
-    //     body: JSON.stringify({ user, vote: selectedOption.value }),
-    //     headers: {
-    //       'Content-Type': 'application/json',
-    //     },
-    //   });
-
-    //   if (response.status === 200) {
-    //     selectedOption.setAttribute('disabled', '');
-    //     voteButton.setAttribute('disabled', '');
-    //   }
-    // });
-  };
-
-  // const createUserCards = async () => {
-  //   const response = await fetch(`http://localhost:5050/api/vote/sessions`, {
-  //     method: 'GET',
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //     },
-  //   });
-
-  //   if (response.status === 200) {
-  //     const users = (await response.json()) as User[];
-  //     const self = getUser();
-  //     console.log('Users in session', users);
-
-  //     const votingCardContainer: HTMLDivElement = document.querySelector('.voting-card-container') as HTMLDivElement;
-  //     votingCardContainer.innerHTML = '';
-
-  //     users.map((user) => {
-  //       const votingCard: HTMLDivElement = document.createElement('div');
-  //       votingCard.classList.add('voting-card-div');
-  //       votingCard.innerHTML = /*html */ `<p>${user.username} funderar</p>`;
-  //       votingCard.setAttribute('user-id', user._id);
-
-  //       if (user._id === self._id) {
-  //         renderSelfCard(user, votingCard);
-  //       }
-
-  //       votingCardContainer.append(votingCard);
-  //     });
-  //   }
-  // };
+              if (response.status === 200) {
+                selectedOption.setAttribute('disabled', '');
+                voteButton.setAttribute('disabled', '');
+              }
+            });
+          }
+          userHasCard = true;
+        } else {
+          const votingCard: HTMLDivElement = document.createElement('div');
+          votingCard.classList.add('voting-card-div');
+          votingCard.innerText = 'Röstkort';
+          votingCard.innerHTML = /*html */ `<p>${user.username} funderar</p>`;
+          votingCardContainer.appendChild(votingCard);
+        }
+      
+      });
+      
+    })  
+    
+  }
 
   const printHeaderHtml = () => {
     const admin = true; // Tillfällig lösning

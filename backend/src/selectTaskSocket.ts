@@ -66,7 +66,7 @@ export const handleSession = (io: Server) => {
       //console.log(user);
 
       UserList.push(user);
-      //console.log(userList);
+      console.log('sendUser', UserList);
 
       io.emit('userList', UserList);
     });
@@ -80,7 +80,7 @@ export const handleSession = (io: Server) => {
         
       }
       
-      //console.log(loggedInUser);
+      console.log('localstorage', UserList);
 
       io.emit('userList', UserList);
     });
