@@ -97,6 +97,6 @@ export const handleSession = (io: Server) => {
       }
       //const connectedUsers = UserList.filter(user => user.status === 'connected')
       io.emit('userList', UserList)
-     })
+    })
   });
 };

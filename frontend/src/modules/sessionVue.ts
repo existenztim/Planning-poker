@@ -96,6 +96,10 @@ export default function sessionVue() {
           votingCard.innerText = 'Röstkort';
           votingCard.innerHTML = /*html */ `<p>${user.username} funderar</p>`;
           votingCardContainer.appendChild(votingCard);
+
+          if (user.status === 'disconnected') {
+            votingCard.innerHTML = `<p>${user.username} har lämnat omröstningen</p>`
+          }
         }
       
       });
