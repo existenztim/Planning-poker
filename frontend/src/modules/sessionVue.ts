@@ -208,7 +208,7 @@ export default function sessionVue() {
             //finishedTaskList.push(finishedTask);
             socket.emit('send sessionList', list);
             socket.emit('send finishedList', finishedTask);
-            previousVoteTask();
+            //previousVoteTask();
             sessionVue();
           }     
         })
@@ -216,30 +216,9 @@ export default function sessionVue() {
     })
   }
 
-  const previousVoteTask = () => {
-    socket.on('finished List', (list:Task[]) => {
-      const table = document.querySelector('.done-tasks') as HTMLTableElement;
-      table.innerHTML="alla färdiga röstningar";
-      let count = 0;
-      list.map((item) => {
-        const tr = document.createElement('tr');
-        tr.id = `tr-${count}`;
-        count++;
+  // const previousVoteTask = () => {
 
-        const titleTd = document.createElement('td');
-        titleTd.innerText = item.title;
-        const descriptionTd = document.createElement('td');
-        descriptionTd.innerText = item.description;
-
-        table.append(tr);
-        tr.append(titleTd, descriptionTd);
-
-        tr.addEventListener('click', (e) => {
-          console.log(e.currentTarget);
-        });
-      });
-    })
-  }
+  // }
 
   printAppHtml();
   renderCards();
