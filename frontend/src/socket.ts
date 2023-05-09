@@ -1,5 +1,6 @@
 import { io } from 'https://cdn.socket.io/4.3.2/socket.io.esm.min.js';
 import type { User } from './models/userModel';
+import type { Task } from './models/taskModel';
 
 const URL = 'http://localhost:5050';
 export const socket = io(URL);
@@ -49,3 +50,26 @@ socket.on('flipCards', (data: Props[], average: number) => {
 
   votingContainer.appendChild(averageScoreElement);
 });
+
+socket.on('finished List', (list:Task[]) => {
+  const table = document.querySelector('.done-tasks') as HTMLTableElement;
+  table.innerHTML="alla färdiga röstningar";
+  let count = 0;
+  list.map((item) => {
+    const tr = document.createElement('tr');
+    tr.id = `tr-${count}`;
+    count++;
+
+    const titleTd = document.createElement('td');
+    titleTd.innerText = item.title;
+    const descriptionTd = document.createElement('td');
+    descriptionTd.innerText = item.description;
+
+    table.append(tr);
+    tr.append(titleTd, descriptionTd);
+
+    tr.addEventListener('click', (e) => {
+      console.log(e.currentTarget);
+    });
+  });
+})
