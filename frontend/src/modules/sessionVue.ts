@@ -50,10 +50,6 @@ export default function sessionVue() {
       const loggedInUser = getUser();
       let userHasCard = false;
 
-      //const CheckUserInlog = loggedInUser ? JSON.parse(loggedInUser) : null;
-      
-     
-  
       UserList.map((user) => {
 
         if(user._id === loggedInUser._id){
@@ -148,8 +144,10 @@ export default function sessionVue() {
 
   const logoutBtnEvent =() => {
     const logoutBtn = document.getElementById('logOut');
+    const loggedOutUser  = getUser();
     logoutBtn?.addEventListener('click', () => {
-      localStorage.removeItem("userData");
+      socket.emit('disconnectUser', loggedOutUser);
+      localStorage.removeItem('userData');
       location.reload();
     })
   }
@@ -181,7 +179,6 @@ export default function sessionVue() {
     });
   };
   printAppHtml();
-  //createUserCards();
   renderCards();
   getTasks();
 }
