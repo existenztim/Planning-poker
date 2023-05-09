@@ -40,6 +40,14 @@ export default function sessionVue() {
     printHeaderHtml();
   };
 
+  /*
+* Admin delite cards when a user LogOut. 
+*/
+
+  function adminDeliteLogedoutUser (username:string) {
+    socket.emit('removeUser', username);
+  }
+
   const renderCards = () => {
 
     socket.on('userList', (UserList: User[]) => {
@@ -52,6 +60,10 @@ export default function sessionVue() {
       let userHasCard = false;
 
       UserList.map((user) => {
+
+        if (user.status == 'removed') {
+          return
+        }
 
         if(user._id === loggedInUser._id){
           if(!userHasCard){
@@ -114,7 +126,7 @@ export default function sessionVue() {
       });
 
     })  
-    
+
   }
 
   const printHeaderHtml = () => {
