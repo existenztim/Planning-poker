@@ -71,8 +71,8 @@ socket.on('finished List', (list:Task[]) => {
     table.append(tr);
     tr.append(titleTd, descriptionTd);
 
-    tr.addEventListener('click', (e) => {
-      console.log(e.currentTarget);
-    });
+    // tr.addEventListener('click', (e) => {
+    //   console.log(e.currentTarget);
+    // });
   });
 })

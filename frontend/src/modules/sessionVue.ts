@@ -178,9 +178,9 @@ export default function sessionVue() {
         table.append(tr);
         tr.append(titleTd, descriptionTd);
 
-        tr.addEventListener('click', (e) => {
-          //console.log(e.currentTarget);
-        });
+        // tr.addEventListener('click', (e) => {
+        //   //console.log(e.currentTarget);
+        // });
       });
     });
   };
@@ -212,7 +212,9 @@ export default function sessionVue() {
             sessionVue();
           }     
         })
-      } 
+      } else {
+        displayCurrentTask.innerHTML ="Sessionen är avslutad!";
+      }
     })
   }
 
