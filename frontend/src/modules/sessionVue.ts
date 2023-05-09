@@ -114,25 +114,27 @@ export default function sessionVue() {
     let nextButton = '';
     
     if(userData.admin == false) { //ta bort false senare 
-      nextButton = `<button id='nextTask'>Nästa uppgift</button>`;
+      nextButton = /*html*/`<button id='nextTask'>Nästa uppgift</button>`;
     }
 
     socket.on('getList', (list:Task[]) => {
-      displayCurrentTask.innerHTML = /*html*/
+      if (list.length >= 1){
+        displayCurrentTask.innerHTML = /*html*/
       `<h3>${list[0].title}</h3>
        <p>${list[0].description}</p>
        ${nextButton}
       `;
-      const nextTaskBtn = document.getElementById('nextTask');
-      nextTaskBtn?.addEventListener('click', () => {
-        list.shift();
-        if (list.length >= 1){
-          socket.emit('send sessionList', list);
-          sessionVue();
-        } else {
-          nextTaskBtn.innerHTML ="Det finns inget mer att rösta på."
-        }
-      })
+        const nextTaskBtn = document.getElementById('nextTask');
+        nextTaskBtn?.addEventListener('click', () => {
+          if(window.confirm("Är du säker på att du vill gå vidare till nästa task?")){
+            const finishedTask = list.shift();
+            finishedTask;
+            socket.emit('send sessionList', list);
+            socket.emit('send finishedList', finishedTask);
+            sessionVue();
+          }     
+        })
+      } 
     })
   }
 
@@ -142,7 +144,7 @@ export default function sessionVue() {
     let adminButton = '';
 
     if(userData.admin == false) { //ta bort false senare 
-      adminButton = `<button id='adminMode'>Admin Läge</button>`;
+      adminButton = /*html*/`<button id='adminMode'>Admin Läge</button>`;
     }
 
     headerContainer.innerHTML = /*html */ `

@@ -55,11 +55,14 @@ export const handleAddVote = (user: IUser, vote: string) => {
 export const handleSession = (io: Server) => {
   io.on('connection', function (socket: Socket) {
     console.log('new session socket: ', socket.id);
+    
     socket.on('send sessionList', (list) => {
-      //console.log(list);
-      //fortsätt här...
-
       io.emit('getList', list);
+    });
+    
+    socket.on('send finishedList', (list) => {
+      console.log("finished tasks:", list)
+      io.emit('finisedList', list);
     });
 
     socket.on('sendUser', (user) => {
