@@ -31,11 +31,12 @@
     
   }
 }
-.todo-list {
+.todo-list, .done-tasks {
   margin-left: 0px;
   margin-right: 25em;
   background-color: lightgray;
   height: 100vh;
+  padding: 1rem;
 
   tr {
     display: block;
