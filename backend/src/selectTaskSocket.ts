@@ -63,6 +63,7 @@ export const handleSession = (io: Server) => {
       //fortsätt här...
 
       io.emit('getTaskList', list);
+      io.emit('userList', UserList)
     });
 
     socket.on('send finishedList', (listItem) => {
