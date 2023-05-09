@@ -208,8 +208,8 @@ export default function sessionVue() {
             //finishedTaskList.push(finishedTask);
             socket.emit('send sessionList', list);
             socket.emit('send finishedList', finishedTask);
-            sessionVue();
             previousVoteTask();
+            sessionVue();
           }     
         })
       } 
