@@ -15,7 +15,7 @@ Tekniskt upplägg avgör ni på egen hand.
 
 - Önskar ni feedback på koden ska ni _inte_ merge:a pull requesten som heter "Feedback".
 
-Överenskommelse vid uppstart/ gruppkontrakt: 
+## Överenskommelse vid uppstart/ gruppkontrakt: 
 - Gruppdeltagarna arbetar helst kontorstid, 8-16. Vid behov kan detta ses över. Inget helgjobb.
 - Vi träffas varje dag för stand-up oftast förmiddagarna/morgnarna. Då över teams i planerade möten genom kallendern. 
 - Övrig tid är vi nåbara och aktiva på chatten i teams. 
