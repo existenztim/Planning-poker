@@ -1,0 +1,33 @@
+.newUserDiv, .userDiv {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: 50px;
+    font-size: 1.8rem;
+}
+
+.newUserSpan, .UserSpan{
+    display: flex;
+    justify-content: center;
+    padding: 30px;
+}
+
+.UserInput, .newUserInput, .newUserPassword, .UserPassword{
+    display: flex;
+    justify-content: center;
+    font-size: 1.4rem;
+    margin: 0px 500px 15px 500px;
+    border-radius: 10px;
+    padding: 10px;
+    text-align: center;
+}
+
+.UserLoginBtns{
+    display: flex;
+    justify-content: center;
+    font-size: 1.4rem;
+    margin: 0px 500px 15px 950px;
+    width: 350px;
+    border-radius: 10px;
+    padding: 10px;
+}
