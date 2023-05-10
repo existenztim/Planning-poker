@@ -141,14 +141,15 @@ export default function sessionVue() {
           if (user.status === 'disconnected') {
             votingCard.innerHTML = `<p>${user.username} har lämnat omröstningen</p>`
             const userData = JSON.parse(localStorage.getItem('userData') || '');
-            if (userData!=null && userData.admin) {
+            adminDeliteLogedoutUser(user.username);     // User som loggas ut tas bort när de diskonnectar. 
+          /*  if (userData!=null && userData.admin) {
               const deleteUserCardBtn: HTMLButtonElement = document.createElement('button');
               votingCard.appendChild(deleteUserCardBtn);
               deleteUserCardBtn.innerText = 'Ta bort användare'
               deleteUserCardBtn.addEventListener('click', () => {
                 adminDeliteLogedoutUser(user.username)
               });
-            }
+            }*/ // Om användaren ska ta bort users som är disconnectade själv. 
           }
         }
       });
