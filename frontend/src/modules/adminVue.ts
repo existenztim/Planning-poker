@@ -133,8 +133,30 @@ export default function renderTempAdminPage () {
   }
 
   const deleteTaskEvent = () => {
-    const checkboxes = document.querySelectorAll('id^="delete');
-    console.log(checkboxes);
+    const createTaskFeedback = document.querySelector('#create-task-feedback') as HTMLParagraphElement;
+    const deleteBtns = document.querySelectorAll('button[id^="delete"]');
+
+    deleteBtns.forEach((button) => {
+      const dataId = (button as HTMLButtonElement).dataset.id as string;
+
+      button.addEventListener("click", () => {
+        console.log(dataId);
+        fetch(`http://localhost:5050/api/tasks/delete/${dataId}`, {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+          .then((res) => {
+            createTaskFeedback.innerHTML = `Uppgiften har tagits bort!`;
+            console.log(res);
+          })
+          .catch((err) => {
+            createTaskFeedback.innerHTML = "Något gick fel:" + err;
+          });
+        renderTempAdminPage();
+      })
+    })
   }
 
   const socket = io(socketURL);
