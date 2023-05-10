@@ -9,6 +9,7 @@ import voteRouter from './routes/vote.route';
 
 import userRoute from './routes/user.route';
 import tasksRouter from './routes/tasks.route';
+import resultRouter from './routes/results.route';
 import { handleSession } from './selectTaskSocket';
 
 dotenv.config();
@@ -32,6 +33,7 @@ app.use('/api/users', userRoute);
 app.use('/api/tasks', tasksRouter);
 
 app.use('/api/vote', voteRouter);
+app.use('/api/results', resultRouter)
 
 export const io = new Server(server, {
   cors: {
