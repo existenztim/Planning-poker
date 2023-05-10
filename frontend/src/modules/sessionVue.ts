@@ -81,7 +81,7 @@ export default function sessionVue() {
         <option value=1>Tiny 1SP</option>
         <option value=3>Small 3SP</option>
         <option value=5>Medium 5SP</option>
-        <option value=8>Large 8 SP</option>
+        <option value=8>Large 8SP</option>
       </select>
       <button id="submitVote">Rösta</button>
     `;
@@ -198,10 +198,6 @@ export default function sessionVue() {
 
         table.append(tr);
         tr.append(titleTd, descriptionTd);
-
-        // tr.addEventListener('click', (e) => {
-        //   //console.log(e.currentTarget);
-        // });
       });
     });
   };
@@ -229,7 +225,6 @@ export default function sessionVue() {
             //finishedTaskList.push(finishedTask);
             socket.emit('send sessionList', list);
             socket.emit('send finishedList', finishedTask);
-            //previousVoteTask();
             sessionVue();
           }     
         })
@@ -238,10 +233,6 @@ export default function sessionVue() {
       }
     })
   }
-
-  // const previousVoteTask = () => {
-
-  // }
 
   printAppHtml();
   renderCards();
