@@ -4,7 +4,6 @@ import type { Task } from './models/taskModel';
 //import sessionVue from './modules/sessionVue';
 //import { getUser } from './utils/getUser';
 
-
 const URL = 'http://localhost:5050';
 export const socket = io(URL);
 
@@ -20,6 +19,7 @@ socket.on('userList', (userList: User[]) => {
   userList.map((user) => {
     const votingCard: HTMLDivElement = document.createElement('div');
     votingCard.classList.add('voting-card-div');
+    votingCard.setAttribute('user-id', user._id);
     votingCard.innerText = 'Röstkort';
     votingCard.innerHTML = /*html */ `<p>${user.username}s: poäng</p>
     <select name="points" id="points">
@@ -54,9 +54,9 @@ socket.on('flipCards', (data: Props[], average: number) => {
   votingContainer.appendChild(averageScoreElement);
 });
 
-socket.on('finished List', (list:Task[]) => {
+socket.on('finished List', (list: Task[]) => {
   const table = document.querySelector('.done-tasks') as HTMLTableElement;
-  table.innerHTML="alla färdiga röstningar";
+  table.innerHTML = 'alla färdiga röstningar';
   let count = 0;
   list.map((item) => {
     const tr = document.createElement('tr');
@@ -75,4 +75,4 @@ socket.on('finished List', (list:Task[]) => {
     //   console.log(e.currentTarget);
     // });
   });
-})
+});

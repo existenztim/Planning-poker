@@ -5,12 +5,12 @@ import type { Task } from '../models/taskModel.ts';
 import type { User } from '../models/userModel.ts';
 import { getUser } from '../utils/getUser.ts';
 import { adminDeliteLogedoutUser } from './adminVue.ts';
-let toggleView = true;
-const socketURL ="http://localhost:5050";
+const toggleView = true;
+const socketURL = 'http://localhost:5050';
 
 export default function sessionVue() {
   let toggleView = true;
-  const userData = JSON.parse(localStorage.getItem("userData") as string); 
+  const userData = JSON.parse(localStorage.getItem('userData') as string);
 
   const printAppHtml = () => {
     const container: HTMLElement = document.querySelector('#app') as HTMLElement;
@@ -45,46 +45,43 @@ export default function sessionVue() {
   };
 
   /*
-* Admin delite cards when a user LogOut. 
-*/
+   * Admin delite cards when a user LogOut.
+   */
 
-  function adminDeliteLogedoutUser (username:string) {
+  function adminDeliteLogedoutUser(username: string) {
     socket.emit('removeUser', username);
   }
 
   const renderCards = () => {
-
     socket.on('userList', (UserList: User[]) => {
       const votingCardContainer: HTMLDivElement = document.querySelector('.voting-card-container') as HTMLDivElement;
       votingCardContainer.innerHTML = '';
 
       console.log('Receiving update on users in session from server', UserList);
-      
+
       const loggedInUser = getUser();
       let userHasCard = false;
 
       UserList.map((user) => {
-
         if (user.status == 'removed') {
-          return
+          return;
         }
 
-        if(user._id === loggedInUser._id){
-          if(!userHasCard){
+        if (user._id === loggedInUser._id) {
+          if (!userHasCard) {
             const selectContainer = document.createElement('div');
             selectContainer.classList.add('voting-card-div');
-            const selectHTML = /*html */
-           `
-           <p>${loggedInUser.username} funderar</p>
-      <select name="points" id="points">
-        <option value=null>Välj</option>
-        <option value=1>Tiny 1SP</option>
-        <option value=3>Small 3SP</option>
-        <option value=5>Medium 5SP</option>
-        <option value=8>Large 8 SP</option>
-      </select>
-      <button id="submitVote">Rösta</button>
-    `;
+            selectContainer.setAttribute('user-id', loggedInUser._id);
+            const selectHTML = /*html */ `<p>${loggedInUser.username} funderar</p>
+            <select name="points" id="points">
+              <option value=null>Välj</option>
+              <option value=1>Tiny 1SP</option>
+              <option value=3>Small 3SP</option>
+              <option value=5>Medium 5SP</option>
+              <option value=8>Large 8 SP</option>
+            </select>
+            <button id="submitVote">Rösta</button>`;
+
             selectContainer.innerHTML = selectHTML;
             votingCardContainer.appendChild(selectContainer);
 
@@ -110,36 +107,36 @@ export default function sessionVue() {
         } else {
           const votingCard: HTMLDivElement = document.createElement('div');
           votingCard.classList.add('voting-card-div');
+          votingCard.setAttribute('user-id', user._id);
           votingCard.innerText = 'Röstkort';
           votingCard.innerHTML = /*html */ `<p>${user.username} funderar</p>`;
           votingCardContainer.appendChild(votingCard);
 
           if (user.status === 'disconnected') {
-            votingCard.innerHTML = `<p>${user.username} har lämnat omröstningen</p>`
+            votingCard.innerHTML = `<p>${user.username} har lämnat omröstningen</p>`;
             const userData = JSON.parse(localStorage.getItem('userData') || '');
-            if (userData!=null && userData.admin) {
+            if (userData != null && userData.admin) {
               const deleteUserCardBtn: HTMLButtonElement = document.createElement('button');
               votingCard.appendChild(deleteUserCardBtn);
-              deleteUserCardBtn.innerText = 'Ta bort användare'
+              deleteUserCardBtn.innerText = 'Ta bort användare';
               deleteUserCardBtn.addEventListener('click', () => {
-                adminDeliteLogedoutUser(user.username)
+                adminDeliteLogedoutUser(user.username);
               });
             }
           }
         }
       });
-
-    })  
-
-  }
+    });
+  };
 
   const printHeaderHtml = () => {
     const headerContainer = document.querySelector('#header') as HTMLHeadingElement;
     const headerTag = /*html*/ `<h1>Planning Poker</h1>`;
     let adminButton = '';
 
-    if(userData.admin == false) { //ta bort false senare 
-      adminButton = /*html*/`<button id='adminMode'>Admin Läge</button>`;
+    if (userData.admin == false) {
+      //ta bort false senare
+      adminButton = /*html*/ `<button id='adminMode'>Admin Läge</button>`;
     }
 
     headerContainer.innerHTML = /*html */ `
@@ -148,41 +145,40 @@ export default function sessionVue() {
         ${adminButton}
         <button id='logOut'>Logga ut</button>
       </div>
-    `
+    `;
 
     adminBtnEvent();
     logoutBtnEvent();
-  }
-  
+  };
+
   const adminBtnEvent = () => {
     const adminBtn = document.getElementById('adminMode');
     adminBtn?.addEventListener('click', () => {
       if (toggleView) {
-        toggleView = false; 
+        toggleView = false;
         console.log(toggleView);
         renderTempAdminPage();
-
       } else {
-        toggleView = true; 
+        toggleView = true;
         sessionVue();
       }
-    })
-  }
+    });
+  };
 
-  const logoutBtnEvent =() => {
+  const logoutBtnEvent = () => {
     const logoutBtn = document.getElementById('logOut');
-    const loggedOutUser  = getUser();
+    const loggedOutUser = getUser();
     logoutBtn?.addEventListener('click', () => {
       socket.emit('disconnectUser', loggedOutUser);
       localStorage.removeItem('userData');
       location.reload();
-    })
-  }
+    });
+  };
 
   const getTasks = () => {
     socket.on('getTaskList', (list: Task[]) => {
       const table: HTMLTableElement = document.querySelector('.todo-list') as HTMLTableElement;
-      table.innerHTML ="röstningslista";
+      table.innerHTML = 'röstningslista';
       console.log(list);
       let count = 0;
       list.map((item) => {
@@ -209,21 +205,23 @@ export default function sessionVue() {
   const currentVoteTask = () => {
     const displayCurrentTask = document.querySelector('.voting-header') as HTMLDivElement;
     let nextButton = '';
-    
-    if(userData.admin == false) { //ta bort false senare 
-      nextButton = /*html*/`<button id='nextTask'>Nästa uppgift</button>`;
+
+    if (userData.admin == false) {
+      //ta bort false senare
+      nextButton = /*html*/ `<button id='nextTask'>Nästa uppgift</button>`;
     }
 
-    socket.on('getTaskList', (list:Task[]) => {
-      if (list.length >= 1){
-        displayCurrentTask.innerHTML = /*html*/
-      `<h3>${list[0].title}</h3>
+    socket.on('getTaskList', (list: Task[]) => {
+      if (list.length >= 1) {
+        displayCurrentTask.innerHTML =
+          /*html*/
+          `<h3>${list[0].title}</h3>
        <p>${list[0].description}</p>
        ${nextButton}
       `;
         const nextTaskBtn = document.getElementById('nextTask');
         nextTaskBtn?.addEventListener('click', () => {
-          if(window.confirm("Är du säker på att du vill gå vidare till nästa task?")){
+          if (window.confirm('Är du säker på att du vill gå vidare till nästa task?')) {
             const finishedTask = list.shift();
             finishedTask;
             //finishedTaskList.push(finishedTask);
@@ -231,13 +229,13 @@ export default function sessionVue() {
             socket.emit('send finishedList', finishedTask);
             //previousVoteTask();
             sessionVue();
-          }     
-        })
+          }
+        });
       } else {
-        displayCurrentTask.innerHTML ="Sessionen är avslutad!";
+        displayCurrentTask.innerHTML = 'Sessionen är avslutad!';
       }
-    })
-  }
+    });
+  };
 
   // const previousVoteTask = () => {
 
