@@ -31,17 +31,15 @@ export default function renderTempAdminPage () {
   <button id="save-task-btn">Spara</button>`
   
     container.append(taskForm);
-    const saveButton :HTMLButtonElement = document.querySelector('#save-task-btn') as HTMLButtonElement;
-    const titleField :HTMLInputElement = document.querySelector('#title') as HTMLInputElement;
-    const descriptionField :HTMLInputElement = document.querySelector('#description') as HTMLInputElement;
-    const pointsField :HTMLSelectElement = document.querySelector('#points') as HTMLSelectElement;
-    //console.log(saveButton, titleField, descriptionField, pointsField);
+    const saveButton = document.querySelector('#save-task-btn') as HTMLButtonElement;
+    const titleField = document.querySelector('#title') as HTMLInputElement;
+    const descriptionField = document.querySelector('#description') as HTMLInputElement;
+    const pointsField = document.querySelector('#points') as HTMLSelectElement;
   
-    saveButton.addEventListener('click', () => {
+    saveButton.addEventListener('click', (event) => {
+      event.preventDefault();
       const task = {title: titleField.value, description: descriptionField.value, points: pointsField.value}
-      //console.log(titleField.value, descriptionField.value, pointsField.value);
       
-  
       fetch('http://localhost:5050/api/tasks/add', {
         method: 'POST',
         headers: {
@@ -70,10 +68,6 @@ export default function renderTempAdminPage () {
       console.log(error);
     }
   }
-  
-  /**
-   * This will print the tasks from fetch 
-   */
   
   const printTasks = (list:Task[]) => {
     const body = document.querySelector<HTMLDivElement>('#app');
@@ -105,12 +99,6 @@ export default function renderTempAdminPage () {
     initSessionBtnEvent();
   }
   
-  /**
-   * This function adds an event listener, when 
-   * clicked creates an array of tasks from checked checkboxes and their associated task divs. 
-   * The tasks get sent to the sessionList Array.
-   */
-  
   const  initSessionBtnEvent = () => {
     const initSessionBtn = document.getElementById("initSessionBtn");
     if(initSessionBtn) {
@@ -140,14 +128,10 @@ export default function renderTempAdminPage () {
     }
   }
   
-  /**
-   *Emits sessionList to backend using socket.io
-   */
   const socket = io(socketURL);
   const emitSession = (tasks:Task[]) => {
     socket.emit("send sessionList", tasks);
     alert("Tasks have been sent for a planning poker session!");
-    //displayVotingTasks(); <--- behöver kalla på en funktion här
   }
   createTasks();
 }

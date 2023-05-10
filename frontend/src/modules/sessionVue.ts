@@ -5,7 +5,7 @@ import type { Task } from '../models/taskModel.ts';
 import type { User } from '../models/userModel.ts';
 import { getUser } from '../utils/getUser.ts';
 import { adminDeliteLogedoutUser } from './adminVue.ts';
-let toggleView = true;
+
 const socketURL ="http://localhost:5050";
 
 export default function sessionVue() {
