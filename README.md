@@ -21,3 +21,4 @@ Tekniskt upplägg avgör ni på egen hand.
 - Övrig tid är vi nåbara och aktiva på chatten i teams. 
 - Vi planerade upp projektet ihop. Bröt ner de olika tasksen i mindre delar för att lättare få en uppfattning om hur långt tid de kommer att ta. (Planning-Poker) Men även för att få en gemensam bild av hur flödet kommer att vara. Vi planerade in en retro och review för måndagen utifrån glad, sad, mad- mallen. Då vi även gjorde en ny sprintplanering. 
 - Pull Request kräver två granskare innan man får merga in koden. Och man mergar ihop den aprovade branchen med develop och fixar krockar i VSC innan man går vidare i GitHub och skickar in den till develop. 
+- Vi utvecklar mot develop och inte direkt till main. 
