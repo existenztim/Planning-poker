@@ -18,6 +18,6 @@ Tekniskt upplägg avgör ni på egen hand.
 Överenskommelse vid uppstart/ gruppkontrakt: 
 - Gruppdeltagarna arbetar helst kontorstid, 8-16. Vid behov kan detta ses över. Inget helgjobb.
 - Vi träffas varje dag för stand-up oftast förmiddagarna/morgnarna. Då över teams i planerade möten genom kallendern. 
-- Överig tid är vi nåbara och aktiva på chatten i teams. 
+- Övrig tid är vi nåbara och aktiva på chatten i teams. 
 - Vi planerade upp projektet ihop. Bröt ner de olika tasksen i mindre delar för att lättare få en uppfattning om hur långt tid de kommer att ta. (Planning-Poker) Men även för att få en gemansam bild av hur flödet kommer att vara. Vi planerade in en retro och review för måndagen utifrån glad, sad, mad mallen. Då vi även gjorde en ny sprintplanering. 
 - Pull Request kräver två granskare innan man får merga in koden. Och man mergar ihop den aprovade branchen med develop och fixar krockar i VSC innan man går vidare i GitHub och skickar in den till develop. 
