@@ -138,7 +138,7 @@ export default function sessionVue() {
     const headerTag = /*html*/ `<h1>Planning Poker</h1>`;
     let adminButton = '';
 
-    if(userData.admin == false) { //ta bort false senare 
+    if(userData.admin) { 
       adminButton = /*html*/`<button id='adminMode'>Admin Läge</button>`;
     }
 
@@ -210,7 +210,7 @@ export default function sessionVue() {
     const displayCurrentTask = document.querySelector('.voting-header') as HTMLDivElement;
     let nextButton = '';
     
-    if(userData.admin == false) { //ta bort false senare 
+    if(userData.admin) { 
       nextButton = /*html*/`<button id='nextTask'>Nästa uppgift</button>`;
     }
 
