@@ -40,7 +40,8 @@ export default function sessionVue() {
   };
 
   const renderCards = () => {
-
+    //console.log('rendercards körs');
+    
     socket.on('userList', (UserList: User[]) => {
       const votingCardContainer: HTMLDivElement = document.querySelector('.voting-card-container') as HTMLDivElement;
       votingCardContainer.innerHTML = '';

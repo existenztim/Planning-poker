@@ -35,6 +35,8 @@ interface Props {
   vote: string;
 }
 
+
+
 socket.on('flipCards', (data: Props[], average: number) => {
   const cardElements = document.querySelector('.voting-card-container') as HTMLDivElement;
 

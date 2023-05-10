@@ -55,20 +55,27 @@ export const handleAddVote = (user: IUser, vote: string) => {
 export const handleSession = (io: Server) => {
   io.on('connection', function (socket: Socket) {
     console.log('new session socket: ', socket.id);
+    
     socket.on('send sessionList', (list) => {
       //console.log(list);
       //fortsätt här...
 
       io.emit('getTaskList', list);
+      io.emit('userList', UserList)
     });
 
     socket.on('sendUser', (user :IUser) => {
-      //console.log(user);
-      user.status = 'connected';
-      UserList.push(user);
-      //console.log('sendUser', UserList);
+      try {
+        user.status = 'connected';
+        UserList.push(user);
+        //console.log('sendUser', UserList);
 
-      io.emit('userList', UserList);
+        io.emit('userList', UserList);
+      }catch (error){
+        console.log(error, 'error adding user on sendUser');
+        
+      }
+        
     });
     socket.on('localStorageUser', (loggedInUser :IUser) => {
 
@@ -78,25 +85,28 @@ export const handleSession = (io: Server) => {
         loggedInUser.status = 'connected';
         UserList.push(loggedInUser)
         console.log('användaren finns redan');
-        
       }
       
-      //console.log('localstorage', UserList);
-
       io.emit('userList', UserList);
     });
 
     socket.on('disconnectUser', (loggedOutUser) => {
-      const disconnectedUser = UserList.find(user => user.username === loggedOutUser.username)
-      console.log(disconnectedUser, 'disconnect');
+      try {
+        const disconnectedUser = UserList.find(user => user.username === loggedOutUser.username)
+        console.log(disconnectedUser, 'disconnect');
       
-      if (disconnectedUser) {
-        disconnectedUser.status = 'disconnected'
-        console.log();
-        disconnectedUser
+        if (disconnectedUser) {
+          disconnectedUser.status = 'disconnected'
+          console.log();
+          disconnectedUser
+        }
+        //const connectedUsers = UserList.filter(user => user.status === 'connected')
+        io.emit('userList', UserList)
+      } catch (error) {
+        console.log('error disconnecting user', error);
+        
       }
-      //const connectedUsers = UserList.filter(user => user.status === 'connected')
-      io.emit('userList', UserList)
+      
     })
   });
 };
