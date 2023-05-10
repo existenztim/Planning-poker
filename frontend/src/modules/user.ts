@@ -27,6 +27,9 @@ export const checkUser = () => {
 
 function createAndLoginUser() {
   const userAndLoginRoot = document.getElementById('app');
+  const newUserDiv = document.createElement('div');
+  newUserDiv.id = 'newUserDiv';
+  newUserDiv.className = 'newUserDiv';
 
   const newUserSpan = document.createElement('span');
   newUserSpan.id = 'newUserSpan';
@@ -50,9 +53,11 @@ function createAndLoginUser() {
   serverMassage.className = 'serverMassage';
 
   const addNewUserBtn = document.createElement('button');
+  addNewUserBtn.className = 'UserLoginBtns'
   addNewUserBtn.innerHTML = 'Lägg till och logga in';
 
-  userAndLoginRoot?.append(newUserSpan, newUserInput, newUserPassword, addNewUserBtn, serverMassage);
+  newUserDiv?.append(newUserSpan, newUserInput, newUserPassword, addNewUserBtn, serverMassage);
+  userAndLoginRoot?.appendChild(newUserDiv)
 
   addNewUserBtn.addEventListener('click', (event) => {
     serverMassage.innerHTML = '';
@@ -97,6 +102,11 @@ function createAndLoginUser() {
   /*------------------------------------------------------------------
   ------------------------------ Login -------------------------------
   ------------------------------------------------------------------*/
+  
+  const userDiv = document.createElement('div');
+  userDiv.id = 'userDiv';
+  userDiv.className = 'userDiv';
+
   const UserSpan = document.createElement('span');
   UserSpan.id = 'UserSpan';
   UserSpan.className = 'UserSpan';
@@ -115,9 +125,11 @@ function createAndLoginUser() {
   UserPassword.placeholder = 'Lösenord';
 
   const LoginBtn = document.createElement('button');
+  LoginBtn.className = 'UserLoginBtns'
   LoginBtn.innerHTML = 'Logga in';
 
-  userAndLoginRoot?.append(UserSpan, UserInput, UserPassword, LoginBtn);
+  userDiv?.append(UserSpan, UserInput, UserPassword, LoginBtn);
+  userAndLoginRoot?.appendChild(userDiv);
 
   LoginBtn.addEventListener('click', (event) => {
     serverMassage.innerHTML = '';
