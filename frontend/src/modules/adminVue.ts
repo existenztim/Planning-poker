@@ -36,7 +36,7 @@ export default function renderTempAdminPage () {
     const titleField = document.querySelector('#title') as HTMLInputElement;
     const descriptionField = document.querySelector('#description') as HTMLInputElement;
     const pointsField = document.querySelector('#points') as HTMLSelectElement;
-    const createTaskFeedback = document.querySelector('#points') as HTMLParagraphElement;
+    const createTaskFeedback = document.querySelector('#create-task-feedback') as HTMLParagraphElement;
 
     saveButton.addEventListener('click', (event) => {
       event.preventDefault();
@@ -56,7 +56,6 @@ export default function renderTempAdminPage () {
         }).catch(err => {
           createTaskFeedback.innerHTML = "Något gick fel:" + err;
         })
-       
       renderTempAdminPage();
     })
     taskSetup();
@@ -90,8 +89,8 @@ export default function renderTempAdminPage () {
           ${task._id},
           ${task.title},
           ${task.description}">
-  
           <label for="addTask">Add to voting session</label>
+          <button id="delete-${task._id} "data-id="${task._id}">Delete task</button>   
       </div>
       `
     })
@@ -101,6 +100,7 @@ export default function renderTempAdminPage () {
     `
     body?.appendChild(taskContainer);
     initSessionBtnEvent();
+    deleteTaskEvent();
   }
   
   const  initSessionBtnEvent = () => {
@@ -131,7 +131,12 @@ export default function renderTempAdminPage () {
       
     }
   }
-  
+
+  const deleteTaskEvent = () => {
+    const checkboxes = document.querySelectorAll('id^="delete');
+    console.log(checkboxes);
+  }
+
   const socket = io(socketURL);
   const emitSession = (tasks:Task[]) => {
     socket.emit("send sessionList", tasks);
