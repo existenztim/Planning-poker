@@ -20,14 +20,6 @@ export default function renderTempAdminPage () {
     <input type="text" id="title" name="title">
     <label for="description">Beskrivning</label>
     <textarea id="description" name="description"></textarea>
-    <label for = "points">Poäng</label>
-    <select name="points" id="points">
-      <option value=null>Välj</option>
-      <option value=1>Tiny 1SP</option>
-      <option value=3>Small 3SP</option>
-      <option value=5>Medium 5SP</option>
-      <option value=8>Large 8 SP</option>
-    </select>
   <button id="save-task-btn">Spara</button>
     <p id="create-task-feedback"></p>`
   
@@ -35,13 +27,17 @@ export default function renderTempAdminPage () {
     const saveButton = document.querySelector('#save-task-btn') as HTMLButtonElement;
     const titleField = document.querySelector('#title') as HTMLInputElement;
     const descriptionField = document.querySelector('#description') as HTMLInputElement;
-    const pointsField = document.querySelector('#points') as HTMLSelectElement;
+    //const pointsField = document.querySelector('#points') as HTMLSelectElement;
     const createTaskFeedback = document.querySelector('#create-task-feedback') as HTMLParagraphElement;
 
     saveButton.addEventListener('click', (event) => {
       event.preventDefault();
-      const task = {title: titleField.value, description: descriptionField.value, points: pointsField.value}
-      
+      const task = {
+        title: titleField.value, 
+        description: descriptionField.value, 
+        points: null
+      }
+
       fetch('http://localhost:5050/api/tasks/add', {
         method: 'POST',
         headers: {
@@ -51,7 +47,7 @@ export default function renderTempAdminPage () {
       })
         .then(res => res.json())
         .then(data => {
-          createTaskFeedback.innerHTML= `Din uppgift "${data.title}" har sparats!`;
+          alert(`Din uppgift "${data.title}" har sparats!`);
           
         }).catch(err => {
           createTaskFeedback.innerHTML = "Något gick fel:" + err;
@@ -65,7 +61,6 @@ export default function renderTempAdminPage () {
       const response = await fetch(`${socketURL}/api/tasks`);
       const tasks = await response.json();
       const templateTaskList: Task[] = tasks
-      console.log("Fetched list: ",templateTaskList);
       printTasks(templateTaskList);
     } catch (error) {
       console.log(error);
@@ -125,7 +120,6 @@ export default function renderTempAdminPage () {
             sessionVue();
           } 
         });
-        console.log("Session list: ",sessionList);
         emitSession(sessionList);
       })
       
@@ -133,26 +127,26 @@ export default function renderTempAdminPage () {
   }
 
   const deleteTaskEvent = () => {
-    const createTaskFeedback = document.querySelector('#create-task-feedback') as HTMLParagraphElement;
     const deleteBtns = document.querySelectorAll('button[id^="delete"]');
 
     deleteBtns.forEach((button) => {
       const dataId = (button as HTMLButtonElement).dataset.id as string;
 
       button.addEventListener("click", () => {
-        console.log(dataId);
-        fetch(`http://localhost:5050/api/tasks/delete/${dataId}`, {
+
+        fetch(`${socketURL}/api/tasks/delete/`, {
           method: "DELETE",
+          body: JSON.stringify({dataId}),
           headers: {
             "Content-Type": "application/json",
           },
         })
           .then((res) => {
-            createTaskFeedback.innerHTML = `Uppgiften har tagits bort!`;
+            alert(`Uppgiften har tagits bort!`);
             console.log(res);
           })
           .catch((err) => {
-            createTaskFeedback.innerHTML = "Något gick fel:" + err;
+            alert("Något gick fel:" + err);
           });
         renderTempAdminPage();
       })
