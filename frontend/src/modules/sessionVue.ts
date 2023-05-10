@@ -13,6 +13,7 @@ export default function sessionVue() {
   let toggleView = true;
   const userData = JSON.parse(localStorage.getItem("userData") as string); 
 
+  /**Creates basic html-structure */
   const printAppHtml = () => {
     const container: HTMLElement = document.querySelector('#app') as HTMLElement;
     // eslint-disable-next-line no-console
@@ -21,24 +22,17 @@ export default function sessionVue() {
     const votingPageContainer: HTMLDivElement = document.createElement('div');
     votingPageContainer.classList.add('votingpage');
 
-    const todoTaskList: HTMLTableElement = document.createElement('table');
-    todoTaskList.classList.add('todo-list');
-    
+    const todoTaskDiv : HTMLDivElement = document.createElement('div');
+    todoTaskDiv.classList.add('todo-div');
 
+    
+    
     const votingContainer: HTMLDivElement = document.createElement('div');
     votingContainer.classList.add('voting-div');
 
-    const doneTasksDiv :HTMLDivElement = document.createElement('div');
-    const doneTasksList: HTMLTableElement = document.createElement('table');
-    doneTasksList.classList.add('done-tasks');
 
-    const finishVotingBtn : HTMLButtonElement = document.createElement('button');
-    finishVotingBtn.innerText = 'Avsluta sessionen';
-    
-    container.appendChild(votingPageContainer);
-    votingPageContainer.append(todoTaskList, votingContainer, doneTasksDiv);
-
-    doneTasksDiv.append(doneTasksList ,finishVotingBtn);
+    const todoTaskList: HTMLTableElement = document.createElement('table');
+    todoTaskList.classList.add('todo-list');
 
     const displayVoteTask: HTMLDivElement = document.createElement('div');
     displayVoteTask.classList.add('voting-header');
@@ -46,9 +40,25 @@ export default function sessionVue() {
 
     const voteCardsContainer: HTMLDivElement = document.createElement('div');
     voteCardsContainer.classList.add('voting-card-container');
+
+    const doneTasksDiv :HTMLDivElement = document.createElement('div');
+    doneTasksDiv.classList.add('done-div');
+    const doneTasksList: HTMLTableElement = document.createElement('table');
+    doneTasksList.classList.add('done-tasks');
+
+    const finishVotingBtn : HTMLButtonElement = document.createElement('button');
+    finishVotingBtn.innerText = 'Avsluta sessionen';
     
+    container.appendChild(votingPageContainer);
+
+    votingPageContainer.append(todoTaskDiv, votingContainer, doneTasksDiv);
+
+    todoTaskDiv.appendChild(todoTaskList);
+
     votingContainer.append(displayVoteTask, voteCardsContainer);
-    
+
+    doneTasksDiv.append(doneTasksList ,finishVotingBtn);
+
     printHeaderHtml();
 
     finishVotingBtn.addEventListener('click', () => {
@@ -58,7 +68,7 @@ export default function sessionVue() {
   };
 
   /*
-* Admin delite cards when a user LogOut.  
+* Admin delete cards when a user LogOut.  
 */
 
   function adminDeliteLogedoutUser (username:string) {
@@ -146,6 +156,7 @@ export default function sessionVue() {
     })  
 
   }
+
 
   const printHeaderHtml = () => {
     const headerContainer = document.querySelector('#header') as HTMLHeadingElement;

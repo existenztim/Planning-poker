@@ -31,11 +31,13 @@
     
   }
 }
-.todo-list, .done-tasks {
-  margin-left: 0px;
-  margin-right: 25em;
+.todo-div, .done-div {
   background-color: lightgray;
+  width: 30%;
   height: 100vh;
+}
+
+.todo-list, .done-tasks {
   padding: 1rem;
 
   tr {
@@ -52,11 +54,6 @@
       font-weight: bold;
     }
   }
-}
-
-.done-tasks {
-  margin-right: 0px;
-  margin-left: 25em;
 }
 
 .voting {
