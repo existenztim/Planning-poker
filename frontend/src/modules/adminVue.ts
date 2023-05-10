@@ -66,7 +66,7 @@ export default function renderTempAdminPage () {
       const response = await fetch(`${socketURL}/api/tasks`);
       const tasks = await response.json();
       const templateTaskList: Task[] = tasks
-      console.log("Fetched list: ",templateTaskList);
+      //console.log("Fetched list: ",templateTaskList);
       printTasks(templateTaskList);
     } catch (error) {
       console.log(error);

@@ -5,6 +5,7 @@ import type { Task } from '../models/taskModel.ts';
 import type { User } from '../models/userModel.ts';
 import { getUser } from '../utils/getUser.ts';
 import { adminDeliteLogedoutUser } from './adminVue.ts';
+import { checkUser } from './user.ts';
 let toggleView = true;
 const socketURL ="http://localhost:5050";
 
@@ -19,33 +20,45 @@ export default function sessionVue() {
 
     const votingPageContainer: HTMLDivElement = document.createElement('div');
     votingPageContainer.classList.add('votingpage');
+
     const todoTaskList: HTMLTableElement = document.createElement('table');
     todoTaskList.classList.add('todo-list');
-    todoTaskList.innerText = 'röstningslista';
+    
+
     const votingContainer: HTMLDivElement = document.createElement('div');
     votingContainer.classList.add('voting-div');
+
+    const doneTasksDiv :HTMLDivElement = document.createElement('div');
     const doneTasksList: HTMLTableElement = document.createElement('table');
     doneTasksList.classList.add('done-tasks');
-    doneTasksList.innerText = 'alla färdiga röstningar';
 
-    //console.log(todoTaskList, votingContainer, doneTasksList);
+    const finishVotingBtn : HTMLButtonElement = document.createElement('button');
+    finishVotingBtn.innerText = 'Avsluta sessionen';
+    
     container.appendChild(votingPageContainer);
-    votingPageContainer.append(todoTaskList, votingContainer, doneTasksList);
+    votingPageContainer.append(todoTaskList, votingContainer, doneTasksDiv);
+
+    doneTasksDiv.append(doneTasksList ,finishVotingBtn);
 
     const displayVoteTask: HTMLDivElement = document.createElement('div');
     displayVoteTask.classList.add('voting-header');
-    displayVoteTask.innerText = 'vad vi ska rösta på';
+    
 
     const voteCardsContainer: HTMLDivElement = document.createElement('div');
     voteCardsContainer.classList.add('voting-card-container');
-    voteCardsContainer.innerText = 'våra röstkost';
-
+    
     votingContainer.append(displayVoteTask, voteCardsContainer);
+    
     printHeaderHtml();
+
+    finishVotingBtn.addEventListener('click', () => {
+      console.log('klickade på avsluta omröstning');
+      socket.emit('finishVoting');
+    })
   };
 
   /*
-* Admin delite cards when a user LogOut. 
+* Admin delite cards when a user LogOut.  
 */
 
   function adminDeliteLogedoutUser (username:string) {
@@ -59,7 +72,7 @@ export default function sessionVue() {
       const votingCardContainer: HTMLDivElement = document.querySelector('.voting-card-container') as HTMLDivElement;
       votingCardContainer.innerHTML = '';
 
-      console.log('Receiving update on users in session from server', UserList);
+      //console.log('Receiving update on users in session from server', UserList);
       
       const loggedInUser = getUser();
       let userHasCard = false;
@@ -160,7 +173,7 @@ export default function sessionVue() {
     adminBtn?.addEventListener('click', () => {
       if (toggleView) {
         toggleView = false; 
-        console.log(toggleView);
+        //console.log(toggleView);
         renderTempAdminPage();
 
       } else {
@@ -184,10 +197,10 @@ export default function sessionVue() {
     socket.on('getTaskList', (list: Task[]) => {
       const table: HTMLTableElement = document.querySelector('.todo-list') as HTMLTableElement;
       table.innerHTML ="röstningslista";
-      console.log(list);
+      //console.log(list);
       let count = 0;
       list.map((item) => {
-        console.log(item.title);
+        //console.log(item.title);
         const tr = document.createElement('tr');
         tr.id = `tr-${count}`;
         count++;
@@ -240,12 +253,9 @@ export default function sessionVue() {
     })
   }
 
-  // const previousVoteTask = () => {
-
-  // }
-
   printAppHtml();
   renderCards();
   getTasks();
   currentVoteTask();
+
 }
