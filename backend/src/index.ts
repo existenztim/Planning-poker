@@ -9,14 +9,13 @@ import voteRouter from './routes/vote.route';
 
 import userRoute from './routes/user.route';
 import tasksRouter from './routes/tasks.route';
-import resultRouter from './routes/results.route';
 import { handleSession } from './selectTaskSocket';
 
 dotenv.config();
 
 const PORT = process.env.PORT || 5000;
 
-const app = express();
+export const app = express();
 const server = http.createServer(app);
 
 // async function init (){
@@ -33,7 +32,7 @@ app.use('/api/users', userRoute);
 app.use('/api/tasks', tasksRouter);
 
 app.use('/api/vote', voteRouter);
-app.use('/api/results', resultRouter)
+
 
 export const io = new Server(server, {
   cors: {

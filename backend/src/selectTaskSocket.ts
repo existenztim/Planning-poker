@@ -5,12 +5,17 @@ import { io } from './index';
 import type IUser from './models/userListModel';
 import type { newTask } from './models/TasksInterface';
 import Result from './models/ResultModel';
-import resultRouter from './routes/results.route';
 
-const app = express();
+import { Router } from 'express';
+//import Result from '../models/ResultModel';
 
-app.use('/api/result', resultRouter)
+const resultRouter = Router();
 
+resultRouter.get('/',async (req, res) => {
+  const results = await Result.find({})
+  res.send(results)
+      
+})
 
 interface Props {
   user: IUser;
