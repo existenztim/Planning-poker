@@ -13,7 +13,7 @@ const taskSchema = new Schema(
     points: {
       type: Number,
       default: null,
-      optional: true
+      required: false
     },
   }
 );

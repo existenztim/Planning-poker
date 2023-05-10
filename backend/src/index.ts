@@ -15,7 +15,7 @@ dotenv.config();
 
 const PORT = process.env.PORT || 5000;
 
-const app = express();
+export const app = express();
 const server = http.createServer(app);
 
 // async function init (){
@@ -32,6 +32,7 @@ app.use('/api/users', userRoute);
 app.use('/api/tasks', tasksRouter);
 
 app.use('/api/vote', voteRouter);
+
 
 export const io = new Server(server, {
   cors: {
