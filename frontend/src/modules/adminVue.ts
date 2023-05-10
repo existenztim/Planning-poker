@@ -28,14 +28,16 @@ export default function renderTempAdminPage () {
       <option value=5>Medium 5SP</option>
       <option value=8>Large 8 SP</option>
     </select>
-  <button id="save-task-btn">Spara</button>`
+  <button id="save-task-btn">Spara</button>
+    <p id="create-task-feedback"></p>`
   
     container.append(taskForm);
     const saveButton = document.querySelector('#save-task-btn') as HTMLButtonElement;
     const titleField = document.querySelector('#title') as HTMLInputElement;
     const descriptionField = document.querySelector('#description') as HTMLInputElement;
     const pointsField = document.querySelector('#points') as HTMLSelectElement;
-  
+    const createTaskFeedback = document.querySelector('#points') as HTMLParagraphElement;
+
     saveButton.addEventListener('click', (event) => {
       event.preventDefault();
       const task = {title: titleField.value, description: descriptionField.value, points: pointsField.value}
@@ -49,11 +51,13 @@ export default function renderTempAdminPage () {
       })
         .then(res => res.json())
         .then(data => {
-          console.log(data);
+          createTaskFeedback.innerHTML= `Din uppgift "${data.title}" har sparats!`;
           
+        }).catch(err => {
+          createTaskFeedback.innerHTML = "Något gick fel:" + err;
         })
-      //showTasks();
-      taskSetup();
+       
+      renderTempAdminPage();
     })
     taskSetup();
   }
@@ -73,7 +77,7 @@ export default function renderTempAdminPage () {
     const body = document.querySelector<HTMLDivElement>('#app');
     const taskContainer = document.createElement("div");
     taskContainer.classList.add("select-task-container");
-  
+
     list.map(task => {
       taskContainer.innerHTML += /*html */`
       <div id="task:${task._id}" class="task-item">
