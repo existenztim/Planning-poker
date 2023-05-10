@@ -2,12 +2,15 @@
 import type { Socket, Server } from 'socket.io';
 import { io } from './index';
 import type IUser from './models/userListModel';
+import type { newTask } from './models/TasksInterface';
+
 
 interface Props {
   user: IUser;
   vote: string;
 }
 
+export const finishedList: newTask[] = [];
 export const UserList: IUser[] = [];
 export const VoteList: Props[] = [];
 
@@ -60,8 +63,15 @@ export const handleSession = (io: Server) => {
       //fortsätt här...
 
       io.emit('getTaskList', list);
+      io.emit('userList', UserList)
     });
 
+    socket.on('send finishedList', (listItem) => {
+      finishedList.push(listItem);
+      console.log(finishedList);
+      io.emit('finished List', finishedList);
+    });
+    
     socket.on('sendUser', (user :IUser) => {
       //console.log(user);
       user.status = 'connected';

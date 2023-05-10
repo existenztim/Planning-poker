@@ -143,9 +143,8 @@ export default function renderTempAdminPage () {
   /**
    *Emits sessionList to backend using socket.io
    */
-  
+  const socket = io(socketURL);
   const emitSession = (tasks:Task[]) => {
-    const socket = io(socketURL);
     socket.emit("send sessionList", tasks);
     alert("Tasks have been sent for a planning poker session!");
     //displayVotingTasks(); <--- behöver kalla på en funktion här

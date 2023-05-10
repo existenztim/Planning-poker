@@ -4,9 +4,13 @@ import renderTempAdminPage from './adminVue.ts';
 import type { Task } from '../models/taskModel.ts';
 import type { User } from '../models/userModel.ts';
 import { getUser } from '../utils/getUser.ts';
-let toggleView = true;
+const socketURL ="http://localhost:5050";
+
 
 export default function sessionVue() {
+  let toggleView = true;
+  const userData = JSON.parse(localStorage.getItem("userData") as string); 
+
   const printAppHtml = () => {
     const container: HTMLElement = document.querySelector('#app') as HTMLElement;
     // eslint-disable-next-line no-console
@@ -109,14 +113,12 @@ export default function sessionVue() {
   }
 
   const printHeaderHtml = () => {
-    const admin = true; // Tillfällig lösning
     const headerContainer = document.querySelector('#header') as HTMLHeadingElement;
     const headerTag = /*html*/ `<h1>Planning Poker</h1>`;
     let adminButton = '';
-    const userData = JSON.parse(localStorage.getItem("userData") as string);
 
     if(userData.admin == false) { //ta bort false senare 
-      adminButton = `<button id='adminMode'>Admin Läge</button>`;
+      adminButton = /*html*/`<button id='adminMode'>Admin Läge</button>`;
     }
 
     headerContainer.innerHTML = /*html */ `
@@ -126,7 +128,7 @@ export default function sessionVue() {
         <button id='logOut'>Logga ut</button>
       </div>
     `
-    console.log(localStorage.getItem("userData"));
+
     adminBtnEvent();
     logoutBtnEvent();
   }
@@ -157,9 +159,9 @@ export default function sessionVue() {
   }
 
   const getTasks = () => {
-    const table: HTMLTableElement = document.querySelector('.todo-list') as HTMLTableElement;
-
     socket.on('getTaskList', (list: Task[]) => {
+      const table: HTMLTableElement = document.querySelector('.todo-list') as HTMLTableElement;
+      table.innerHTML ="röstningslista";
       console.log(list);
       let count = 0;
       list.map((item) => {
@@ -176,13 +178,52 @@ export default function sessionVue() {
         table.append(tr);
         tr.append(titleTd, descriptionTd);
 
-        tr.addEventListener('click', (e) => {
-          //console.log(e.currentTarget);
-        });
+        // tr.addEventListener('click', (e) => {
+        //   //console.log(e.currentTarget);
+        // });
       });
     });
   };
+
+  const currentVoteTask = () => {
+    const displayCurrentTask = document.querySelector('.voting-header') as HTMLDivElement;
+    let nextButton = '';
+    
+    if(userData.admin == false) { //ta bort false senare 
+      nextButton = /*html*/`<button id='nextTask'>Nästa uppgift</button>`;
+    }
+
+    socket.on('getTaskList', (list:Task[]) => {
+      if (list.length >= 1){
+        displayCurrentTask.innerHTML = /*html*/
+      `<h3>${list[0].title}</h3>
+       <p>${list[0].description}</p>
+       ${nextButton}
+      `;
+        const nextTaskBtn = document.getElementById('nextTask');
+        nextTaskBtn?.addEventListener('click', () => {
+          if(window.confirm("Är du säker på att du vill gå vidare till nästa task?")){
+            const finishedTask = list.shift();
+            finishedTask;
+            //finishedTaskList.push(finishedTask);
+            socket.emit('send sessionList', list);
+            socket.emit('send finishedList', finishedTask);
+            //previousVoteTask();
+            sessionVue();
+          }     
+        })
+      } else {
+        displayCurrentTask.innerHTML ="Sessionen är avslutad!";
+      }
+    })
+  }
+
+  // const previousVoteTask = () => {
+
+  // }
+
   printAppHtml();
   renderCards();
   getTasks();
+  currentVoteTask();
 }

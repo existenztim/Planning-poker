@@ -20,4 +20,3 @@ Diskussion övringt:
 
 
 ![image](https://user-images.githubusercontent.com/113335422/237021682-759fbc1e-5da8-4972-96d2-a3f90e3b8799.png)
- 
