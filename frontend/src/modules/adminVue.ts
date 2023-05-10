@@ -1,6 +1,8 @@
 import { io } from "https://cdn.socket.io/4.3.2/socket.io.esm.min.js";
 import type { Task } from "../models/taskModel"
 import sessionVue from "./sessionVue";
+//import {renderCards} from '../modules/sessionVue'
+
 const socketURL ="http://localhost:5050";
 
 export default function renderTempAdminPage () {
@@ -64,7 +66,7 @@ export default function renderTempAdminPage () {
       const response = await fetch(`${socketURL}/api/tasks`);
       const tasks = await response.json();
       const templateTaskList: Task[] = tasks
-      console.log("Fetched list: ",templateTaskList);
+      //console.log("Fetched list: ",templateTaskList);
       printTasks(templateTaskList);
     } catch (error) {
       console.log(error);
@@ -130,11 +132,13 @@ export default function renderTempAdminPage () {
               points: null
             }
             sessionList.push(task);
-            sessionVue();
+            
           } 
         });
         console.log("Session list: ",sessionList);
         emitSession(sessionList);
+        
+        sessionVue();
       })
       
     }
@@ -146,8 +150,10 @@ export default function renderTempAdminPage () {
   const socket = io(socketURL);
   const emitSession = (tasks:Task[]) => {
     socket.emit("send sessionList", tasks);
+    
     alert("Tasks have been sent for a planning poker session!");
     //displayVotingTasks(); <--- behöver kalla på en funktion här
   }
   createTasks();
+  
 }

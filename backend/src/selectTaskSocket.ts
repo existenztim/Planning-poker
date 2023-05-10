@@ -1,9 +1,21 @@
 /* eslint-disable no-console */
+import express from 'express';
 import type { Socket, Server } from 'socket.io';
 import { io } from './index';
 import type IUser from './models/userListModel';
 import type { newTask } from './models/TasksInterface';
+import Result from './models/ResultModel';
 
+import { Router } from 'express';
+//import Result from '../models/ResultModel';
+
+const resultRouter = Router();
+
+resultRouter.get('/',async (req, res) => {
+  const results = await Result.find({})
+  res.send(results)
+      
+})
 
 interface Props {
   user: IUser;
@@ -58,71 +70,116 @@ export const handleAddVote = (user: IUser, vote: string) => {
 export const handleSession = (io: Server) => {
   io.on('connection', function (socket: Socket) {
     console.log('new session socket: ', socket.id);
+    
     socket.on('send sessionList', (list) => {
       //console.log(list);
       //fortsätt här...
-
-      io.emit('getTaskList', list);
-      io.emit('userList', UserList)
+      try {
+        io.emit('getTaskList', list);
+        io.emit('userList', UserList)
+      } catch (error) {
+        console.log('error in send SessionList', error);
+        
+      }
+      
     });
 
-    socket.on('send finishedList', (listItem) => {
-      finishedList.push(listItem);
-      console.log(finishedList);
-      io.emit('finished List', finishedList);
-    });
-    
     socket.on('sendUser', (user :IUser) => {
-      //console.log(user);
-      user.status = 'connected';
-      const connectedUser = UserList.find((item) => item.username === user.username);
-      if (connectedUser) {
-        console.log('User is in session, reconnecting');
+      try {
+        user.status = 'connected';
+        const connectedUser = UserList.find((item) => item.username === user.username);
+        if (connectedUser) {
+          console.log('User is in session, reconnecting');
 
-        connectedUser.status = 'connected';
-        io.emit('userList', UserList);
-      } else {
-        console.log('User does not exist in server, adding!');
-        UserList.push(user);
-        io.emit('userList', UserList);
-      }
+          connectedUser.status = 'connected';
+          io.emit('userList', UserList);
+        } else {
+          console.log('User does not exist in server, adding!');
+          UserList.push(user);
+          io.emit('userList', UserList);
+        }
       //console.log('sendUser', UserList);
+      }catch (error) {
+        console.log('error in sendUser', error);
+        
+      }
+      
     });
-    socket.on('removeUser', (username: string) => {
-      //console.log(user);
-      const user = UserList.find(user => user.username === username) 
-      if (user != undefined) {
-        user.status = 'removed';
-      }
-      //console.log('sendUser', UserList);
 
-      io.emit('userList', UserList);
-    });
     socket.on('localStorageUser', (loggedInUser: IUser) => {
-      const user = UserList.find((user) => user.username === loggedInUser.username);
+      try   {
+        const user = UserList.find((user) => user.username === loggedInUser.username);
 
-      if (!user) {
-        loggedInUser.status = 'connected';
-        UserList.push(loggedInUser);
-        console.log('användaren finns redan');
+        if (!user) {
+          loggedInUser.status = 'connected';
+          UserList.push(loggedInUser);
+          console.log('användaren finns redan');
+        }
+        io.emit('userList', UserList);
+
+      }catch (error) {
+        console.log('error in localStorageUser', error);  
       }
+    });
 
-      //console.log('localstorage', UserList);
-
-      io.emit('userList', UserList);
+    socket.on('removeUser', (username: string) => {
+      try {
+        const user = UserList.find(user => user.username === username) 
+        if (user != undefined) {
+          user.status = 'removed';
+        }
+        //console.log('sendUser', UserList)
+        io.emit('userList', UserList);
+        //console.log(error, 'error adding user on sendUser');
+      
+      } catch (error) {
+        console.log('error i removeUser', error);
+        
+      }
+      
     });
 
     socket.on('disconnectUser', (loggedOutUser) => {
-      const disconnectedUser = UserList.find((user) => user.username === loggedOutUser.username);
-      console.log(disconnectedUser, 'disconnect');
+      try {
+        const disconnectedUser = UserList.find((user) => user.username === loggedOutUser.username);
+        console.log(disconnectedUser, 'disconnect');
 
-      if (disconnectedUser) {
-        disconnectedUser.status = 'disconnected';
-        console.log();
-        disconnectedUser;
+        if (disconnectedUser) {
+          disconnectedUser.status = 'disconnected';
+          console.log();
+          disconnectedUser;
+        }
+        //const connectedUsers = UserList.filter(user => user.status === 'connected')
+        io.emit('userList', UserList);
+      } catch (error) {
+        console.log('error disconnecting user', error);
       }
-      //const connectedUsers = UserList.filter(user => user.status === 'connected')
-      io.emit('userList', UserList);
     });
+
+    socket.on('send finishedList', (listItem) => {
+      try {
+        finishedList.push(listItem);
+        console.log('finished list', finishedList);
+        io.emit('finished List', finishedList);
+        
+      }catch (error) {
+        console.log('error in send FinishedList', error);
+      }
+    });
+    
+    socket.on('finishVoting', async () => {
+      try {
+        const result = new Result({ sprint: finishedList });
+        const savedResult = await result.save();
+        console.log('Resultat sparad i databasen:', savedResult);
+        finishedList.splice(0, finishedList.length);
+        io.emit('restartVoting', UserList);
+        //console.log('Alla resultat sparade i databasen');
+
+      } catch (error) {
+        console.log('error in finishVoting', error);
+      }
+    });
+    
   });
 };
