@@ -149,6 +149,5 @@ export default function renderTempAdminPage () {
     alert("Tasks have been sent for a planning poker session!");
     //displayVotingTasks(); <--- behöver kalla på en funktion här
   }
-  
   createTasks();
 }

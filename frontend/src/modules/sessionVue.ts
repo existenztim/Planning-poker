@@ -4,8 +4,9 @@ import renderTempAdminPage from './adminVue.ts';
 import type { Task } from '../models/taskModel.ts';
 import type { User } from '../models/userModel.ts';
 import { getUser } from '../utils/getUser.ts';
+import { adminDeliteLogedoutUser } from './adminVue.ts';
+let toggleView = true;
 const socketURL ="http://localhost:5050";
-
 
 export default function sessionVue() {
   let toggleView = true;
@@ -43,6 +44,14 @@ export default function sessionVue() {
     printHeaderHtml();
   };
 
+  /*
+* Admin delite cards when a user LogOut. 
+*/
+
+  function adminDeliteLogedoutUser (username:string) {
+    socket.emit('removeUser', username);
+  }
+
   const renderCards = () => {
 
     socket.on('userList', (UserList: User[]) => {
@@ -55,6 +64,10 @@ export default function sessionVue() {
       let userHasCard = false;
 
       UserList.map((user) => {
+
+        if (user.status == 'removed') {
+          return
+        }
 
         if(user._id === loggedInUser._id){
           if(!userHasCard){
@@ -103,13 +116,21 @@ export default function sessionVue() {
 
           if (user.status === 'disconnected') {
             votingCard.innerHTML = `<p>${user.username} har lämnat omröstningen</p>`
+            const userData = JSON.parse(localStorage.getItem('userData') || '');
+            if (userData!=null && userData.admin) {
+              const deleteUserCardBtn: HTMLButtonElement = document.createElement('button');
+              votingCard.appendChild(deleteUserCardBtn);
+              deleteUserCardBtn.innerText = 'Ta bort användare'
+              deleteUserCardBtn.addEventListener('click', () => {
+                adminDeliteLogedoutUser(user.username)
+              });
+            }
           }
         }
-      
       });
-      
+
     })  
-    
+
   }
 
   const printHeaderHtml = () => {
