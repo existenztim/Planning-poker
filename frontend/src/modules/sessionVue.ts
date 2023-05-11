@@ -211,7 +211,7 @@ export default function sessionVue() {
   const getTasks = () => {
     socket.on('getTaskList', (list: Task[]) => {
       const table: HTMLTableElement = document.querySelector('.todo-list') as HTMLTableElement;
-      table.innerHTML ="Röstningslista";
+  
       //console.log(list);
       let count = 0;
       list.map((item) => {
