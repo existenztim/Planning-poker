@@ -1,9 +1,12 @@
+@use 'variables' as var;
+
 .newUserDiv, .userDiv {
     display: flex;
     flex-direction: column;
     justify-content: center;
     margin: 50px;
-    font-size: 1.8rem;
+    color: var.$dark-lavender;
+    font: var.$text-font;
 }
 
 .newUserSpan, .UserSpan{
@@ -15,9 +18,11 @@
 .UserInput, .newUserInput, .newUserPassword, .UserPassword{
     display: flex;
     justify-content: center;
-    font-size: 1.4rem;
+    color: var.$dark-blue;
+    background-color: var.$light-green;
+    font: var.$text-font;
     margin: 0px 500px 15px 500px;
-    border-radius: 10px;
+    border-radius: 0.4em;
     padding: 10px;
     text-align: center;
 }
@@ -25,9 +30,11 @@
 .UserLoginBtns{
     display: flex;
     justify-content: center;
-    font-size: 1.4rem;
+    font: var.$text-font;
+    color: var.$dark-blue;
+    background-color: var.$dark-green;
     margin: 0px 500px 15px 950px;
-    width: 350px;
-    border-radius: 10px;
-    padding: 10px;
+    width: 9em;
+    border-radius: 0.35em;
+    padding: 0.5em;
 }
