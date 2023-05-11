@@ -24,6 +24,7 @@ export default function sessionVue() {
 
     const todoTaskDiv : HTMLDivElement = document.createElement('div');
     todoTaskDiv.classList.add('todo-div');
+    todoTaskDiv.innerText = 'Kommande röstningar';
     
     const votingContainer: HTMLDivElement = document.createElement('div');
     votingContainer.classList.add('voting-div');
@@ -34,6 +35,7 @@ export default function sessionVue() {
 
     const displayVoteTask: HTMLDivElement = document.createElement('div');
     displayVoteTask.classList.add('voting-header');
+    displayVoteTask.innerText = 'Väntar på omröstning...'
     
 
     const voteCardsContainer: HTMLDivElement = document.createElement('div');
@@ -41,6 +43,8 @@ export default function sessionVue() {
 
     const doneTasksDiv :HTMLDivElement = document.createElement('div');
     doneTasksDiv.classList.add('done-div');
+    doneTasksDiv.innerText = 'Avslutade omröstningar';
+
     const doneTasksList: HTMLTableElement = document.createElement('table');
     doneTasksList.classList.add('done-tasks');
 
@@ -97,7 +101,7 @@ export default function sessionVue() {
             selectContainer.classList.add('voting-card-div');
             const selectHTML = /*html */
            `
-           <p>${loggedInUser.username} funderar</p>
+           <p>Rösta:</p>
       <select name="points" id="points">
         <option value=null>Välj</option>
         <option value=1>Tiny 1SP</option>
@@ -132,21 +136,21 @@ export default function sessionVue() {
         } else {
           const votingCard: HTMLDivElement = document.createElement('div');
           votingCard.classList.add('voting-card-div');
-          votingCard.innerText = 'Röstkort';
           votingCard.innerHTML = /*html */ `<p>${user.username} funderar</p>`;
           votingCardContainer.appendChild(votingCard);
 
           if (user.status === 'disconnected') {
             votingCard.innerHTML = `<p>${user.username} har lämnat omröstningen</p>`
             const userData = JSON.parse(localStorage.getItem('userData') || '');
-            if (userData!=null && userData.admin) {
+            adminDeliteLogedoutUser(user.username);     // User som loggas ut tas bort när de diskonnectar. 
+          /*  if (userData!=null && userData.admin) {
               const deleteUserCardBtn: HTMLButtonElement = document.createElement('button');
               votingCard.appendChild(deleteUserCardBtn);
               deleteUserCardBtn.innerText = 'Ta bort användare'
               deleteUserCardBtn.addEventListener('click', () => {
                 adminDeliteLogedoutUser(user.username)
               });
-            }
+            }*/ // Om användaren ska ta bort users som är disconnectade själv. 
           }
         }
       });
@@ -162,7 +166,7 @@ export default function sessionVue() {
     `<h1>Planning Poker</h1>
     <p>Inloggad som : ${userData.username}</p>`;
     let adminButton = '';
-
+    
     if(userData.admin) { 
       adminButton = /*html*/`<button id='adminMode'>Admin Läge</button>`;
     }
@@ -207,7 +211,7 @@ export default function sessionVue() {
   const getTasks = () => {
     socket.on('getTaskList', (list: Task[]) => {
       const table: HTMLTableElement = document.querySelector('.todo-list') as HTMLTableElement;
-      table.innerHTML ="röstningslista";
+  
       //console.log(list);
       let count = 0;
       list.map((item) => {
@@ -244,7 +248,7 @@ export default function sessionVue() {
       `;
         const nextTaskBtn = document.getElementById('nextTask');
         nextTaskBtn?.addEventListener('click', () => {
-          if(window.confirm("Är du säker på att du vill gå vidare till nästa task?")){
+          if(window.confirm("Är du säker på att du vill gå vidare till nästa omröstning?")){
             const finishedTask = list.shift();
             finishedTask;
             //finishedTaskList.push(finishedTask);

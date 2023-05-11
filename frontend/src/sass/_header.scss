@@ -1,13 +1,32 @@
+@use 'variables' as var;
+
 #header {
     display: flex;
-    background-color: gray;
     justify-content: space-between;
     gap: 3px;
-    padding: 0 1rem;
+    padding: 0 4rem;
+    margin-bottom: 5em;
+
+    h1 {
+        font: var.$header-font;
+        color: var.$dark-lavender;
+        font-weight: 700;
+    }
 
     .button-container {
         display: flex;
         align-items: center;
         justify-content: center;
+        border-radius: 0.4em;
+    
+        button {
+            font: var.$text-font;
+            color: var.$dark-blue;
+            background-color: var.$dark-green;
+            margin-right: 1em;
+            border-radius: 0.35em;
+        }
     }
+
 }
+
