@@ -24,8 +24,6 @@ export default function sessionVue() {
 
     const todoTaskDiv : HTMLDivElement = document.createElement('div');
     todoTaskDiv.classList.add('todo-div');
-
-    
     
     const votingContainer: HTMLDivElement = document.createElement('div');
     votingContainer.classList.add('voting-div');
@@ -105,7 +103,7 @@ export default function sessionVue() {
         <option value=1>Tiny 1SP</option>
         <option value=3>Small 3SP</option>
         <option value=5>Medium 5SP</option>
-        <option value=8>Large 8 SP</option>
+        <option value=8>Large 8SP</option>
       </select>
       <button id="submitVote">Rösta</button>
     `;
@@ -161,10 +159,12 @@ export default function sessionVue() {
 
   const printHeaderHtml = () => {
     const headerContainer = document.querySelector('#header') as HTMLHeadingElement;
-    const headerTag = /*html*/ `<h1>Planning Poker</h1>`;
+    const headerTag = /*html*/ 
+    `<h1>Planning Poker</h1>
+    <p>Inloggad som : ${userData.username}</p>`;
     let adminButton = '';
 
-    if(userData.admin == false) { //ta bort false senare 
+    if(userData.admin) { 
       adminButton = /*html*/`<button id='adminMode'>Admin Läge</button>`;
     }
 
@@ -232,7 +232,7 @@ export default function sessionVue() {
     const displayCurrentTask = document.querySelector('.voting-header') as HTMLDivElement;
     let nextButton = '';
     
-    if(userData.admin == false) { //ta bort false senare 
+    if(userData.admin) { 
       nextButton = /*html*/`<button id='nextTask'>Nästa uppgift</button>`;
     }
 
@@ -251,7 +251,6 @@ export default function sessionVue() {
             //finishedTaskList.push(finishedTask);
             socket.emit('send sessionList', list);
             socket.emit('send finishedList', finishedTask);
-            //previousVoteTask();
             sessionVue();
           }     
         })

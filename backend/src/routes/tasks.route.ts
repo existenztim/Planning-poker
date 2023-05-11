@@ -24,5 +24,17 @@ tasksRouter.post('/add', async (req, res) => {
         
   }
 });
+tasksRouter.delete('/delete/', async (req, res) => {
+  try {
+    const deleteTask = await Task.findByIdAndDelete({ _id: req.body.dataId });
+    if(deleteTask)
+    {res.send(`Task ${req.body.dataId} deleted`);}
+    else
+    {res.send(`Task not found`);}
+  }  
+  catch(error) {
+    console.log(error);
+  }
+});
 
 export default tasksRouter;
