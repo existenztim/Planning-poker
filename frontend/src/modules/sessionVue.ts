@@ -183,11 +183,12 @@ export default function sessionVue() {
     adminBtn?.addEventListener('click', () => {
       if (toggleView) {
         toggleView = false; 
-        //console.log(toggleView);
+        adminBtn.innerText ="Sessions Läge";
         renderTempAdminPage();
 
       } else {
         toggleView = true; 
+        adminBtn.innerText ="Admin Läge";
         sessionVue();
       }
     })
