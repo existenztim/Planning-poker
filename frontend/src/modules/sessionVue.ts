@@ -24,6 +24,7 @@ export default function sessionVue() {
 
     const todoTaskDiv : HTMLDivElement = document.createElement('div');
     todoTaskDiv.classList.add('todo-div');
+    todoTaskDiv.innerText = 'Kommande röstningar';
 
     
     
@@ -36,6 +37,7 @@ export default function sessionVue() {
 
     const displayVoteTask: HTMLDivElement = document.createElement('div');
     displayVoteTask.classList.add('voting-header');
+    displayVoteTask.innerText = 'Väntar på omröstning...'
     
 
     const voteCardsContainer: HTMLDivElement = document.createElement('div');
@@ -43,6 +45,8 @@ export default function sessionVue() {
 
     const doneTasksDiv :HTMLDivElement = document.createElement('div');
     doneTasksDiv.classList.add('done-div');
+    doneTasksDiv.innerText = 'Avslutade omröstningar';
+
     const doneTasksList: HTMLTableElement = document.createElement('table');
     doneTasksList.classList.add('done-tasks');
 
@@ -99,7 +103,7 @@ export default function sessionVue() {
             selectContainer.classList.add('voting-card-div');
             const selectHTML = /*html */
            `
-           <p>${loggedInUser.username} funderar</p>
+           <p>Rösta:</p>
       <select name="points" id="points">
         <option value=null>Välj</option>
         <option value=1>Tiny 1SP</option>
@@ -134,7 +138,6 @@ export default function sessionVue() {
         } else {
           const votingCard: HTMLDivElement = document.createElement('div');
           votingCard.classList.add('voting-card-div');
-          votingCard.innerText = 'Röstkort';
           votingCard.innerHTML = /*html */ `<p>${user.username} funderar</p>`;
           votingCardContainer.appendChild(votingCard);
 
@@ -165,7 +168,7 @@ export default function sessionVue() {
     let adminButton = '';
 
     if(userData.admin == false) { //ta bort false senare 
-      adminButton = /*html*/`<button id='adminMode'>Admin Läge</button>`;
+      adminButton = /*html*/`<button id='adminMode'>Admin-läge</button>`;
     }
 
     headerContainer.innerHTML = /*html */ `
@@ -208,7 +211,7 @@ export default function sessionVue() {
   const getTasks = () => {
     socket.on('getTaskList', (list: Task[]) => {
       const table: HTMLTableElement = document.querySelector('.todo-list') as HTMLTableElement;
-      table.innerHTML ="röstningslista";
+      table.innerHTML ="Röstningslista";
       //console.log(list);
       let count = 0;
       list.map((item) => {
@@ -249,7 +252,7 @@ export default function sessionVue() {
       `;
         const nextTaskBtn = document.getElementById('nextTask');
         nextTaskBtn?.addEventListener('click', () => {
-          if(window.confirm("Är du säker på att du vill gå vidare till nästa task?")){
+          if(window.confirm("Är du säker på att du vill gå vidare till nästa omröstning?")){
             const finishedTask = list.shift();
             finishedTask;
             //finishedTaskList.push(finishedTask);
