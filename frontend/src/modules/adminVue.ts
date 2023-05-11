@@ -31,7 +31,6 @@ export default function renderTempAdminPage () {
     const descriptionField = document.querySelector('#description') as HTMLInputElement;
     //const pointsField = document.querySelector('#points') as HTMLSelectElement;
     const createTaskFeedback = document.querySelector('#create-task-feedback') as HTMLParagraphElement;
-
     saveButton.addEventListener('click', (event) => {
       event.preventDefault();
       const task = {
@@ -39,7 +38,6 @@ export default function renderTempAdminPage () {
         description: descriptionField.value, 
         points: null
       }
-
       fetch('http://localhost:5050/api/tasks/add', {
         method: 'POST',
         headers: {
@@ -73,7 +71,6 @@ export default function renderTempAdminPage () {
     const body = document.querySelector<HTMLDivElement>('#app');
     const taskContainer = document.createElement("div");
     taskContainer.classList.add("select-task-container");
-
     list.map(task => {
       taskContainer.innerHTML += /*html */`
       <div id="task:${task._id}" class="task-item">
@@ -86,14 +83,14 @@ export default function renderTempAdminPage () {
           ${task._id},
           ${task.title},
           ${task.description}">
-          <label for="addTask">Add to voting session</label>
-          <button id="delete-${task._id} "data-id="${task._id}">Delete task</button>   
+          <label for="addTask">Lägg till i omröstning</label>
+          <button id="delete-${task._id} "data-id="${task._id}">Ta bort uppgift</button>   
       </div>
       `
     })
   
     taskContainer.innerHTML += /*html*/`
-    <button id="initSessionBtn">Start session</button>
+    <button id="initSessionBtn">Starta session</button>
     `
     body?.appendChild(taskContainer);
     initSessionBtnEvent();
@@ -158,9 +155,8 @@ export default function renderTempAdminPage () {
   const socket = io(socketURL);
   const emitSession = (tasks:Task[]) => {
     socket.emit("send sessionList", tasks);
-    
-    alert("Tasks have been sent for a planning poker session!");
+    alert("Tasks har lagts till i din Planning poker session!");
+    //displayVotingTasks(); <--- behöver kalla på en funktion här
   }
   createTasks();
-  
 }
