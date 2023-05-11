@@ -18,7 +18,7 @@ export default function renderTempAdminPage () {
     const taskForm : HTMLFormElement = document.createElement('form');
   
     taskForm.innerHTML = /*html */`
-    <label for="title">Task</label>
+    <label for="title">Uppgift</label>
     <input type="text" id="title" name="title">
     <label for="description">Beskrivning</label>
     <textarea id="description" name="description"></textarea>
@@ -31,7 +31,6 @@ export default function renderTempAdminPage () {
     const descriptionField = document.querySelector('#description') as HTMLInputElement;
     //const pointsField = document.querySelector('#points') as HTMLSelectElement;
     const createTaskFeedback = document.querySelector('#create-task-feedback') as HTMLParagraphElement;
-
     saveButton.addEventListener('click', (event) => {
       event.preventDefault();
       const task = {
@@ -39,7 +38,6 @@ export default function renderTempAdminPage () {
         description: descriptionField.value, 
         points: null
       }
-
       fetch('http://localhost:5050/api/tasks/add', {
         method: 'POST',
         headers: {
@@ -73,7 +71,6 @@ export default function renderTempAdminPage () {
     const body = document.querySelector<HTMLDivElement>('#app');
     const taskContainer = document.createElement("div");
     taskContainer.classList.add("select-task-container");
-
     list.map(task => {
       taskContainer.innerHTML += /*html */`
       <div id="task:${task._id}" class="task-item">
@@ -85,10 +82,9 @@ export default function renderTempAdminPage () {
           data-id="
           ${task._id},
           ${task.title},
-          ${task.description}
+          ${task.description}">
           <label for="addTask">Lägg till i omröstning</label>
-          <button id="delete-${task._id} "data-id="${task._id}">Delete task</button>   
-
+          <button id="delete-${task._id} "data-id="${task._id}">Ta bort uppgift</button>   
       </div>
       `
     })
