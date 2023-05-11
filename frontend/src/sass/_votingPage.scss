@@ -11,7 +11,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 30%;
+    width: 25%;
     height: 100vh;
     color: var.$dark-blue;
   }
@@ -37,7 +37,7 @@
   
 
   .voting-div {
-    width: 30%;
+    width: 40%;
     text-align: center;
 
     .voting-header {
@@ -56,7 +56,7 @@
     
     .voting-card-container {
         display: flex;
-        justify-content: space-between;
+        justify-content: space-evenly;
         flex-direction: row;
     
         .voting-card-div {
