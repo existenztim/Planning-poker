@@ -24,10 +24,9 @@ export default function sessionVue() {
 
     const todoTaskDiv : HTMLDivElement = document.createElement('div');
     todoTaskDiv.classList.add('todo-div');
-    
+
     const votingContainer: HTMLDivElement = document.createElement('div');
     votingContainer.classList.add('voting-div');
-
 
     const todoTaskList: HTMLTableElement = document.createElement('table');
     todoTaskList.classList.add('todo-list');
@@ -159,9 +158,7 @@ export default function sessionVue() {
 
   const printHeaderHtml = () => {
     const headerContainer = document.querySelector('#header') as HTMLHeadingElement;
-    const headerTag = /*html*/ 
-    `<h1>Planning Poker</h1>
-    <p>Inloggad som : ${userData.username}</p>`;
+    const headerTag = /*html*/ `<h1>Planning Poker</h1>`;
     let adminButton = '';
 
     if(userData.admin) { 
@@ -251,6 +248,7 @@ export default function sessionVue() {
             //finishedTaskList.push(finishedTask);
             socket.emit('send sessionList', list);
             socket.emit('send finishedList', finishedTask);
+            //previousVoteTask();
             sessionVue();
           }     
         })
