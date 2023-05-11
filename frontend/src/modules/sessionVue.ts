@@ -6,7 +6,7 @@ import type { User } from '../models/userModel.ts';
 import { getUser } from '../utils/getUser.ts';
 import { adminDeliteLogedoutUser } from './adminVue.ts';
 import { checkUser } from './user.ts';
-let toggleView = true;
+
 const socketURL ="http://localhost:5050";
 
 export default function sessionVue() {
@@ -36,7 +36,7 @@ export default function sessionVue() {
 
     const displayVoteTask: HTMLDivElement = document.createElement('div');
     displayVoteTask.classList.add('voting-header');
-    
+    displayVoteTask.innerText= 'Här kommer du se vilken uppgift vi rösta om.';
 
     const voteCardsContainer: HTMLDivElement = document.createElement('div');
     voteCardsContainer.classList.add('voting-card-container');
@@ -116,7 +116,7 @@ export default function sessionVue() {
             const selectedOption = selectContainer.querySelector('#points') as HTMLSelectElement;
             voteButton.addEventListener('click', async (e) => {
               e.preventDefault();
-              const response = await fetch('http://localhost:5050/api/vote/send', {
+              const response = await fetch(`${socketURL}/api/vote/send`, {
                 method: 'POST',
                 body: JSON.stringify({ user, vote: selectedOption.value }),
                 headers: {
@@ -224,10 +224,6 @@ export default function sessionVue() {
 
         table.append(tr);
         tr.append(titleTd, descriptionTd);
-
-        // tr.addEventListener('click', (e) => {
-        //   //console.log(e.currentTarget);
-        // });
       });
     });
   };
