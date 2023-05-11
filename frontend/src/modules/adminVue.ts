@@ -119,12 +119,10 @@ export default function renderTempAdminPage () {
               points: null
             }
             sessionList.push(task);
-            
+            sessionVue();
           } 
         });
         emitSession(sessionList);
-        
-        sessionVue();
       })
       
     }

@@ -24,8 +24,6 @@ export default function sessionVue() {
 
     const todoTaskDiv : HTMLDivElement = document.createElement('div');
     todoTaskDiv.classList.add('todo-div');
-
-    
     
     const votingContainer: HTMLDivElement = document.createElement('div');
     votingContainer.classList.add('voting-div');
@@ -116,7 +114,7 @@ export default function sessionVue() {
             const selectedOption = selectContainer.querySelector('#points') as HTMLSelectElement;
             voteButton.addEventListener('click', async (e) => {
               e.preventDefault();
-              const response = await fetch('http://localhost:5050/api/vote/send', {
+              const response = await fetch(`${socketURL}/api/vote/send`, {
                 method: 'POST',
                 body: JSON.stringify({ user, vote: selectedOption.value }),
                 headers: {
@@ -160,7 +158,9 @@ export default function sessionVue() {
 
   const printHeaderHtml = () => {
     const headerContainer = document.querySelector('#header') as HTMLHeadingElement;
-    const headerTag = /*html*/ `<h1>Planning Poker</h1>`;
+    const headerTag = /*html*/ 
+    `<h1>Planning Poker</h1>
+    <p>Inloggad som : ${userData.username}</p>`;
     let adminButton = '';
 
     if(userData.admin) { 
