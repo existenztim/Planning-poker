@@ -1,19 +1,24 @@
 @use 'variables' as var;
 
 #header {
-    color: var.$dark-lavender;
     display: flex;
-    font: var.$header-font;
     justify-content: space-between;
     gap: 3px;
-    padding: 0 1rem;
+    padding: 0 4rem;
+    margin-bottom: 5em;
+
+    h1 {
+        font: var.$header-font;
+        color: var.$dark-lavender;
+        font-weight: 700;
+    }
 
     .button-container {
         display: flex;
         align-items: center;
         justify-content: center;
         border-radius: 0.4em;
-
+    
         button {
             font: var.$text-font;
             color: var.$dark-blue;
@@ -24,3 +29,4 @@
     }
 
 }
+
