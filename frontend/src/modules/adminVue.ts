@@ -18,7 +18,7 @@ export default function renderTempAdminPage () {
     const taskForm : HTMLFormElement = document.createElement('form');
   
     taskForm.innerHTML = /*html */`
-    <label for="title">Uppgift</label>
+    <label for="title">Task</label>
     <input type="text" id="title" name="title">
     <label for="description">Beskrivning</label>
     <textarea id="description" name="description"></textarea>
@@ -95,13 +95,13 @@ export default function renderTempAdminPage () {
           ${task.title},
           ${task.description}">
   
-          <label for="addTask">Add to voting session</label>
+          <label for="addTask">Lägg till i omröstning</label>
       </div>
       `
     })
   
     taskContainer.innerHTML += /*html*/`
-    <button id="initSessionBtn">Start session</button>
+    <button id="initSessionBtn">Starta session</button>
     `
     body?.appendChild(taskContainer);
     initSessionBtnEvent();
@@ -151,7 +151,7 @@ export default function renderTempAdminPage () {
   const emitSession = (tasks:Task[]) => {
     socket.emit("send sessionList", tasks);
     
-    alert("Tasks have been sent for a planning poker session!");
+    alert("Tasks har lagts till i din Planning poker session!");
     //displayVotingTasks(); <--- behöver kalla på en funktion här
   }
   createTasks();

@@ -1,4 +1,25 @@
+@use 'variables' as var;
+
+form {
+    color: var.$dark-blue;
+    font: var.$text-font;
+    width: 60%;
+
+    select {
+        font: var.$text-font;
+    }
+
+    button {
+        font: var.$text-font;
+        background-color: var.$dark-green;
+        width: 10em;
+        border-radius: 0.35em;
+    }
+}
+
 .select-task-container {
+    color: var.$dark-blue;
+    font: var.$text-font;
     margin-top: 1rem;
     display: flex;
     flex-direction: column;
@@ -7,6 +28,7 @@
     .task-item {
         border: 1px solid black;
         border-radius: 5px;
+        width: 60%;
         ul  {
             list-style: none;
             li:first-child {
@@ -17,6 +39,9 @@
 
     button {
         margin-top: 1em;
-        background-color: grey;
+        font: var.$text-font;
+        background-color: var.$dark-green;
+        width: 10em;
+        border-radius: 0.35em;
     }
 }
