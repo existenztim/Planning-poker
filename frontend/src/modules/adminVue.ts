@@ -22,28 +22,24 @@ export default function renderTempAdminPage () {
     <input type="text" id="title" name="title">
     <label for="description">Beskrivning</label>
     <textarea id="description" name="description"></textarea>
-    <label for = "points">Poäng</label>
-    <select name="points" id="points">
-      <option value=null>Välj</option>
-      <option value=1>Tiny 1SP</option>
-      <option value=3>Small 3SP</option>
-      <option value=5>Medium 5SP</option>
-      <option value=8>Large 8 SP</option>
-    </select>
-  <button id="save-task-btn">Spara</button>`
+  <button id="save-task-btn">Spara</button>
+    <p id="create-task-feedback"></p>`
   
     container.append(taskForm);
-    const saveButton :HTMLButtonElement = document.querySelector('#save-task-btn') as HTMLButtonElement;
-    const titleField :HTMLInputElement = document.querySelector('#title') as HTMLInputElement;
-    const descriptionField :HTMLInputElement = document.querySelector('#description') as HTMLInputElement;
-    const pointsField :HTMLSelectElement = document.querySelector('#points') as HTMLSelectElement;
-    //console.log(saveButton, titleField, descriptionField, pointsField);
-  
-    saveButton.addEventListener('click', () => {
-      const task = {title: titleField.value, description: descriptionField.value, points: pointsField.value}
-      //console.log(titleField.value, descriptionField.value, pointsField.value);
-      
-  
+    const saveButton = document.querySelector('#save-task-btn') as HTMLButtonElement;
+    const titleField = document.querySelector('#title') as HTMLInputElement;
+    const descriptionField = document.querySelector('#description') as HTMLInputElement;
+    //const pointsField = document.querySelector('#points') as HTMLSelectElement;
+    const createTaskFeedback = document.querySelector('#create-task-feedback') as HTMLParagraphElement;
+
+    saveButton.addEventListener('click', (event) => {
+      event.preventDefault();
+      const task = {
+        title: titleField.value, 
+        description: descriptionField.value, 
+        points: null
+      }
+
       fetch('http://localhost:5050/api/tasks/add', {
         method: 'POST',
         headers: {
@@ -53,11 +49,12 @@ export default function renderTempAdminPage () {
       })
         .then(res => res.json())
         .then(data => {
-          console.log(data);
+          alert(`Din uppgift "${data.title}" har sparats!`);
           
+        }).catch(err => {
+          createTaskFeedback.innerHTML = "Något gick fel:" + err;
         })
-      //showTasks();
-      taskSetup();
+      renderTempAdminPage();
     })
     taskSetup();
   }
@@ -66,22 +63,17 @@ export default function renderTempAdminPage () {
       const response = await fetch(`${socketURL}/api/tasks`);
       const tasks = await response.json();
       const templateTaskList: Task[] = tasks
-      //console.log("Fetched list: ",templateTaskList);
       printTasks(templateTaskList);
     } catch (error) {
       console.log(error);
     }
   }
   
-  /**
-   * This will print the tasks from fetch 
-   */
-  
   const printTasks = (list:Task[]) => {
     const body = document.querySelector<HTMLDivElement>('#app');
     const taskContainer = document.createElement("div");
     taskContainer.classList.add("select-task-container");
-  
+
     list.map(task => {
       taskContainer.innerHTML += /*html */`
       <div id="task:${task._id}" class="task-item">
@@ -93,9 +85,10 @@ export default function renderTempAdminPage () {
           data-id="
           ${task._id},
           ${task.title},
-          ${task.description}">
-  
+          ${task.description}
           <label for="addTask">Lägg till i omröstning</label>
+          <button id="delete-${task._id} "data-id="${task._id}">Delete task</button>   
+
       </div>
       `
     })
@@ -105,13 +98,8 @@ export default function renderTempAdminPage () {
     `
     body?.appendChild(taskContainer);
     initSessionBtnEvent();
+    deleteTaskEvent();
   }
-  
-  /**
-   * This function adds an event listener, when 
-   * clicked creates an array of tasks from checked checkboxes and their associated task divs. 
-   * The tasks get sent to the sessionList Array.
-   */
   
   const  initSessionBtnEvent = () => {
     const initSessionBtn = document.getElementById("initSessionBtn");
@@ -132,28 +120,47 @@ export default function renderTempAdminPage () {
               points: null
             }
             sessionList.push(task);
-            
+            sessionVue();
           } 
         });
-        console.log("Session list: ",sessionList);
         emitSession(sessionList);
-        
-        sessionVue();
       })
       
     }
   }
-  
-  /**
-   *Emits sessionList to backend using socket.io
-   */
+
+  const deleteTaskEvent = () => {
+    const deleteBtns = document.querySelectorAll('button[id^="delete"]');
+
+    deleteBtns.forEach((button) => {
+      const dataId = (button as HTMLButtonElement).dataset.id as string;
+
+      button.addEventListener("click", () => {
+
+        fetch(`${socketURL}/api/tasks/delete/`, {
+          method: "DELETE",
+          body: JSON.stringify({dataId}),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+          .then((res) => {
+            alert(`Uppgiften har tagits bort!`);
+            console.log(res);
+          })
+          .catch((err) => {
+            alert("Något gick fel:" + err);
+          });
+        renderTempAdminPage();
+      })
+    })
+  }
+
   const socket = io(socketURL);
   const emitSession = (tasks:Task[]) => {
     socket.emit("send sessionList", tasks);
-    
     alert("Tasks har lagts till i din Planning poker session!");
     //displayVotingTasks(); <--- behöver kalla på en funktion här
   }
   createTasks();
-  
 }
