@@ -45,14 +45,16 @@ socket.on('finished List', (list:Task[]) => {
     titleTd.innerText = item.title;
     const descriptionTd = document.createElement('td');
     descriptionTd.innerText = item.description;
+    const pointsTd = document.createElement('td');
+
+    if(item.points) {
+      pointsTd.innerText = "Poäng: " + JSON.stringify(item.points);
+    } else {
+      pointsTd.innerText = "ej poängsatt";
+    }
 
     table.append(tr);
-    tr.append(titleTd, descriptionTd);
-
-    
-    // tr.addEventListener('click', (e) => {
-    //   console.log(e.currentTarget);
-    // });
+    tr.append(titleTd, descriptionTd, pointsTd);
   });
  
   socket.on('restartVoting', (UserList: User[]) => {
