@@ -59,7 +59,7 @@ socket.on('flipCards', (data: Props[], average: number) => {
 
 socket.on('finished List', (list: Task[]) => {
   const table = document.querySelector('.done-tasks') as HTMLTableElement;
-  table.innerHTML+="alla färdiga röstningar";
+  
 
   let count = 0;
   list.map((item) => {
