@@ -1,6 +1,9 @@
+@use 'variables' as var;
+
 #header {
+    color: var.$dark-lavender;
     display: flex;
-    background-color: gray;
+    font: var.$header-font;
     justify-content: space-between;
     gap: 3px;
     padding: 0 1rem;
