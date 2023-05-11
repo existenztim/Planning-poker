@@ -11,7 +11,7 @@ const socketURL ="http://localhost:5050";
 
 export default function sessionVue() {
   let toggleView = true;
-  const userData = JSON.parse(localStorage.getItem("userData") as string); 
+  const userData = JSON.parse(localStorage.getItem('userData') as string);
 
   /**Creates basic html-structure */
   const printAppHtml = () => {
@@ -73,32 +73,29 @@ export default function sessionVue() {
 * Admin delete cards when a user LogOut.  
 */
 
-  function adminDeliteLogedoutUser (username:string) {
+  function adminDeliteLogedoutUser(username: string) {
     socket.emit('removeUser', username);
   }
 
   const renderCards = () => {
-    //console.log('rendercards körs');
-    
     socket.on('userList', (UserList: User[]) => {
       const votingCardContainer: HTMLDivElement = document.querySelector('.voting-card-container') as HTMLDivElement;
       votingCardContainer.innerHTML = '';
-
       //console.log('Receiving update on users in session from server', UserList);
-      
+
       const loggedInUser = getUser();
       let userHasCard = false;
 
       UserList.map((user) => {
-
         if (user.status == 'removed') {
-          return
+          return;
         }
 
-        if(user._id === loggedInUser._id){
-          if(!userHasCard){
+        if (user._id === loggedInUser._id) {
+          if (!userHasCard) {
             const selectContainer = document.createElement('div');
             selectContainer.classList.add('voting-card-div');
+            selectContainer.setAttribute('user-id', loggedInUser._id);
             const selectHTML = /*html */
            `
            <p>Rösta:</p>
@@ -136,28 +133,29 @@ export default function sessionVue() {
         } else {
           const votingCard: HTMLDivElement = document.createElement('div');
           votingCard.classList.add('voting-card-div');
+          votingCard.setAttribute('user-id', user._id);
+          votingCard.innerText = 'Röstkort';
+
           votingCard.innerHTML = /*html */ `<p>${user.username} funderar</p>`;
           votingCardContainer.appendChild(votingCard);
 
           if (user.status === 'disconnected') {
-            votingCard.innerHTML = `<p>${user.username} har lämnat omröstningen</p>`
+            votingCard.innerHTML = `<p>${user.username} har lämnat omröstningen</p>`;
             const userData = JSON.parse(localStorage.getItem('userData') || '');
             adminDeliteLogedoutUser(user.username);     // User som loggas ut tas bort när de diskonnectar. 
           /*  if (userData!=null && userData.admin) {
               const deleteUserCardBtn: HTMLButtonElement = document.createElement('button');
               votingCard.appendChild(deleteUserCardBtn);
-              deleteUserCardBtn.innerText = 'Ta bort användare'
+              deleteUserCardBtn.innerText = 'Ta bort användare';
               deleteUserCardBtn.addEventListener('click', () => {
-                adminDeliteLogedoutUser(user.username)
+                adminDeliteLogedoutUser(user.username);
               });
             }*/ // Om användaren ska ta bort users som är disconnectade själv. 
           }
         }
       });
-
-    })  
-
-  }
+    });
+  };
 
 
   const printHeaderHtml = () => {
@@ -177,12 +175,12 @@ export default function sessionVue() {
         ${adminButton}
         <button id='logOut'>Logga ut</button>
       </div>
-    `
+    `;
 
     adminBtnEvent();
     logoutBtnEvent();
-  }
-  
+  };
+
   const adminBtnEvent = () => {
     const adminBtn = document.getElementById('adminMode');
     adminBtn?.addEventListener('click', () => {
@@ -190,23 +188,22 @@ export default function sessionVue() {
         toggleView = false; 
         //console.log(toggleView);
         renderTempAdminPage();
-
       } else {
-        toggleView = true; 
+        toggleView = true;
         sessionVue();
       }
-    })
-  }
+    });
+  };
 
-  const logoutBtnEvent =() => {
+  const logoutBtnEvent = () => {
     const logoutBtn = document.getElementById('logOut');
-    const loggedOutUser  = getUser();
+    const loggedOutUser = getUser();
     logoutBtn?.addEventListener('click', () => {
       socket.emit('disconnectUser', loggedOutUser);
       localStorage.removeItem('userData');
       location.reload();
-    })
-  }
+    });
+  };
 
   const getTasks = () => {
     socket.on('getTaskList', (list: Task[]) => {
@@ -239,10 +236,11 @@ export default function sessionVue() {
       nextButton = /*html*/`<button id='nextTask'>Nästa uppgift</button>`;
     }
 
-    socket.on('getTaskList', (list:Task[]) => {
-      if (list.length >= 1){
-        displayCurrentTask.innerHTML = /*html*/
-      `<h3>${list[0].title}</h3>
+    socket.on('getTaskList', (list: Task[]) => {
+      if (list.length >= 1) {
+        displayCurrentTask.innerHTML =
+          /*html*/
+          `<h3>${list[0].title}</h3>
        <p>${list[0].description}</p>
        ${nextButton}
       `;
@@ -255,17 +253,16 @@ export default function sessionVue() {
             socket.emit('send sessionList', list);
             socket.emit('send finishedList', finishedTask);
             sessionVue();
-          }     
-        })
+          }
+        });
       } else {
-        displayCurrentTask.innerHTML ="Sessionen är avslutad!";
+        displayCurrentTask.innerHTML = 'Sessionen är avslutad!';
       }
-    })
-  }
+    });
+  };
 
   printAppHtml();
   renderCards();
   getTasks();
   currentVoteTask();
-
 }
