@@ -2,12 +2,12 @@ import { io } from 'https://cdn.socket.io/4.3.2/socket.io.esm.min.js';
 import type { User } from './models/userModel';
 import type { Task } from './models/taskModel';
 import { checkUser } from './modules/user';
+import { getUser } from './utils/getUser';
 //import sessionVue from './modules/sessionVue';
 //import { getUser } from './utils/getUser';
 
 const URL = 'http://localhost:5050';
 export const socket = io(URL);
-
 
 // socket.onAny((event, ...args) => {
 //   console.log(event, args);
@@ -41,9 +41,10 @@ interface Props {
   vote: string;
 }
 
+export let averageScore = 0;
 
 socket.on('flipCards', (data: Props[], average: number) => {
-  const cardElements = document.querySelector('.voting-card-container') as HTMLDivElement;
+  averageScore = average;
 
   for (const vote of data) {
     const card = document.querySelector(`[user-id="${vote.user._id}"`) as HTMLDivElement;
@@ -53,13 +54,26 @@ socket.on('flipCards', (data: Props[], average: number) => {
   const votingContainer = document.querySelector('.voting-div') as HTMLDivElement;
   const averageScoreElement = document.createElement('p');
   averageScoreElement.innerHTML = `Medel-röstvärde: ${String(average)}`;
-
   votingContainer.appendChild(averageScoreElement);
+
+  if (getUser().admin) {
+    const overwritePoints: HTMLDivElement = document.createElement('div');
+    overwritePoints.classList.add('overwrite-card-div');
+    overwritePoints.innerHTML = /*html */ `<p>Sätt poäng manuellt</p>
+    <select name="points" id="overwrite-points">
+      <option value=null>Välj</option>
+      <option value=1>Tiny 1SP</option>
+      <option value=3>Small 3SP</option>
+      <option value=5>Medium 5SP</option>
+      <option value=8>Large 8 SP</option>
+    </select>`;
+
+    votingContainer.append(overwritePoints);
+  }
 });
 
 socket.on('finished List', (list: Task[]) => {
   const table = document.querySelector('.done-tasks') as HTMLTableElement;
-  
 
   let count = 0;
   list.map((item) => {
@@ -75,15 +89,13 @@ socket.on('finished List', (list: Task[]) => {
     table.append(tr);
     tr.append(titleTd, descriptionTd);
 
-    
     // tr.addEventListener('click', (e) => {
     //   console.log(e.currentTarget);
     // });
   });
- 
+
   socket.on('restartVoting', (UserList: User[]) => {
     checkUser();
     console.log('restartVoting', UserList);
-    
-  })
-})
+  });
+});
