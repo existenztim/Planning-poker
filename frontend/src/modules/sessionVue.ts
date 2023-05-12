@@ -260,7 +260,7 @@ export default function sessionVue() {
       }
     });
   };
-
+ 
   printAppHtml();
   renderCards();
   getTasks();
