@@ -1,0 +1,22 @@
+@use 'variables' as var;
+
+.overwrite-card-div {
+  color: var.$dark-blue;
+  background-color: var.$light-green;
+  margin: 0 auto;
+  width: fit-content;
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+
+  select {
+    background-color: var.$dark-green;
+    color: var.$ligh-beige;
+    font: var.$text-font;
+  }
+
+  #submitVote {
+    background-color: var.$dark-green;
+    color: var.$ligh-beige;
+    font: var.$text-font;
+  }
+}
