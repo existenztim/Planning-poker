@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { socket } from '../socket.ts';
+import { averageScore, socket } from '../socket.ts';
 import renderTempAdminPage from './adminVue.ts';
 import type { Task } from '../models/taskModel.ts';
 import type { User } from '../models/userModel.ts';
@@ -7,7 +7,7 @@ import { getUser } from '../utils/getUser.ts';
 import { adminDeliteLogedoutUser } from './adminVue.ts';
 import { checkUser } from './user.ts';
 
-const socketURL ="http://localhost:5050";
+const socketURL = 'http://localhost:5050';
 
 export default function sessionVue() {
   let toggleView = true;
@@ -22,9 +22,10 @@ export default function sessionVue() {
     const votingPageContainer: HTMLDivElement = document.createElement('div');
     votingPageContainer.classList.add('votingpage');
 
-    const todoTaskDiv : HTMLDivElement = document.createElement('div');
+    const todoTaskDiv: HTMLDivElement = document.createElement('div');
     todoTaskDiv.classList.add('todo-div');
     todoTaskDiv.innerText = 'Kommande röstningar';
+
     const votingContainer: HTMLDivElement = document.createElement('div');
     votingContainer.classList.add('voting-div');
 
@@ -38,16 +39,16 @@ export default function sessionVue() {
     const voteCardsContainer: HTMLDivElement = document.createElement('div');
     voteCardsContainer.classList.add('voting-card-container');
 
-    const doneTasksDiv :HTMLDivElement = document.createElement('div');
+    const doneTasksDiv: HTMLDivElement = document.createElement('div');
     doneTasksDiv.classList.add('done-div');
     doneTasksDiv.innerText = 'Avslutade omröstningar';
 
     const doneTasksList: HTMLTableElement = document.createElement('table');
     doneTasksList.classList.add('done-tasks');
 
-    const finishVotingBtn : HTMLButtonElement = document.createElement('button');
+    const finishVotingBtn: HTMLButtonElement = document.createElement('button');
     finishVotingBtn.innerText = 'Avsluta sessionen';
-    
+
     container.appendChild(votingPageContainer);
 
     votingPageContainer.append(todoTaskDiv, votingContainer, doneTasksDiv);
@@ -56,19 +57,19 @@ export default function sessionVue() {
 
     votingContainer.append(displayVoteTask, voteCardsContainer);
 
-    doneTasksDiv.append(doneTasksList ,finishVotingBtn);
+    doneTasksDiv.append(doneTasksList, finishVotingBtn);
 
     printHeaderHtml();
 
     finishVotingBtn.addEventListener('click', () => {
       console.log('klickade på avsluta omröstning');
       socket.emit('finishVoting');
-    })
+    });
   };
 
   /*
-* Admin delete cards when a user LogOut.  
-*/
+   * Admin delete cards when a user LogOut.
+   */
 
   function adminDeliteLogedoutUser(username: string) {
     socket.emit('removeUser', username);
@@ -93,8 +94,9 @@ export default function sessionVue() {
             const selectContainer = document.createElement('div');
             selectContainer.classList.add('voting-card-div');
             selectContainer.setAttribute('user-id', loggedInUser._id);
-            const selectHTML = /*html */
-           `
+            const selectHTML =
+              /*html */
+              `
            <p>Rösta:</p>
       <select name="points" id="points">
         <option value=null>Välj</option>
@@ -139,29 +141,28 @@ export default function sessionVue() {
           if (user.status === 'disconnected') {
             votingCard.innerHTML = `<p>${user.username} har lämnat omröstningen</p>`;
             const userData = JSON.parse(localStorage.getItem('userData') || '');
-            adminDeliteLogedoutUser(user.username);     // User som loggas ut tas bort när de diskonnectar. 
-          /*  if (userData!=null && userData.admin) {
+            adminDeliteLogedoutUser(user.username); // User som loggas ut tas bort när de diskonnectar.
+            /*  if (userData!=null && userData.admin) {
               const deleteUserCardBtn: HTMLButtonElement = document.createElement('button');
               votingCard.appendChild(deleteUserCardBtn);
               deleteUserCardBtn.innerText = 'Ta bort användare';
               deleteUserCardBtn.addEventListener('click', () => {
                 adminDeliteLogedoutUser(user.username);
               });
-            }*/ // Om användaren ska ta bort users som är disconnectade själv. 
+            }*/ // Om användaren ska ta bort users som är disconnectade själv.
           }
         }
       });
     });
   };
 
-
   const printHeaderHtml = () => {
     const headerContainer = document.querySelector('#header') as HTMLHeadingElement;
     const headerTag = /*html*/ `<h1>Planning Poker</h1>`;
     let adminButton = '';
-    
-    if(userData.admin) { 
-      adminButton = /*html*/`<button id='adminMode'>Admin Läge</button>`;
+
+    if (userData.admin) {
+      adminButton = /*html*/ `<button id='adminMode'>Admin Läge</button>`;
     }
 
     headerContainer.innerHTML = /*html */ `
@@ -204,7 +205,7 @@ export default function sessionVue() {
   const getTasks = () => {
     socket.on('getTaskList', (list: Task[]) => {
       const table: HTMLTableElement = document.querySelector('.todo-list') as HTMLTableElement;
-      table.innerHTML ="";
+      table.innerHTML = '';
       //console.log(list);
       let count = 0;
       list.map((item) => {
@@ -227,9 +228,9 @@ export default function sessionVue() {
   const currentVoteTask = () => {
     const displayCurrentTask = document.querySelector('.voting-header') as HTMLDivElement;
     let nextButton = '';
-    
-    if(userData.admin) { 
-      nextButton = /*html*/`<button id='nextTask'>Nästa uppgift</button>`;
+
+    if (userData.admin) {
+      nextButton = /*html*/ `<button id='nextTask'>Nästa uppgift</button>`;
     }
 
     socket.on('getTaskList', (list: Task[]) => {
@@ -242,8 +243,20 @@ export default function sessionVue() {
       `;
         const nextTaskBtn = document.getElementById('nextTask');
         nextTaskBtn?.addEventListener('click', () => {
-          if(window.confirm("Är du säker på att du vill gå vidare till nästa omröstning?")){
+          if (window.confirm('Är du säker på att du vill gå vidare till nästa omröstning?')) {
             const finishedTask = list.shift();
+
+            const pointsOverwriteElement = document.querySelector('#overwrite-points') as HTMLSelectElement;
+            const pointsOverwriteValue = pointsOverwriteElement.value;
+
+            if (finishedTask) {
+              if (pointsOverwriteValue !== 'null') {
+                finishedTask.points = Number(pointsOverwriteValue);
+              } else {
+                finishedTask.points = averageScore;
+              }
+            }
+
             finishedTask;
             //finishedTaskList.push(finishedTask);
             socket.emit('send sessionList', list);
