@@ -34,7 +34,7 @@ export default function sessionVue() {
 
     const displayVoteTask: HTMLDivElement = document.createElement('div');
     displayVoteTask.classList.add('voting-header');
-    displayVoteTask.innerText = 'Väntar på omröstning...';
+    displayVoteTask.innerText = 'Väntar på omröstning...'
 
     const voteCardsContainer: HTMLDivElement = document.createElement('div');
     voteCardsContainer.classList.add('voting-card-container');
@@ -158,10 +158,7 @@ export default function sessionVue() {
 
   const printHeaderHtml = () => {
     const headerContainer = document.querySelector('#header') as HTMLHeadingElement;
-    const headerTag =
-      /*html*/
-      `<h1>Planning Poker</h1>
-    <p>Inloggad som : ${userData.username}</p>`;
+    const headerTag = /*html*/ `<h1>Planning Poker</h1>`;
     let adminButton = '';
 
     if (userData.admin) {
@@ -184,11 +181,12 @@ export default function sessionVue() {
     const adminBtn = document.getElementById('adminMode');
     adminBtn?.addEventListener('click', () => {
       if (toggleView) {
-        toggleView = false;
-        //console.log(toggleView);
+        toggleView = false; 
+        adminBtn.innerText ="Sessions Läge";
         renderTempAdminPage();
       } else {
-        toggleView = true;
+        toggleView = true; 
+        adminBtn.innerText ="Admin Läge";
         sessionVue();
       }
     });
@@ -263,6 +261,7 @@ export default function sessionVue() {
             //finishedTaskList.push(finishedTask);
             socket.emit('send sessionList', list);
             socket.emit('send finishedList', finishedTask);
+            //previousVoteTask();
             sessionVue();
           }
         });
@@ -271,7 +270,7 @@ export default function sessionVue() {
       }
     });
   };
-
+ 
   printAppHtml();
   renderCards();
   getTasks();

@@ -7,6 +7,7 @@ import type { newTask } from './models/TasksInterface';
 import Result from './models/ResultModel';
 
 import { Router } from 'express';
+import User from './models/UserModel';
 //import Result from '../models/ResultModel';
 
 const resultRouter = Router();
@@ -23,7 +24,7 @@ interface Props {
 }
 
 export const finishedList: newTask[] = [];
-export const UserList: IUser[] = [];
+export let UserList: IUser[] = [];
 export const VoteList: Props[] = [];
 
 const findNearestFibonacci = (value: number) => {
@@ -142,13 +143,20 @@ export const handleSession = (io: Server) => {
     socket.on('disconnectUser', (loggedOutUser) => {
       try {
         const disconnectedUser = UserList.find((user) => user.username === loggedOutUser.username);
-        console.log(disconnectedUser, 'disconnect');
+        //console.log(disconnectedUser, 'disconnect');
 
         if (disconnectedUser) {
           disconnectedUser.status = 'disconnected';
-          console.log();
-          disconnectedUser;
+          console.log(disconnectedUser);
+    
         }
+
+        if (UserList.every(user => user.status === 'disconnected')) {
+          UserList = []; // Töm arrayen
+          console.log(UserList);
+          
+        }
+
         //const connectedUsers = UserList.filter(user => user.status === 'connected')
         io.emit('userList', UserList);
       } catch (error) {
