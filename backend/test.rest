@@ -1,0 +1,18 @@
+
+
+POST http://localhost:5050/api/tasks/add
+Content-Type: application/json
+
+{
+  "title": "Test Testsson",
+  "description": "test@mail.com",
+  "points": 1
+}
+
+###
+
+DELETE http://localhost:5050/api/tasks/delete/
+Content-Type: application/json
+{
+  "_Id": ""
+}

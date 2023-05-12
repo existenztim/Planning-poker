@@ -1,0 +1,40 @@
+@use 'variables' as var;
+
+.newUserDiv, .userDiv {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: 50px;
+    color: var.$dark-lavender;
+    font: var.$text-font;
+}
+
+.newUserSpan, .UserSpan{
+    display: flex;
+    justify-content: center;
+    padding: 30px;
+}
+
+.UserInput, .newUserInput, .newUserPassword, .UserPassword{
+    display: flex;
+    justify-content: center;
+    color: var.$dark-blue;
+    background-color: var.$light-green;
+    font: var.$text-font;
+    margin: 0px 500px 15px 500px;
+    border-radius: 0.4em;
+    padding: 10px;
+    text-align: center;
+}
+
+.UserLoginBtns{
+    display: flex;
+    justify-content: center;
+    font: var.$text-font;
+    color: var.$dark-blue;
+    background-color: var.$dark-green;
+    margin: 0px 500px 15px 950px;
+    width: 9em;
+    border-radius: 0.35em;
+    padding: 0.5em;
+}
